@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<<canvas id = "canvas" width ="640" height ="480" style="border: 1px solid blue; width: 640px; height: 480px;"></canvas>
+<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script>
+var Context = {
+	canvas: null,
+  context: null,
+  create: function(id) {
+  	this.canvas = document.getElementById(id);
+    this.context = this.canvas.getContext('2d')
+    return this.context;
+  }
+};
+$(document).ready(function(){
+	Context.create("canvas");
+  
+  Context.context.beginPath();
+  Context.context.rect(0,0,640,480);
+  Context.context.fillStyle = 'black';
+  Context.context.fill();
+});
+</script>
+
+</body>
+</html>
+
+
