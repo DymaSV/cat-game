@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+
+<script src="scripts/canvas.js"></script>
+<script src="scripts/sprite.js"></script>
+<script src="scripts/world.js"></script>
+<script>
+    var Context = null;
+    var BLOCK_W = 32;
+    var BLOCK_H = 32;
+    var wall = new Sprite("/wall.png");
+    $(document).ready(function(){
+        Context = new HTML("game", 640, 480);
+    });
+</script>
+</head>
+<body>
+    <canvas id="game"></canvas>
+</body>
+</html>
+
+
