@@ -30,22 +30,23 @@ var Sprite = function(fn) {
         console.log("Unable to load sprite. Filename '" + fn + "' is undefined or null.");
     }
 
-    // Normal draw
-    this.draw = function(x, y) {
-        Context.context.drawImage(this.image, x, y, BLOCK_W, BLOCK_H);
-    };
-
-    this.drawAnimated = function(x, y, spriteSheetIndex)
-    {
-        if (this.animationDelay++ >= 3) {
-            this.animationDelay = 0;
-            this.animationIndexCounter++;
-            if (this.animationIndexCounter >= spriteSheetIndex.length)
-                this.animationIndexCounter = 0;
-            this.animationCurrentFrame = spriteSheetIndex[this.animationIndexCounter];
+    //Draw function
+    this.draw = function(x, y, various) {
+        if(various == undefined){
+            Context.context.drawImage(this.image, x, y, BLOCK_W, BLOCK_H);
         }
-        var res = i2xy(this.animationCurrentFrame, 4);
-        Context.context.drawImage(this.image, res[0]*32, res[1]*32, 32, 32, x, y, 32, 32);
+        if(Array.isArray(various) && various.length > 0)
+        {
+            if (this.animationDelay++ >= 3) {
+                this.animationDelay = 0;
+                this.animationIndexCounter++;
+                if (this.animationIndexCounter >= various.length)
+                    this.animationIndexCounter = 0;
+                this.animationCurrentFrame = various[this.animationIndexCounter];
+            }
+            var res = i2xy(this.animationCurrentFrame, 4);
+            Context.context.drawImage(this.image, res[0]*32, res[1]*32, 32, 32, x, y, 32, 32);
+        }
     };
 
     // Stretched draw
