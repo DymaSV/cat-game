@@ -28,7 +28,6 @@ var Sprite = function(fn) {
         Context.context.drawImage(this.image, x, y, BLOCK_W, BLOCK_H);
     };
 
-    /* Tutorial 7 Code Start -- Draw animated sprite */
     this.drawAnimated = function(x, y, spriteSheetIndex)
     {
         if (this.animationDelay++ >= 3) {
@@ -38,10 +37,9 @@ var Sprite = function(fn) {
                 this.animationIndexCounter = 0;
             this.animationCurrentFrame = spriteSheetIndex[this.animationIndexCounter];
         }
-        var res = i2xy(this.animationCurrentFrame, 8);
+        var res = i2xy(this.animationCurrentFrame, 4);
         Context.context.drawImage(this.image, res[0]*32, res[1]*32, 32, 32, x, y, 32, 32);
     };
-    /* Tutorial 7 Code End */
 
     // Stretched draw
     this.draw2 = function(x, y, w, h) {
