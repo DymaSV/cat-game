@@ -6,6 +6,7 @@
 <script src="scripts/utility.js"></script>
 <script src="scripts/keyboard.js"></script>
 <script src="scripts/canvas.js"></script>
+<script src="scripts/spritesheet.js"></script>
 <script src="scripts/sprite.js"></script>
 <script src="scripts/world.js"></script>
 
@@ -15,7 +16,8 @@
     var BLOCK_H = 32;
     var wall = new Sprite("./wall.png");
     var water = new Sprite("./water.png");
-    var cat = new Sprite("./cats.png");
+    var catSpriteSheet = new SpriteSheet("./cats.png");
+    var cat = new Sprite(catSpriteSheet);
     let cat_x = 32;
     let cat_y = 0;
 

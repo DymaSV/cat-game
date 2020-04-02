@@ -2,6 +2,7 @@ var Sprite = function(fn) {
 
     this.TO_RADIANS = Math.PI/180;
     this.image = null;
+    this.spriteSheet = null;
     this.is_pattern = false;
     this.pattern = null;
     this.pattern_x_times = 0;
@@ -15,8 +16,14 @@ var Sprite = function(fn) {
     // Load the sprite
     if (fn != undefined && fn != "" && fn != null)
     {
-        this.load(fn);
-        console.log("Loaded sprite " + fn);
+        if(fn instanceof SpriteSheet){
+            this.spriteSheet = fn;
+            this.image = this.spriteSheet.image;
+        }
+        else {
+            this.load(fn);
+            console.log("Loaded sprite " + fn);
+        }
     }
     else
     {
