@@ -6,6 +6,7 @@
 <script src="scripts/utility.js"></script>
 <script src="scripts/keyboard.js"></script>
 <script src="scripts/canvas.js"></script>
+<script src="scripts/animate.js"></script>
 <script src="scripts/spritesheet.js"></script>
 <script src="scripts/sprite.js"></script>
 <script src="scripts/world.js"></script>
@@ -17,10 +18,13 @@
     var wall = new Sprite("./wall.png");
     var water = new Sprite("./water.png");
     var catSpriteSheet = new SpriteSheet("./cats.png");
+    var dogSpriteSheet = new SpriteSheet("./dog-sprite-sheet.png");
     var cat = new Sprite(catSpriteSheet);
     let cat_x = 32;
     let cat_y = 0;
-
+    var dog = new Sprite(dogSpriteSheet);
+    let dog_x = 128;
+    let dog_y = 64;
     var map = [0,1,1,1,1,1,1,1,1,1,
                0,1,0,0,1,1,1,0,0,1,
                1,1,0,0,0,0,0,0,0,1,
@@ -36,41 +40,46 @@
         Context = new HTML("game", 640, 480);
         initKeyEvents();
     });
-    setInterval(function(){
+    let drawMap = function(){
         let mapIndex = 0;
         for (let y = 0; y < 10; y=y+1) {
-                for (let x = 0; x < 10; x=x+1, mapIndex++) {
+            for (let x = 0; x < 10; x=x+1, mapIndex++) {
+                let x_new = x * BLOCK_W;
+                let y_new = y * BLOCK_H;
+                if(map[mapIndex] == 1) {
+                    wall.draw(x_new, y_new);
+                }
+                else {
+                    water.draw(x_new, y_new);
+                }
+            } 
+        }
+    }
+    let drawCatHero = function(){
+        let spriteSheetIndex = [17,18,19,20,21,22,22,22,22,22,22,22,22,23];
+        if(keyState.keyLeftState){
+            cat_x = cat_x-1;
+            spriteSheetIndex = [12,13,14,15];
+        }
+        if(keyState.keyRightState){
+            cat_x = cat_x+1;
+            spriteSheetIndex = [4,5,6,7];
+        }
+        if(keyState.keyDownState){
+            cat_y = cat_y+1;
+            spriteSheetIndex = [0,1,2,3];
+        }
+        if(keyState.keyUpState){
+            cat_y = cat_y-1;
+            spriteSheetIndex = [8,9,10,11];
+        }
+        cat.draw(cat_x, cat_y, spriteSheetIndex);
+    }
+    setInterval(function(){
+        drawMap();
+        drawCatHero();
+        dog.draw(dog_x, dog_y, [1,2,3]);
 
-                    let x_new = x * BLOCK_W;
-                    let y_new = y * BLOCK_H;
-                
-                    //if(Math.floor(Math.floor(Math.random() * Math.floor(2)))){
-                        if(map[mapIndex] == 1) {
-                            wall.draw(x_new, y_new);
-                        }
-                        else {
-                            water.draw(x_new, y_new);
-                        }
-                } 
-            }
-            let spriteSheetIndex = [17,18,19,20,21,21,21,21,22,23];
-            if(keyState.keyLeftState){
-                cat_x = cat_x-1;
-                spriteSheetIndex = [12,13,14,15];
-            }
-            if(keyState.keyRightState){
-                cat_x = cat_x+1;
-                spriteSheetIndex = [4,5,6,7];
-            }
-            if(keyState.keyDownState){
-                cat_y = cat_y+1;
-                spriteSheetIndex = [0,1,2,3];
-            }
-            if(keyState.keyUpState){
-                cat_y = cat_y-1;
-                spriteSheetIndex = [8,9,10,11];
-            }
-            cat.draw(cat_x, cat_y, spriteSheetIndex);
     }, 40)
 
 </script>

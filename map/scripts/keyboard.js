@@ -12,6 +12,11 @@ class KeyActiveState {
         this.keyRightState = false;
         this.keyUpState = false;
         this.keyDownState = false;
+
+        this.upLeftState = false;
+        this.upRightState = false;
+        this.downLeftState = false;
+        this.downRightState = false;
       }
 }
 let keyState = new KeyActiveState();
@@ -20,7 +25,7 @@ function initKeyEvents(){
         if (e.keyCode == key_shift) {
             keyState.keyShiftState = true;
         }
-        //Direction
+        //One direction
         if (e.keyCode == key_left) {
             keyState.keyLeftState = true;
         }
@@ -33,9 +38,28 @@ function initKeyEvents(){
         if (e.keyCode == key_down) {
             keyState.keyDownState = true;
         }
+
+        //Two direction
+        if (keyState.keyLeftState && keyState.keyUpState) {
+            keyState.upLeftState = true;
+        }
+        if (e.keyCode == key_right && e.keyCode == key_up) {
+            keyState.upRightState = true;
+        }
+        if (e.keyCode == key_left && e.keyCode == key_down) {
+            keyState.downLeftState = true;
+        }
+        if (e.keyCode == key_right && e.keyCode == key_down) {
+            keyState.downRightState = true;
+        }
     });
 
     $(document).keyup(function(e){
+        keyState.upLeftState = false;
+        keyState.upRightState = false;
+        keyState.downLeftState = false;
+        keyState.downRightState = false;
+
         if (e.keyCode == key_shift) {
             keyState.keyShiftState = false;
         }
