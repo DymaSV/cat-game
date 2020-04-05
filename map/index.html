@@ -10,6 +10,7 @@
 <script src="scripts/spritesheet.js"></script>
 <script src="scripts/sprite.js"></script>
 <script src="scripts/world.js"></script>
+<script src="scripts/collision.js"></script>
 
 <script>
     var Context = null;
@@ -17,10 +18,10 @@
     var BLOCK_H = 32;
     var wall = new Sprite("./wall.png");
     var water = new Sprite("./water.png");
-    var catSpriteSheet = new SpriteSheet("./cats.png");
-    var dogSpriteSheet = new SpriteSheet("./dog-sprite-sheet.png");
+    var catSpriteSheet = new SpriteSheet("./cats.png", 20, 20);
+    var dogSpriteSheet = new SpriteSheet("./dog-sprite-sheet.png", 20, 20);
     var cat = new Sprite(catSpriteSheet);
-    let cat_x = 32;
+    let cat_x = 0;
     let cat_y = 0;
     var dog = new Sprite(dogSpriteSheet);
     let dog_x = 128;
@@ -75,11 +76,16 @@
         }
         cat.draw(cat_x, cat_y, spriteSheetIndex);
     }
+    let collision = new Collision();
     setInterval(function(){
         drawMap();
         drawCatHero();
         dog.draw(dog_x, dog_y, [1,2,3]);
 
+        if(collision.detectCollision(cat,dog))
+        {
+            console.log("Collision");
+        }
     }, 40)
 
 </script>
