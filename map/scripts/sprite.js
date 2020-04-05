@@ -6,8 +6,8 @@ var Sprite = function(fn) {
     this.animate = null;
     this.collisionWidth = null;
     this.collisionHeight = null;
-    this.x = null;
-    this.y = null;
+    this.x = 0;
+    this.y = 0;
     this.is_pattern = false;
     this.load = function(filename) { this.image = new Image(); this.image.src = filename; return this; };
 
@@ -42,7 +42,7 @@ var Sprite = function(fn) {
                 this.animate.animationCurrentFrame = various[this.animate.animationIndexCounter];
             }
 
-            var res = i2xy(this.animate.animationCurrentFrame, 4);
+            var res = i2xy(this.animate.animationCurrentFrame, this.spriteSheet.spriteSheetWidth);
             Context.context.drawImage(this.image, res[0]*32, res[1]*32, 32, 32, x, y, 32, 32);
             this.x = x;
             this.y = y;

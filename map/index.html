@@ -11,21 +11,29 @@
 <script src="scripts/sprite.js"></script>
 <script src="scripts/world.js"></script>
 <script src="scripts/collision.js"></script>
+<script src="scripts/enemy-utility.js"></script>
 
 <script>
+    let collisionDone = false;
     var Context = null;
+    var contextWidth = 640;
+    var contextHeight = 480;
     var BLOCK_W = 32;
     var BLOCK_H = 32;
     var wall = new Sprite("./wall.png");
-    var water = new Sprite("./water.png");
-    var catSpriteSheet = new SpriteSheet("./cats.png", 20, 20);
-    var dogSpriteSheet = new SpriteSheet("./dog-sprite-sheet.png", 20, 20);
+    var waterSpriteSheet = new SpriteSheet("./water.png", 32, 32);
+    var water = new Sprite(waterSpriteSheet);
+    var bangSpriteSheet = new SpriteSheet("./bang.png", 20, 20, 8);
+    var catSpriteSheet = new SpriteSheet("./cats.png", 20, 20, 4);
+    var dogSpriteSheet = new SpriteSheet("./dog-sprite-sheet.png", 20, 20, 4);
+    var bang = new Sprite(bangSpriteSheet);
     var cat = new Sprite(catSpriteSheet);
-    let cat_x = 0;
-    let cat_y = 0;
+    let cat_x = cat.x = 0;
+    let cat_y = cat.y = 0;
     var dog = new Sprite(dogSpriteSheet);
-    let dog_x = 128;
-    let dog_y = 64;
+    let dog_x = dog.x = 32;
+    let dog_y = dog.y = 32;
+    let enemyUtility = new EnemyUtility();
     var map = [0,1,1,1,1,1,1,1,1,1,
                0,1,0,0,1,1,1,0,0,1,
                1,1,0,0,0,0,0,0,0,1,
@@ -38,7 +46,7 @@
                1,1,1,1,1,1,1,1,1,1];
 
     $(document).ready(function(){
-        Context = new HTML("game", 640, 480);
+        Context = new HTML("game", contextWidth, contextHeight);
         initKeyEvents();
     });
     let drawMap = function(){
@@ -79,13 +87,25 @@
     let collision = new Collision();
     setInterval(function(){
         drawMap();
-        drawCatHero();
-        dog.draw(dog_x, dog_y, [1,2,3]);
-
-        if(collision.detectCollision(cat,dog))
-        {
-            console.log("Collision");
+        if(!collisionDone){
+            collisionDone = collision.detectCollision(cat,dog);
         }
+            if(collisionDone)
+            {
+                bang.draw(cat_x, cat_y, [31,30,29,28,27,26,25,24,23,22,21,20,
+                                        19,18,17,16,15,14,13,12,11,10,9,8,7,
+                                        6,5,4,3,2,1,31,32]);
+                                        // [31,30,29,28,27,26,25,24,23,22,21,20,
+                                        // 19,18,17,16,15,14,13,12,11,10,9,8,7,
+                                        // 6,5,4,3,2,1,31,32]
+                collisionDone = true;
+            } else {
+                drawCatHero();
+                dog_xy = enemyUtility.getEnemyCoordinates(dog_x, dog_y, 1, 200, 200);
+                dog_x = dog_xy.x;
+                dog_y = dog_xy.y;
+                dog.draw(dog_x, dog_y, [1,2,3]);
+            }
     }, 40)
 
 </script>
