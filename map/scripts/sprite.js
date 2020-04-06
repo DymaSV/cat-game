@@ -3,6 +3,7 @@ var Sprite = function(fn) {
     this.TO_RADIANS = Math.PI/180;
     this.image = null;
     this.spriteSheet = null;
+    this.spritePositions = null;
     this.animate = null;
     this.collisionWidth = null;
     this.collisionHeight = null;
@@ -19,6 +20,8 @@ var Sprite = function(fn) {
             this.animate = new Animate(0, 0, 0);
             this.collisionWidth = this.spriteSheet.collisionWidth;
             this.collisionHeight = this.spriteSheet.collisionHeight;
+            this.spritePositions = this.spriteSheet.spritePositions;
+            console.log("Loaded sprite " + this.spriteSheet.image.src);
         } else {
             this.load(fn);
             console.log("Loaded sprite " + fn);
@@ -29,23 +32,25 @@ var Sprite = function(fn) {
     }
     
     //Draw function
-    this.draw = function(x, y, various) {
-        if(various == undefined) {
+    this.draw = function(x, y, direction) {
+        if(direction == undefined) {
             Context.context.drawImage(this.image, x, y, BLOCK_W, BLOCK_H);
-        }
-        if(Array.isArray(various) && various.length > 0) {
-            if (this.animate.animationDelay++ >= 3) {
-                this.animate.animationDelay = 0;
-                this.animate.animationIndexCounter++;
-                if (this.animate.animationIndexCounter >= various.length)
-                    this.animate.animationIndexCounter = 0;
-                this.animate.animationCurrentFrame = various[this.animate.animationIndexCounter];
-            }
+        } else {
+            various = this.getSpritePositions(direction);
+            if(Array.isArray(various) && various.length > 0) {
+                if (this.animate.animationDelay++ >= 3) {
+                    this.animate.animationDelay = 0;
+                    this.animate.animationIndexCounter++;
+                    if (this.animate.animationIndexCounter >= various.length)
+                        this.animate.animationIndexCounter = 0;
+                    this.animate.animationCurrentFrame = various[this.animate.animationIndexCounter];
+                }
 
-            var res = i2xy(this.animate.animationCurrentFrame, this.spriteSheet.spriteSheetWidth);
-            Context.context.drawImage(this.image, res[0]*32, res[1]*32, 32, 32, x, y, 32, 32);
-            this.x = x;
-            this.y = y;
+                var res = i2xy(this.animate.animationCurrentFrame, this.spriteSheet.spriteSheetWidth);
+                Context.context.drawImage(this.image, res[0]*32, res[1]*32, 32, 32, x, y, 32, 32);
+                this.x = x;
+                this.y = y;
+            }
         }
     };
 
@@ -86,5 +91,21 @@ var Sprite = function(fn) {
         Context.context.rotate(angle * this.TO_RADIANS);
         Context.context.drawImage(this.image, -(this.image.width/2), -(this.image.height/2));
         Context.context.restore();
+    }
+
+    this.getSpritePositions = function(direction) {
+        if(direction == DirectionEnum.left) {
+            return this.spritePositions.left
+        }
+        if(direction == DirectionEnum.right) {
+            return this.spritePositions.right
+        }
+        if(direction == DirectionEnum.up) {
+            return this.spritePositions.up
+        }
+        if(direction == DirectionEnum.down) {
+            return this.spritePositions.down
+        }
+        return this.spritePositions.none
     }
 };

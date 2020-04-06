@@ -24,8 +24,8 @@
     var waterSpriteSheet = new SpriteSheet("./water.png", 32, 32);
     var water = new Sprite(waterSpriteSheet);
     var bangSpriteSheet = new SpriteSheet("./bang.png", 20, 20, 8);
-    var catSpriteSheet = new SpriteSheet("./cats.png", 20, 20, 4);
-    var dogSpriteSheet = new SpriteSheet("./dog-sprite-sheet.png", 20, 20, 4);
+    var catSpriteSheet = new SpriteSheet("./cats.png", 20, 20, 4, HeroPositions);
+    var dogSpriteSheet = new SpriteSheet("./dog-sprite-sheet.png", 20, 20, 4, EnemyPositions);
     var bang = new Sprite(bangSpriteSheet);
     var cat = new Sprite(catSpriteSheet);
     let cat_x = cat.x = 0;
@@ -65,24 +65,24 @@
         }
     }
     let drawCatHero = function(){
-        let spriteSheetIndex = [17,18,19,20,21,22,22,22,22,22,22,22,22,23];
+        let direction = DirectionEnum.none;
         if(keyState.keyLeftState){
             cat_x = cat_x-1;
-            spriteSheetIndex = [12,13,14,15];
+            direction = DirectionEnum.left;
         }
         if(keyState.keyRightState){
             cat_x = cat_x+1;
-            spriteSheetIndex = [4,5,6,7];
+            direction = DirectionEnum.right;
         }
         if(keyState.keyDownState){
             cat_y = cat_y+1;
-            spriteSheetIndex = [0,1,2,3];
+            direction = DirectionEnum.down;
         }
         if(keyState.keyUpState){
             cat_y = cat_y-1;
-            spriteSheetIndex = [8,9,10,11];
+            direction = DirectionEnum.up;
         }
-        cat.draw(cat_x, cat_y, spriteSheetIndex);
+        cat.draw(cat_x, cat_y, direction);
     }
     let collision = new Collision();
     setInterval(function(){
@@ -104,7 +104,7 @@
                 dog_xy = enemyUtility.getEnemyCoordinates(dog_x, dog_y, 1, 200, 200);
                 dog_x = dog_xy.x;
                 dog_y = dog_xy.y;
-                dog.draw(dog_x, dog_y, [1,2,3]);
+                dog.draw(dog_x, dog_y, dog_xy.direction);
             }
     }, 40)
 
