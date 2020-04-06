@@ -19,7 +19,7 @@
     var Context = null;
     var contextWidth = 640;
     var contextHeight = 480;
-    var bangSpriteSheet = new SpriteSheet("./bang.png", 20, 20, 8);
+    var bangSpriteSheet = new SpriteSheet("./bang.png", 20, 20, 8, BangPositions);
     var catSpriteSheet = new SpriteSheet("./cats.png", 20, 20, 4, HeroPositions);
     var dogSpriteSheet1 = new SpriteSheet("./dog-sprite-sheet.png", 20, 20, 5, EnemyPositions);
     var bang = new Sprite(bangSpriteSheet);
@@ -63,21 +63,16 @@
             }
             else {break;}
         }
-            if(collisionDone)
-            {
-                bang.draw(cat_x, cat_y, [31,30,29,28,27,26,25,24,23,22,21,20,
-                                        19,18,17,16,15,14,13,12,11,10,9,8,7,
-                                        6,5,4,3,2,1,31,32]);
-                                        // [31,30,29,28,27,26,25,24,23,22,21,20,
-                                        // 19,18,17,16,15,14,13,12,11,10,9,8,7,
-                                        // 6,5,4,3,2,1,31,32]
-                collisionDone = true;
-            } else {
-                drawCatHero();
-                for (let i = 0; i < enemiesArray.length; i++) {
-                    enemiesArray[i].move();
-                }
+        if(collisionDone)
+        {
+            bang.draw(cat_x, cat_y, 4);
+            collisionDone = true;
+        } else {
+            drawCatHero();
+            for (let i = 0; i < enemiesArray.length; i++) {
+                enemiesArray[i].move();
             }
+        }
     }, 40)
 
 </script>
