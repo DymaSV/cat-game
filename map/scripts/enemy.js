@@ -1,9 +1,32 @@
-class EnemyUtility{
-    moveCirle = 30;
+let dogSpriteSheet = new SpriteSheet("./dog-sprite-sheet.png", 20, 20, 5, EnemyPositions);
+let createEnemies = function (cenemiesArray, count, borderWidth, borderHeight) {
+    for (let i = 1; i < count; i++) {
+        enemiesArray.push(new Enemy(dogSpriteSheet, i*32, i*32, borderWidth, borderHeight));
+    }
+}
+
+class Enemy{
+    cirle = 50
+    moveCirle = 50;
     direction = DirectionEnum.none;
     moveChoosed = false;
+    constructor(spriteSheet, x, y, borderWidth, borderHeight){
+        this.sprite = new Sprite(spriteSheet);
+        this.x = this.sprite.x = x;
+        this.y = this.sprite.y = y;
+        this.borderWidth = borderWidth;
+        this.borderHeight = borderHeight;
+    }
+    
+    move(){
+        let enemyMoves = this.getEnemyCoordinates(this.x, this.y, 1, this.borderWidth, this.borderHeight);
+        this.x = enemyMoves.x;
+        this.y = enemyMoves.y;
+        this.sprite.draw(this.x, this.y, enemyMoves.direction);
+    }
+
+    
     getEnemyCoordinates (x, y, dxy, contextWidth, contextHeight) {
-        
         if(!this.moveChoosed && this.moveCirle > 0){
             // //get direction of x; 0 - left, 1 - right;
             // this.x_direction = this.getRandomInt(2);
@@ -16,7 +39,7 @@ class EnemyUtility{
             this.moveCirle--;
             if(this.moveCirle <= 0){
                 this.moveChoosed = false;
-                this.moveCirle = 20;
+                this.moveCirle = this.cirle;
             }
         }
         
@@ -55,12 +78,5 @@ class EnemyUtility{
     getRandomInt(num) {
         return Math.floor(Math.random() * Math.floor(num));
       }
-    
-    // castToDirectionEnum(num) {
-    //     if(num == 0) {return DirectionEnum.left;}
-    //     if(num == 1) {return DirectionEnum.right;}
-    //     if(num == 2) {return DirectionEnum.up;}
-    //     if(num == 3) {return DirectionEnum.down;}
-    //     return DirectionEnum.none;
-    // }
 }
+

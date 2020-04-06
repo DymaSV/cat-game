@@ -9,61 +9,31 @@
 <script src="scripts/animate.js"></script>
 <script src="scripts/spritesheet.js"></script>
 <script src="scripts/sprite.js"></script>
+<script src="scripts/positions.js"></script>
 <script src="scripts/world.js"></script>
 <script src="scripts/collision.js"></script>
-<script src="scripts/enemy-utility.js"></script>
+<script src="scripts/enemy.js"></script>
 
 <script>
     let collisionDone = false;
     var Context = null;
     var contextWidth = 640;
     var contextHeight = 480;
-    var BLOCK_W = 32;
-    var BLOCK_H = 32;
-    var wall = new Sprite("./wall.png");
-    var waterSpriteSheet = new SpriteSheet("./water.png", 32, 32);
-    var water = new Sprite(waterSpriteSheet);
     var bangSpriteSheet = new SpriteSheet("./bang.png", 20, 20, 8);
     var catSpriteSheet = new SpriteSheet("./cats.png", 20, 20, 4, HeroPositions);
-    var dogSpriteSheet = new SpriteSheet("./dog-sprite-sheet.png", 20, 20, 4, EnemyPositions);
+    var dogSpriteSheet1 = new SpriteSheet("./dog-sprite-sheet.png", 20, 20, 5, EnemyPositions);
     var bang = new Sprite(bangSpriteSheet);
     var cat = new Sprite(catSpriteSheet);
     let cat_x = cat.x = 0;
     let cat_y = cat.y = 0;
-    var dog = new Sprite(dogSpriteSheet);
-    let dog_x = dog.x = 32;
-    let dog_y = dog.y = 32;
-    let enemyUtility = new EnemyUtility();
-    var map = [0,1,1,1,1,1,1,1,1,1,
-               0,1,0,0,1,1,1,0,0,1,
-               1,1,0,0,0,0,0,0,0,1,
-               1,1,0,0,1,1,1,0,0,1,
-               1,1,0,1,0,1,1,0,0,1,
-               1,1,0,0,1,1,1,0,0,1,
-               1,1,1,1,1,1,1,0,0,1,
-               1,1,0,0,1,1,1,0,0,1,
-               1,1,1,1,1,1,1,0,0,1,
-               1,1,1,1,1,1,1,1,1,1];
-
+    let enemiesArray = new Array();
+    
     $(document).ready(function(){
         Context = new HTML("game", contextWidth, contextHeight);
         initKeyEvents();
+        createEnemies(enemiesArray,10,200,200);
     });
-    let drawMap = function(){
-        let mapIndex = 0;
-        for (let y = 0; y < 10; y=y+1) {
-            for (let x = 0; x < 10; x=x+1, mapIndex++) {
-                let x_new = x * BLOCK_W;
-                let y_new = y * BLOCK_H;
-                if(map[mapIndex] == 1) {
-                    wall.draw(x_new, y_new);
-                }
-                else {
-                    water.draw(x_new, y_new);
-                }
-            } 
-        }
-    }
+    
     let drawCatHero = function(){
         let direction = DirectionEnum.none;
         if(keyState.keyLeftState){
@@ -87,8 +57,11 @@
     let collision = new Collision();
     setInterval(function(){
         drawMap();
-        if(!collisionDone){
-            collisionDone = collision.detectCollision(cat,dog);
+        for (let i = 0; i < enemiesArray.length; i++) {
+            if(!collisionDone){
+                collisionDone = collision.detectCollision(cat, enemiesArray[i].sprite);
+            }
+            else {break;}
         }
             if(collisionDone)
             {
@@ -101,10 +74,9 @@
                 collisionDone = true;
             } else {
                 drawCatHero();
-                dog_xy = enemyUtility.getEnemyCoordinates(dog_x, dog_y, 1, 200, 200);
-                dog_x = dog_xy.x;
-                dog_y = dog_xy.y;
-                dog.draw(dog_x, dog_y, dog_xy.direction);
+                for (let i = 0; i < enemiesArray.length; i++) {
+                    enemiesArray[i].move();
+                }
             }
     }, 40)
 

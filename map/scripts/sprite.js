@@ -94,18 +94,21 @@ var Sprite = function(fn) {
     }
 
     this.getSpritePositions = function(direction) {
-        if(direction == DirectionEnum.left) {
-            return this.spritePositions.left
+        if(this.spritePositions) {
+            if(direction == DirectionEnum.left) {
+                return this.spritePositions.left;
+            }
+            if(direction == DirectionEnum.right) {
+                return this.spritePositions.right;
+            }
+            if(direction == DirectionEnum.up) {
+                return this.spritePositions.up;
+            }
+            if(direction == DirectionEnum.down) {
+                return this.spritePositions.down;
+            }
+            return this.spritePositions.none;
         }
-        if(direction == DirectionEnum.right) {
-            return this.spritePositions.right
-        }
-        if(direction == DirectionEnum.up) {
-            return this.spritePositions.up
-        }
-        if(direction == DirectionEnum.down) {
-            return this.spritePositions.down
-        }
-        return this.spritePositions.none
+        else {return null;}
     }
 };
