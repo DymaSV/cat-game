@@ -1,7 +1,7 @@
 let dogSpriteSheet = new SpriteSheet("./dog-sprite-sheet.png", 10, 10, 5, EnemyPositions);
 let createEnemies = function (enemiesArray, count, borderWidth, borderHeight) {
     for (let i = 1; i < count; i++) {
-        enemiesArray.push(new Enemy(dogSpriteSheet, i*20, i*30, borderWidth, borderHeight));
+        enemiesArray.push(new Enemy(dogSpriteSheet, i*100, i*30, borderWidth, borderHeight));
     }
 }
 
