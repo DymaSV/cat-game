@@ -1,5 +1,3 @@
-var wall = new Sprite("./wall.png");
-var waterSpriteSheet = new SpriteSheet("./water.png", 16, 16);
 var isWaterSaved = false;
 var MAP_BLOCK_W = 32;
 var MAP_BLOCK_H = 32;
