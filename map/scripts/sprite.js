@@ -34,7 +34,7 @@ var Sprite = function(fn) {
     //Draw function
     this.draw = function(x, y, direction) {
         if(direction == undefined) {
-            Context.context.drawImage(this.image, x, y, BLOCK_W, BLOCK_H);
+            Context.context.drawImage(this.image, x, y, MAP_BLOCK_W, MAP_BLOCK_H);
         } else {
             various = this.getSpritePositions(direction);
             if(Array.isArray(various) && various.length > 0) {
@@ -48,10 +48,10 @@ var Sprite = function(fn) {
 
                 var res = i2xy(this.animate.animationCurrentFrame, this.spriteSheet.spriteSheetWidth);
                 Context.context.drawImage(this.image, res[0]*32, res[1]*32, 32, 32, x, y, 32, 32);
-                this.x = x;
-                this.y = y;
             }
         }
+        this.x = x;
+        this.y = y;
     };
 
     // Stretched draw

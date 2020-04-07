@@ -15,63 +15,101 @@
 <script src="scripts/enemy.js"></script>
 
 <script>
-    let collisionDone = false;
+    var heroEnemyCollision = false;
+    var heroWaterCollisionBegin = false;
+    var heroWaterCollisionEnd = false;
+    var lastDirection = DirectionEnum.none;
     var Context = null;
     var contextWidth = 640;
     var contextHeight = 480;
-    var bangSpriteSheet = new SpriteSheet("./bang.png", 20, 20, 8, BangPositions);
-    var catSpriteSheet = new SpriteSheet("./cats.png", 20, 20, 4, HeroPositions);
-    var dogSpriteSheet1 = new SpriteSheet("./dog-sprite-sheet.png", 20, 20, 5, EnemyPositions);
+    var bangSpriteSheet = new SpriteSheet("./bang.png", 15, 15, 8, BangPositions);
+    var catSpriteSheet = new SpriteSheet("./cats.png", 10, 10, 4, HeroPositions);
     var bang = new Sprite(bangSpriteSheet);
     var cat = new Sprite(catSpriteSheet);
-    let cat_x = cat.x = 0;
-    let cat_y = cat.y = 0;
+    var cat_x = cat.x = 0;
+    var cat_y = cat.y = 0;
     let enemiesArray = new Array();
+    let waterArray = new Array();
+    let collision = new Collision();    
     
-    $(document).ready(function(){
-        Context = new HTML("game", contextWidth, contextHeight);
-        initKeyEvents();
-        createEnemies(enemiesArray,10,200,200);
-    });
-    
-    let drawCatHero = function(){
+    let heroMove = function(){
         let direction = DirectionEnum.none;
         if(keyState.keyLeftState){
-            cat_x = cat_x-1;
+            if(!heroWaterCollisionBegin){
+                cat_x = cat_x-1;
+                heroWaterCollisionEnd = false;
+            }
             direction = DirectionEnum.left;
         }
         if(keyState.keyRightState){
-            cat_x = cat_x+1;
+            if(!heroWaterCollisionBegin){
+                cat_x = cat_x+1;
+                heroWaterCollisionEnd = false;
+            }
             direction = DirectionEnum.right;
         }
         if(keyState.keyDownState){
-            cat_y = cat_y+1;
+            if(!heroWaterCollisionBegin){
+                cat_y = cat_y+1;
+                heroWaterCollisionEnd = false;
+            }
             direction = DirectionEnum.down;
         }
         if(keyState.keyUpState){
-            cat_y = cat_y-1;
+            if(!heroWaterCollisionBegin){
+                cat_y = cat_y-1;
+                heroWaterCollisionEnd = false;
+            }
             direction = DirectionEnum.up;
+        }
+        if(lastDirection != direction) {
+            lastDirection = direction;
+            heroWaterCollisionBegin = false;
+            heroWaterCollisionEnd = true;
         }
         cat.draw(cat_x, cat_y, direction);
     }
-    let collision = new Collision();
-    setInterval(function(){
-        drawMap();
+    let enemyMove = function(){
         for (let i = 0; i < enemiesArray.length; i++) {
-            if(!collisionDone){
-                collisionDone = collision.detectCollision(cat, enemiesArray[i].sprite);
+                enemiesArray[i].move();
+        }
+    }
+    let detectHeroEnemyCollision = function(){
+        for (let i = 0; i < enemiesArray.length; i++) {
+            if(!heroEnemyCollision){
+                heroEnemyCollision = collision.detectCollision(cat, enemiesArray[i].sprite);
             }
             else {break;}
         }
-        if(collisionDone)
+    }
+    let detectHeroWaterCollision = function(){
+        for (let i = 0; i < waterArray.length; i++) {
+            if(!heroWaterCollisionBegin && !heroWaterCollisionEnd){
+                heroWaterCollisionBegin = collision.detectCollision(cat, waterArray[i]);
+            }
+            else {break;}
+        }
+    }
+
+    $(document).ready(function(){
+        Context = new HTML("game", contextWidth, contextHeight);
+        initKeyEvents();
+        createEnemies(enemiesArray, 10, 200, 200);
+        isWaterSaved = false;
+        initMap();
+    });
+    
+    setInterval(function(){
+        drawMap();
+        detectHeroEnemyCollision();
+        detectHeroWaterCollision();
+        if(heroEnemyCollision)
         {
             bang.draw(cat_x, cat_y, 4);
-            collisionDone = true;
+            heroEnemyCollision = true;
         } else {
-            drawCatHero();
-            for (let i = 0; i < enemiesArray.length; i++) {
-                enemiesArray[i].move();
-            }
+            heroMove();
+            enemyMove();
         }
     }, 40)
 

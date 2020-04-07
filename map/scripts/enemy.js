@@ -1,7 +1,7 @@
-let dogSpriteSheet = new SpriteSheet("./dog-sprite-sheet.png", 20, 20, 5, EnemyPositions);
-let createEnemies = function (cenemiesArray, count, borderWidth, borderHeight) {
+let dogSpriteSheet = new SpriteSheet("./dog-sprite-sheet.png", 10, 10, 5, EnemyPositions);
+let createEnemies = function (enemiesArray, count, borderWidth, borderHeight) {
     for (let i = 1; i < count; i++) {
-        enemiesArray.push(new Enemy(dogSpriteSheet, i*32, i*32, borderWidth, borderHeight));
+        enemiesArray.push(new Enemy(dogSpriteSheet, i*20, i*30, borderWidth, borderHeight));
     }
 }
 
@@ -47,28 +47,28 @@ class Enemy{
             if(x - dxy >= 0) {
                 x = x - dxy;
             } else {
-                this.getEnemyCoordinates(x,y,contextWidth, contextHeight);
+                this.getEnemyCoordinates(x, y, 1, contextWidth, contextHeight);
             }
         }
         if(this.direction == DirectionEnum.right) {
             if(x + dxy <= contextWidth) {
                 x = x + dxy;
             } else {
-                this.getEnemyCoordinates(x,y,contextWidth, contextHeight);
+                this.getEnemyCoordinates(x, y, 1, contextWidth, contextHeight);
             }
         }
         if(this.direction == DirectionEnum.up) {
             if(y - dxy >= 0) {
                 y = y - dxy;
             } else {
-                this.getEnemyCoordinates(x,y,contextWidth, contextHeight);
+                this.getEnemyCoordinates(x, y, 1, contextWidth, contextHeight);
             }
         }
         if(this.direction == DirectionEnum.down) {
             if(y + dxy <= contextHeight) {
                 y = y + dxy;
             } else {
-                this.getEnemyCoordinates(x,y,contextWidth, contextHeight);
+                this.getEnemyCoordinates(x, y, 1, contextWidth, contextHeight);
             }
         }
         let direction = this.direction
