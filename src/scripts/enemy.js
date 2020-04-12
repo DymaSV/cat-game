@@ -1,11 +1,16 @@
 import { EnemyPositions } from "./positions";
+import { SpriteSheet } from "./spritesheet";
+import { Sprite } from "./sprite";
+import { DirectionEnum } from "./utility";
 
 let dogSpriteSheet = new SpriteSheet("./images/dog-sprite-sheet.png", 10, 10, 5, EnemyPositions);
 
-export function createEnemies(enemiesArray, count, borderWidth, borderHeight) {
+export function createEnemies(count, borderWidth, borderHeight) {
+    let enemiesArray = new Array();
     for (let i = 1; i < count; i++) {
         enemiesArray.push(new Enemy(dogSpriteSheet, i*100, i*30, borderWidth, borderHeight));
     }
+    return enemiesArray;
 }
 
 class Enemy{

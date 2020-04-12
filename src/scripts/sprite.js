@@ -2,8 +2,9 @@ import { xy2i, i2xy, DirectionEnum } from './utility';
 import { Animate } from './animate';
 import { SpriteSheet } from './spritesheet';
 import { Context } from "../index";
+import { MAP_BLOCK_W, MAP_BLOCK_H } from "./world";
 
-export function Sprite(fn) {
+function Sprite(fn) {
 
     this.TO_RADIANS = Math.PI/180;
     this.image = null;
@@ -16,7 +17,7 @@ export function Sprite(fn) {
     this.y = 0;
     this.is_pattern = false;
     this.load = function(filename) { 
-        this.image = new Image(); 
+        this.image = document.createElement("img");
         this.image.src = filename; 
         return this; 
     };
@@ -30,7 +31,7 @@ export function Sprite(fn) {
             this.collisionWidth = this.spriteSheet.collisionWidth;
             this.collisionHeight = this.spriteSheet.collisionHeight;
             this.spritePositions = this.spriteSheet.spritePositions;
-            console.log("Loaded sprite " + this.spriteSheet);
+            console.log("Loaded sprite " + this.spriteSheet.image.src);
         } else {
             this.load(fn);
             console.log("Loaded sprite " + fn);
@@ -119,3 +120,5 @@ export function Sprite(fn) {
         else {return null;}
     }
 };
+
+export {Sprite};

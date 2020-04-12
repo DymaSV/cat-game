@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 let key_left = 37;
 let key_right = 39;
 let key_up = 38;
@@ -20,8 +22,8 @@ class KeyActiveState {
       }
 }
 
-export const keyState = new KeyActiveState();
-export function initKeyEvents(){
+const keyState = new KeyActiveState();
+function initKeyEvents(){
     $(document).keydown(function(e){
         if (e.keyCode == key_shift) {
             keyState.keyShiftState = true;
@@ -79,3 +81,5 @@ export function initKeyEvents(){
         }
     });
 }
+
+export { keyState, initKeyEvents };

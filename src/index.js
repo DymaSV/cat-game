@@ -1,8 +1,9 @@
+import { HTML } from "./scripts/canvas";
 import { DirectionEnum } from "./scripts/utility";
 import { SpriteSheet } from "./scripts/spritesheet";
 import { Sprite } from "./scripts/sprite";
 import { HeroPositions, BangPositions } from "./scripts/positions";
-import { initMap, drawMap, waterArray, isWaterSaved } from "./scripts/world";
+import { initMap, drawMap, waterArray } from "./scripts/world";
 import { keyState, initKeyEvents } from "./scripts/keyboard";
 import { Collision } from "./scripts/collision";
 import { createEnemies } from "./scripts/enemy";
@@ -12,7 +13,6 @@ var heroEnemyCollision = false;
 var heroWaterCollisionBegin = false;
 var heroWaterCollisionEnd = false;
 var lastDirection = DirectionEnum.none;
-export var Context = null;
 var contextWidth = 1280;
 var contextHeight = 960;
 var bangSpriteSheet = new SpriteSheet("./images/bang.png", 15, 15, 8, BangPositions);
@@ -23,8 +23,9 @@ var cat_x = cat.x = 0;
 var cat_y = cat.y = 0;
 let enemiesArray = new Array();
 let collision = new Collision();    
+let Context = null;
 
-let heroMove = function(){
+function heroMove(){
     let direction = DirectionEnum.none;
     if(keyState.keyLeftState){
         if(!heroWaterCollisionBegin){
@@ -61,12 +62,13 @@ let heroMove = function(){
     }
     cat.draw(cat_x, cat_y, direction);
 }
-let enemyMove = function(){
+function enemyMove(){
     for (let i = 0; i < enemiesArray.length; i++) {
             enemiesArray[i].move();
     }
 }
-let detectHeroEnemyCollision = function(){
+
+function detectHeroEnemyCollision(){
     for (let i = 0; i < enemiesArray.length; i++) {
         if(!heroEnemyCollision){
             heroEnemyCollision = collision.detectCollision(cat, enemiesArray[i].sprite);
@@ -74,7 +76,8 @@ let detectHeroEnemyCollision = function(){
         else {break;}
     }
 }
-let detectHeroWaterCollision = function(){
+
+function detectHeroWaterCollision(){
     for (let i = 0; i < waterArray.length; i++) {
         if(!heroWaterCollisionBegin && !heroWaterCollisionEnd){
             heroWaterCollisionBegin = collision.detectCollision(cat, waterArray[i]);
@@ -86,8 +89,7 @@ let detectHeroWaterCollision = function(){
 $(document).ready(function(){
     Context = new HTML("game", contextWidth, contextHeight);
     initKeyEvents();
-    createEnemies(enemiesArray, 10, 200, 200);
-    isWaterSaved = false;
+    enemiesArray = createEnemies(10, 200, 200);
     initMap();
 });
 
@@ -104,3 +106,5 @@ setInterval(function(){
         enemyMove();
     }
 }, 40);
+
+export { Context };

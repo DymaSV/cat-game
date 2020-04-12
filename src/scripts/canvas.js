@@ -1,4 +1,6 @@
-var HTML = function(canvasId, width, height) {
+import $ from 'jquery';
+
+export function HTML (canvasId, width, height) {
     this.width = width;
     this.height = height;
     this.canvas = document.getElementById(canvasId);
