@@ -1,7 +1,7 @@
 import { DirectionEnum } from "./scripts/utility";
 import { SpriteSheet } from "./scripts/spritesheet";
 import { Sprite } from "./scripts/sprite";
-import { HeroPositions, EnemyPositions, BangPositions } from "./scripts/positions";
+import { HeroPositions, BangPositions } from "./scripts/positions";
 import { initMap, drawMap, waterArray, isWaterSaved } from "./scripts/world";
 import { keyState, initKeyEvents } from "./scripts/keyboard";
 import { Collision } from "./scripts/collision";

@@ -1,3 +1,5 @@
+import { EnemyPositions } from "./positions";
+
 let dogSpriteSheet = new SpriteSheet("./images/dog-sprite-sheet.png", 10, 10, 5, EnemyPositions);
 
 export function createEnemies(enemiesArray, count, borderWidth, borderHeight) {
