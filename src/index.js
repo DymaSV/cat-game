@@ -1,13 +1,20 @@
+import { DirectionEnum } from "./scripts/utility";
+import { SpriteSheet } from "./scripts/spritesheet";
+import { Sprite } from "./scripts/sprite";
+import { HeroPositions, EnemyPositions, BangPositions } from "./scripts/positions";
+import { initMap, drawMap, waterArray, isWaterSaved } from "./scripts/world";
+import { keyState, initKeyEvents } from "./scripts/keyboard";
+import { Collision } from "./scripts/collision";
+import { createEnemies } from "./scripts/enemy";
+import $ from 'jquery';
+
 var heroEnemyCollision = false;
 var heroWaterCollisionBegin = false;
 var heroWaterCollisionEnd = false;
 var lastDirection = DirectionEnum.none;
-var Context = null;
+export var Context = null;
 var contextWidth = 1280;
 var contextHeight = 960;
-let dogSpriteSheet = new SpriteSheet("./images/dog-sprite-sheet.png", 10, 10, 5, EnemyPositions);
-var wall = new Sprite("./images/wall.png");
-var waterSpriteSheet = new SpriteSheet("./images/water.png", 16, 16);
 var bangSpriteSheet = new SpriteSheet("./images/bang.png", 15, 15, 8, BangPositions);
 var catSpriteSheet = new SpriteSheet("./images/cats.png", 10, 10, 4, HeroPositions);
 var bang = new Sprite(bangSpriteSheet);
@@ -15,7 +22,6 @@ var cat = new Sprite(catSpriteSheet);
 var cat_x = cat.x = 0;
 var cat_y = cat.y = 0;
 let enemiesArray = new Array();
-let waterArray = new Array();
 let collision = new Collision();    
 
 let heroMove = function(){
@@ -97,4 +103,4 @@ setInterval(function(){
         heroMove();
         enemyMove();
     }
-}, 40)
+}, 40);

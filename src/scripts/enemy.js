@@ -1,20 +1,23 @@
-let createEnemies = function (enemiesArray, count, borderWidth, borderHeight) {
+let dogSpriteSheet = new SpriteSheet("./images/dog-sprite-sheet.png", 10, 10, 5, EnemyPositions);
+
+export function createEnemies(enemiesArray, count, borderWidth, borderHeight) {
     for (let i = 1; i < count; i++) {
         enemiesArray.push(new Enemy(dogSpriteSheet, i*100, i*30, borderWidth, borderHeight));
     }
 }
 
 class Enemy{
-    cirle = 50
-    moveCirle = 50;
-    direction = DirectionEnum.none;
-    moveChoosed = false;
     constructor(spriteSheet, x, y, borderWidth, borderHeight){
         this.sprite = new Sprite(spriteSheet);
         this.x = this.sprite.x = x;
         this.y = this.sprite.y = y;
         this.borderWidth = borderWidth;
         this.borderHeight = borderHeight;
+        
+        this.cirle = 50;
+        this.moveCirle = 50;
+        this.direction = DirectionEnum.none;
+        this.moveChoosed = false;
     }
     
     move(){

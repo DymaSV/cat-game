@@ -19,8 +19,9 @@ class KeyActiveState {
         this.downRightState = false;
       }
 }
-let keyState = new KeyActiveState();
-function initKeyEvents(){
+
+export const keyState = new KeyActiveState();
+export function initKeyEvents(){
     $(document).keydown(function(e){
         if (e.keyCode == key_shift) {
             keyState.keyShiftState = true;

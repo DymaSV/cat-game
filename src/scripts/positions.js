@@ -1,5 +1,5 @@
 
-const EnemyPositions = {
+export const EnemyPositions = {
     left: [21, 22, 23, 24],
     right: [1, 2, 3, 4],
     up: [31, 32, 33, 34],
@@ -7,7 +7,7 @@ const EnemyPositions = {
     none: [0]
 };
 
-const HeroPositions = {
+export const HeroPositions = {
     left: [12,13,14,15],
     right: [4,5,6,7],
     up: [8,9,10,11],
@@ -15,7 +15,7 @@ const HeroPositions = {
     none: [17,18,19,20,21,22,22,22,22,22,22,22,22,23]
 };
 
-const BangPositions = {
+export const BangPositions = {
     left: [31,30,29,28,27,26,25,24,23,22,21,20,
         19,18,17,16,15,14,13,12,11,10,9,8,7,
         6,5,4,3,2,1,31,32],

@@ -1,4 +1,9 @@
-var Sprite = function(fn) {
+import { xy2i, i2xy, DirectionEnum } from './utility';
+import { Animate } from './animate';
+import { SpriteSheet } from './spritesheet';
+import { Context } from "../index";
+
+export function Sprite(fn) {
 
     this.TO_RADIANS = Math.PI/180;
     this.image = null;
@@ -10,7 +15,11 @@ var Sprite = function(fn) {
     this.x = 0;
     this.y = 0;
     this.is_pattern = false;
-    this.load = function(filename) { this.image = new Image(); this.image.src = filename; return this; };
+    this.load = function(filename) { 
+        this.image = new Image(); 
+        this.image.src = filename; 
+        return this; 
+    };
 
     // Load the sprite
     if (fn != undefined && fn != "" && fn != null) {
@@ -21,7 +30,7 @@ var Sprite = function(fn) {
             this.collisionWidth = this.spriteSheet.collisionWidth;
             this.collisionHeight = this.spriteSheet.collisionHeight;
             this.spritePositions = this.spriteSheet.spritePositions;
-            console.log("Loaded sprite " + this.spriteSheet.image.src);
+            console.log("Loaded sprite " + this.spriteSheet);
         } else {
             this.load(fn);
             console.log("Loaded sprite " + fn);
@@ -36,7 +45,7 @@ var Sprite = function(fn) {
         if(direction == undefined) {
             Context.context.drawImage(this.image, x, y, MAP_BLOCK_W, MAP_BLOCK_H);
         } else {
-            various = this.getSpritePositions(direction);
+            var various = this.getSpritePositions(direction);
             if(Array.isArray(various) && various.length > 0) {
                 if (this.animate.animationDelay++ >= 3) {
                     this.animate.animationDelay = 0;
@@ -57,8 +66,6 @@ var Sprite = function(fn) {
     // Stretched draw
     this.draw2 = function(x, y, w, h) {
         if (this.is_pattern) {
-            //Context.context.fillStyle = Context.context.createPattern(this.image, 'repeat');;
-            //Context.context.fillRect(x, y, w, h);
             for (var i = 0; i < this.pattern_x_times; i++) {
                 Context.context.drawImage(this.image, x + w*i, y, w, h);
             }

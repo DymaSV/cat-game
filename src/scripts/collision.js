@@ -1,4 +1,4 @@
-class Collision{
+export class Collision{
     detectCollision (obj1, obj2) {
         if(obj1 && obj1)
         if (obj1.x < obj2.x + obj2.collisionWidth &&

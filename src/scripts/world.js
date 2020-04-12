@@ -1,6 +1,13 @@
-var isWaterSaved = false;
+import { Sprite } from "./sprite";
+import { SpriteSheet } from "./spritesheet";
+
+export let isWaterSaved = false;
 var MAP_BLOCK_W = 32;
 var MAP_BLOCK_H = 32;
+export let waterArray = new Array();
+var waterSpriteSheet = new SpriteSheet("./images/water.png", 16, 16);
+var wall = new Sprite("./images/wall.png");
+
 var map = [
     1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
     0,1,0,0,1,1,1,0,0,1,0,1,0,0,1,1,1,0,0,1,
@@ -26,8 +33,7 @@ var map = [
     1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
 ];
 
-
-let initMap = function(){
+export function initMap() {
     let mapIndex = 0;
     for (let y = 0; y < 10; y=y+1) {
         for (let x = 0; x < 100; x=x+1, mapIndex++) {
@@ -46,7 +52,7 @@ let initMap = function(){
     isWaterSaved = true;
 }
 
-let drawMap = function(){
+export function drawMap(){
     let mapIndex = 0;
     for (let y = 0; y < 10; y=y+1) {
         for (let x = 0; x < 100; x=x+1, mapIndex++) {
