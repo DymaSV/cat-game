@@ -31,7 +31,7 @@ function Sprite(fn) {
             this.collisionWidth = this.spriteSheet.collisionWidth;
             this.collisionHeight = this.spriteSheet.collisionHeight;
             this.spritePositions = this.spriteSheet.spritePositions;
-            console.log("Loaded sprite " + this.spriteSheet.image.src);
+            console.log("Loaded spriteSheet " + this.spriteSheet.image.srcset);
         } else {
             this.load(fn);
             console.log("Loaded sprite " + fn);

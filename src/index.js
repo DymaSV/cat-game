@@ -1,12 +1,11 @@
 import { HTML } from "./scripts/canvas";
 import { DirectionEnum } from "./scripts/utility";
-import { SpriteSheet } from "./scripts/spritesheet";
 import { Sprite } from "./scripts/sprite";
-import { HeroPositions, BangPositions } from "./scripts/positions";
 import { initMap, drawMap, waterArray } from "./scripts/world";
 import { keyState, initKeyEvents } from "./scripts/keyboard";
 import { Collision } from "./scripts/collision";
 import { createEnemies } from "./scripts/enemy";
+import { catSpriteSheet, bangSpriteSheet } from "./scripts/characters";
 import $ from 'jquery';
 
 var heroEnemyCollision = false;
@@ -15,8 +14,6 @@ var heroWaterCollisionEnd = false;
 var lastDirection = DirectionEnum.none;
 var contextWidth = 1280;
 var contextHeight = 960;
-var bangSpriteSheet = new SpriteSheet("./images/bang.png", 15, 15, 8, BangPositions);
-var catSpriteSheet = new SpriteSheet("./images/cats.png", 10, 10, 4, HeroPositions);
 var bang = new Sprite(bangSpriteSheet);
 var cat = new Sprite(catSpriteSheet);
 var cat_x = cat.x = 0;

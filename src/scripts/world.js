@@ -1,12 +1,11 @@
 import { Sprite } from "./sprite";
-import { SpriteSheet } from "./spritesheet";
+import { waterSpriteSheet, wallSpriteSheet } from "./characters";
 
 var isWaterSaved = false;
 let MAP_BLOCK_W = 32;
 let MAP_BLOCK_H = 32;
 let waterArray = new Array();
-const waterSpriteSheet = new SpriteSheet("./images/water.png", 16, 16);
-let wall = new Sprite("./images/wall.png");
+let wall = new Sprite(wallSpriteSheet);
 let map = [
     1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
     0,1,0,0,1,1,1,0,0,1,0,1,0,0,1,1,1,0,0,1,
