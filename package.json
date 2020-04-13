@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/DymaSV/anim_cat#readme",
   "devDependencies": {
+    "html-webpack-plugin": "^4.2.0",
     "url-loader": "^4.1.0",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11"
