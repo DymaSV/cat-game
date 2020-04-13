@@ -1,28 +1,31 @@
-import { xy2i, i2xy, DirectionEnum } from './utility';
+import { i2xy, DirectionEnum } from './utility';
 import { Animate } from './animate';
 import { SpriteSheet } from './spritesheet';
 import { Context } from "../index";
-import { MAP_BLOCK_W, MAP_BLOCK_H } from "./world";
 
 class Sprite {
-    constructor(fn) {
+    constructor(fn, x, y) {
         this.TO_RADIANS = Math.PI / 180;
+        this.spriteSheetSize = 32; //Width and Height of area that we take in image .png like one item
+        this.canvasSpriteWidth = 32; //Width of image on canvas
+        this.canvasSpriteHeight = 32; //Height of image on canvas
+
         this.image = null;
         this.spriteSheet = null;
         this.spritePositions = null;
         this.animate = null;
         this.collisionWidth = null;
         this.collisionHeight = null;
-        this.x = 0;
-        this.y = 0;
+        this.x = x;
+        this.y = y;
         this.is_pattern = false;
 
         this.initSprite(fn);
     }
 
     initSprite(fn) {
-         // Load the sprite
-         if (fn != undefined && fn != "" && fn != null) {
+        // Load the sprite
+        if (fn != undefined && fn != "" && fn != null) {
             if (fn instanceof SpriteSheet) {
                 this.spriteSheet = fn;
                 this.image = this.spriteSheet.image;
@@ -45,7 +48,11 @@ class Sprite {
     //Draw function
     draw(x, y, direction) {
         if (direction == undefined) {
-            Context.context.drawImage(this.image, x, y, MAP_BLOCK_W, MAP_BLOCK_H);
+            Context.context.drawImage(this.image,
+                x,
+                y,
+                this.canvasSpriteWidth,
+                this.canvasSpriteHeight);
         } else {
             var various = this.getSpritePositions(direction);
             if (Array.isArray(various) && various.length > 0) {
@@ -58,7 +65,15 @@ class Sprite {
                 }
 
                 var res = i2xy(this.animate.animationCurrentFrame, this.spriteSheet.spriteSheetWidth);
-                Context.context.drawImage(this.image, res[0] * 32, res[1] * 32, 32, 32, x, y, 32, 32);
+                Context.context.drawImage(this.image,
+                    res[0] * this.spriteSheetSize,
+                    res[1] * this.spriteSheetSize,
+                    this.spriteSheetSize,
+                    this.spriteSheetSize,
+                    x,
+                    y,
+                    this.canvasSpriteWidth,
+                    this.canvasSpriteHeight);
             }
         }
         this.x = x;
@@ -87,9 +102,17 @@ class Sprite {
         }
         var res = i2xy(this.animate.animationCurrentFrame, 4);
         Context.context.save();
-        Context.context.translate(x - 16, y - 16);
+        Context.context.translate(x - this.canvasSpriteWidth / 2, y - this.canvasSpriteHeight / 2);
         Context.context.rotate(angle * this.TO_RADIANS);
-        Context.context.drawImage(this.image, res[0] * 32, res[1] * 32, 32, 32, x, y, 32, 32);
+        Context.context.drawImage(this.image,
+            res[0] * this.spriteSheetSize,
+            res[1] * this.spriteSheetSize,
+            this.spriteSheetSize,
+            this.spriteSheetSize,
+            x,
+            y,
+            this.canvasSpriteWidth,
+            this.canvasSpriteHeight);
         Context.context.restore();
     }
 

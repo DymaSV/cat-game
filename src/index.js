@@ -2,104 +2,49 @@ import { HTML } from "./scripts/canvas";
 import { DirectionEnum } from "./scripts/utility";
 import { Sprite } from "./scripts/sprite";
 import { initMap, drawMap, waterArray } from "./scripts/world";
-import { keyState, initKeyEvents } from "./scripts/keyboard";
+import { initKeyEvents } from "./scripts/keyboard";
 import { Collision } from "./scripts/collision";
 import { createEnemies } from "./scripts/enemy";
+import { Hero } from "./scripts/hero";
 import { catSpriteSheet, bangSpriteSheet } from "./scripts/characters";
 import $ from 'jquery';
 
-var heroEnemyCollision = false;
-var heroWaterCollisionBegin = false;
-var heroWaterCollisionEnd = false;
-var lastDirection = DirectionEnum.none;
 var contextWidth = 1280;
 var contextHeight = 960;
 var bang = new Sprite(bangSpriteSheet);
-var cat = new Sprite(catSpriteSheet);
-var cat_x = cat.x = 0;
-var cat_y = cat.y = 0;
+var hero = new Hero(catSpriteSheet, 0, 0, 2, contextWidth, contextHeight);
 let enemiesArray = new Array();
-let collision = new Collision();    
+let collision = new Collision();
 let Context = null;
 
-function heroMove(){
-    let direction = DirectionEnum.none;
-    if(keyState.keyLeftState){
-        if(!heroWaterCollisionBegin){
-            cat_x = cat_x-1;
-            heroWaterCollisionEnd = false;
-        }
-        direction = DirectionEnum.left;
-    }
-    if(keyState.keyRightState){
-        if(!heroWaterCollisionBegin){
-            cat_x = cat_x+1;
-            heroWaterCollisionEnd = false;
-        }
-        direction = DirectionEnum.right;
-    }
-    if(keyState.keyDownState){
-        if(!heroWaterCollisionBegin){
-            cat_y = cat_y+1;
-            heroWaterCollisionEnd = false;
-        }
-        direction = DirectionEnum.down;
-    }
-    if(keyState.keyUpState){
-        if(!heroWaterCollisionBegin){
-            cat_y = cat_y-1;
-            heroWaterCollisionEnd = false;
-        }
-        direction = DirectionEnum.up;
-    }
-    if(lastDirection != direction) {
-        lastDirection = direction;
-        heroWaterCollisionBegin = false;
-        heroWaterCollisionEnd = true;
-    }
-    cat.draw(cat_x, cat_y, direction);
-}
-function enemyMove(){
+function enemyMove() {
     for (let i = 0; i < enemiesArray.length; i++) {
-            enemiesArray[i].move();
+        enemiesArray[i].move();
     }
 }
 
-function detectHeroEnemyCollision(){
-    for (let i = 0; i < enemiesArray.length; i++) {
-        if(!heroEnemyCollision){
-            heroEnemyCollision = collision.detectCollision(cat, enemiesArray[i].sprite);
-        }
-        else {break;}
-    }
-}
-
-function detectHeroWaterCollision(){
-    for (let i = 0; i < waterArray.length; i++) {
-        if(!heroWaterCollisionBegin && !heroWaterCollisionEnd){
-            heroWaterCollisionBegin = collision.detectCollision(cat, waterArray[i]);
-        }
-        else {break;}
-    }
-}
-
-$(document).ready(function(){
+$(document).ready(function () {
     Context = new HTML("game", contextWidth, contextHeight);
     initKeyEvents();
     enemiesArray = createEnemies(10, 200, 200);
     initMap();
+    hero.canvasSpriteWidth = 48;
+    hero.canvasSpriteHeight = 48;
+
+    bang.spriteSheetSize = 14
+    bang.canvasSpriteWidth = 48;
+    bang.canvasSpriteHeight = 48;
 });
 
-setInterval(function(){
+setInterval(function () {
     drawMap();
-    detectHeroEnemyCollision();
-    detectHeroWaterCollision();
-    if(heroEnemyCollision)
-    {
-        bang.draw(cat_x, cat_y, 4);
-        heroEnemyCollision = true;
+    collision.detectHeroEnemyCollision(hero, enemiesArray);
+    collision.detectHeroWaterCollision(hero, waterArray);
+    if (collision.heroEnemyCollision) {
+        bang.draw(hero.x, hero.y, DirectionEnum.none);
+        collision.heroEnemyCollision = true;
     } else {
-        heroMove();
+        hero.move(collision);
         enemyMove();
     }
 }, 40);
