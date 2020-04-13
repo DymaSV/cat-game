@@ -5,7 +5,6 @@ var isWaterSaved = false;
 let MAP_BLOCK_W = 32;
 let MAP_BLOCK_H = 32;
 let waterArray = new Array();
-let wall = new Sprite(wallSpriteSheet);
 let map = [
     1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
     0,1,0,0,1,1,1,0,0,1,0,1,0,0,1,1,1,0,0,1,
@@ -32,6 +31,7 @@ let map = [
 ];
 
 function initMap() {
+    let wall = new Sprite(wallSpriteSheet);
     let mapIndex = 0;
     for (let y = 0; y < 10; y=y+1) {
         for (let x = 0; x < 100; x=x+1, mapIndex++) {
@@ -51,6 +51,7 @@ function initMap() {
 }
 
 function drawMap(){
+    let wall = new Sprite(wallSpriteSheet);
     let mapIndex = 0;
     for (let y = 0; y < 10; y=y+1) {
         for (let x = 0; x < 100; x=x+1, mapIndex++) {

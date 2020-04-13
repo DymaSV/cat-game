@@ -20,5 +20,8 @@ module.exports = {
         },
       },
     ],
+  },
+  optimization: {
+    minimize: false //Make true for prod
   }
 };

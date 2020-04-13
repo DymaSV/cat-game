@@ -13,4 +13,10 @@ const dogSpriteSheet = new SpriteSheet(dogImage, 10, 10, 5, EnemyPositions);
 const waterSpriteSheet = new SpriteSheet(waterImage, 16, 16);
 const wallSpriteSheet = new SpriteSheet(wallImage, 16, 16);
 
-export{wallSpriteSheet, catSpriteSheet, dogSpriteSheet, bangSpriteSheet, waterSpriteSheet};
+export{
+    wallSpriteSheet, 
+    catSpriteSheet, 
+    dogSpriteSheet, 
+    bangSpriteSheet, 
+    waterSpriteSheet
+};
