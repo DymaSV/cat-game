@@ -1,6 +1,7 @@
 import { Sprite } from "./sprite";
 import { DirectionEnum } from "./utility";
 import { dogSpriteSheet } from "./characters";
+import { SpriteBorder } from './obstacle';
 
 
 function createEnemies(count, borderMoveWidth, borderMoveHeight) {
@@ -22,8 +23,9 @@ class Enemy {
         this.cirle = 10;
         this.moveCirle = 10;
         this.direction = DirectionEnum.none;
-        this.lastDirection = null;
         this.moveChoosed = false;
+
+        this.borderPoints = new SpriteBorder();
     }
 
     move() {
@@ -34,6 +36,11 @@ class Enemy {
             this.borderMoveHeight);
         this.sprite.x = enemyMoves.x;
         this.sprite.y = enemyMoves.y;
+        this.borderPoints.calculateBorderPoints(
+            this.sprite.x,
+            this.sprite.y,
+            this.sprite.spriteSheet.collisionWidth,
+            this.sprite.spriteSheet.collisionHeight);
         this.sprite.draw(this.sprite.x, this.sprite.y, enemyMoves.direction);
     }
 
@@ -41,10 +48,6 @@ class Enemy {
     getEnemyCoordinates(x, y, dxy, contextWidth, contextHeight) {
         if (!this.moveChoosed && this.moveCirle > 0) {
             this.direction = this.getRandomInt(4);
-            if (this.lastDirection != null && this.lastDirection == this.direction) {
-                this.direction = DirectionEnum.right;
-            }
-            this.lastDirection = this.direction;
             this.moveChoosed = true;
         } else {
             this.moveCirle--;

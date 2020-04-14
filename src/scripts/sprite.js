@@ -12,8 +12,6 @@ class Sprite {
 
         this.spriteSheet = null;
         this.animate = null;
-        this.collisionWidth = null;
-        this.collisionHeight = null;
         this.x = x;
         this.y = y;
         this.is_pattern = false;
@@ -26,46 +24,42 @@ class Sprite {
         if (fn != undefined && fn != "" && fn != null && fn instanceof SpriteSheet) {
             this.spriteSheet = fn;
             this.animate = new Animate(0, 0, 0);
-            this.collisionWidth = this.spriteSheet.collisionWidth;
-            this.collisionHeight = this.spriteSheet.collisionHeight;
             console.log("Loaded spriteSheet " + this.spriteSheet.image.srcset);
         } else {
-            onsole.log("Unable to load sprite. Filename '" + fn + "' is undefined or null.");
+            console.log("Unable to load sprite. Filename '" + fn + "' is undefined or null.");
         }
 
     };
 
     //Draw function
     draw(x, y, direction) {
-        if (direction == undefined) {
+        var various = this.getSpritePositions(direction);
+        if (Array.isArray(various) && various.length > 0) {
+            if (this.animate.animationDelay++ >= 3) {
+                this.animate.animationDelay = 0;
+                this.animate.animationIndexCounter++;
+                if (this.animate.animationIndexCounter >= various.length)
+                    this.animate.animationIndexCounter = 0;
+                this.animate.animationCurrentFrame = various[this.animate.animationIndexCounter];
+            }
+
+            var res = i2xy(this.animate.animationCurrentFrame, this.spriteSheet.spriteSheetColumnsCount);
+
             Context.context.drawImage(this.spriteSheet.image,
+                res[0] * this.spriteSheetSize,
+                res[1] * this.spriteSheetSize,
+                this.spriteSheetSize,
+                this.spriteSheetSize,
                 x,
                 y,
                 this.canvasSpriteWidth,
                 this.canvasSpriteHeight);
         } else {
-            var various = this.getSpritePositions(direction);
-            if (Array.isArray(various) && various.length > 0) {
-                if (this.animate.animationDelay++ >= 3) {
-                    this.animate.animationDelay = 0;
-                    this.animate.animationIndexCounter++;
-                    if (this.animate.animationIndexCounter >= various.length)
-                        this.animate.animationIndexCounter = 0;
-                    this.animate.animationCurrentFrame = various[this.animate.animationIndexCounter];
-                }
-
-                var res = i2xy(this.animate.animationCurrentFrame, this.spriteSheet.spriteSheetColumnsCount);
-
-                Context.context.drawImage(this.spriteSheet.image,
-                    res[0] * this.spriteSheetSize,
-                    res[1] * this.spriteSheetSize,
-                    this.spriteSheetSize,
-                    this.spriteSheetSize,
-                    x,
-                    y,
-                    this.canvasSpriteWidth,
-                    this.canvasSpriteHeight);
-            }
+            Context.context.drawImage(this.spriteSheet.image,
+                x,
+                y,
+                this.canvasSpriteWidth,
+                this.canvasSpriteHeight);
         }
         this.x = x;
         this.y = y;

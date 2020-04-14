@@ -1,6 +1,7 @@
 import { Sprite } from "./sprite";
 import { DirectionEnum } from "./utility";
 import { keyState } from "./keyboard";
+import { SpriteBorder } from './obstacle';
 
 class Hero {
     constructor(spriteSheet, x, y, speed, borderMoveWidth, borderMoveHeight) {
@@ -12,6 +13,9 @@ class Hero {
         this.speed = speed;
         this.lastDirection = DirectionEnum.none;
         this.direction = DirectionEnum.none;
+
+        this.borderPoints = new SpriteBorder();
+
     }
 
     move(collision) {
@@ -29,7 +33,7 @@ class Hero {
             if (!collision.heroWaterCollisionBegin) {
                 if (this.sprite.x + this.speed <= this.borderMoveWidth) {
                     this.sprite.x = this.sprite.x + this.speed;
-                } 
+                }
                 collision.heroWaterCollisionEnd = false;
             }
             this.direction = DirectionEnum.right;
@@ -57,6 +61,12 @@ class Hero {
             collision.heroWaterCollisionBegin = false;
             collision.heroWaterCollisionEnd = true;
         }
+        this.borderPoints.calculateBorderPoints(
+            this.sprite.x,
+            this.sprite.y,
+            this.sprite.spriteSheet.collisionWidth,
+            this.sprite.spriteSheet.collisionHeight);
+            console.log(this.borderPoints);
         this.sprite.draw(this.sprite.x, this.sprite.y, this.direction);
     }
 }

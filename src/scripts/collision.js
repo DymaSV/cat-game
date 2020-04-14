@@ -1,3 +1,6 @@
+import { Obstacle } from './obstacle';
+import { DirectionEnum } from "./utility";
+
 export class Collision {
     constructor() {
         this.heroEnemyCollision = false;
@@ -6,6 +9,29 @@ export class Collision {
     }
 
     detectCollision(obj1, obj2) {
+        if (obj1 && obj1)
+            if (obj1.x < obj2.x + obj2.collisionWidth &&
+                obj1.x + obj1.collisionWidth > obj2.x &&
+                obj1.y < obj2.y + obj2.collisionHeight &&
+                obj1.y + obj1.collisionHeight > obj2.y) {
+                return true;
+            }
+        return false;
+    }
+
+    detectObstecleCollision(obj1, obj2) {
+        switch (obj1.direction) {
+            case DirectionEnum.left:
+                break;
+            case DirectionEnum.right:
+                break;
+            case DirectionEnum.down:
+                break;
+            case DirectionEnum.up:
+                break;
+            default:
+                break;
+        }
         if (obj1 && obj1)
             if (obj1.x < obj2.x + obj2.collisionWidth &&
                 obj1.x + obj1.collisionWidth > obj2.x &&
@@ -25,12 +51,14 @@ export class Collision {
         }
     }
 
-    detectHeroWaterCollision(hero, waterArray) {
-        for (let i = 0; i < waterArray.length; i++) {
-            if (!this.heroWaterCollisionBegin && !this.heroWaterCollisionEnd) {
-                this.heroWaterCollisionBegin = this.detectCollision(hero.sprite, waterArray[i]);
+    detectHeroWaterCollision(object, obstacleArray) {
+        for (let i = 0; i < obstacleArray.length; i++) {
+            if (obstacleArray[i] instanceof Obstacle && obstacleArray[i].isCollisionActive) {
+                if (!this.heroWaterCollisionBegin && !this.heroWaterCollisionEnd) {
+                    this.heroWaterCollisionBegin = this.detectObstecleCollision(object, obstacleArray[i]);
+                }
+                else { break; }
             }
-            else { break; }
         }
     }
 }
