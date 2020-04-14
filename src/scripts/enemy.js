@@ -19,9 +19,10 @@ class Enemy {
         this.borderMoveHeight = borderMoveHeight;
         this.speed = speed;
 
-        this.cirle = 50;
-        this.moveCirle = 50;
+        this.cirle = 10;
+        this.moveCirle = 10;
         this.direction = DirectionEnum.none;
+        this.lastDirection = null;
         this.moveChoosed = false;
     }
 
@@ -31,20 +32,19 @@ class Enemy {
             this.speed,
             this.borderMoveWidth,
             this.borderMoveHeight);
-            this.sprite.x = enemyMoves.x;
-            this.sprite.y = enemyMoves.y;
+        this.sprite.x = enemyMoves.x;
+        this.sprite.y = enemyMoves.y;
         this.sprite.draw(this.sprite.x, this.sprite.y, enemyMoves.direction);
     }
 
 
     getEnemyCoordinates(x, y, dxy, contextWidth, contextHeight) {
         if (!this.moveChoosed && this.moveCirle > 0) {
-            // //get direction of x; 0 - left, 1 - right;
-            // this.x_direction = this.getRandomInt(2);
-            // //get direction of y; 0 - up, 1 - down;
-            // this.y_direction = this.getRandomInt(2);
-
             this.direction = this.getRandomInt(4);
+            if (this.lastDirection != null && this.lastDirection == this.direction) {
+                this.direction = DirectionEnum.right;
+            }
+            this.lastDirection = this.direction;
             this.moveChoosed = true;
         } else {
             this.moveCirle--;
@@ -95,4 +95,4 @@ class Enemy {
     }
 }
 
-export {Enemy, createEnemies};
+export { Enemy, createEnemies };

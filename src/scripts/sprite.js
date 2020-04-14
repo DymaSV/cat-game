@@ -10,9 +10,7 @@ class Sprite {
         this.canvasSpriteWidth = 32; //Width of image on canvas
         this.canvasSpriteHeight = 32; //Height of image on canvas
 
-        this.image = null;
         this.spriteSheet = null;
-        this.spritePositions = null;
         this.animate = null;
         this.collisionWidth = null;
         this.collisionHeight = null;
@@ -25,22 +23,14 @@ class Sprite {
 
     initSprite(fn) {
         // Load the sprite
-        if (fn != undefined && fn != "" && fn != null) {
-            if (fn instanceof SpriteSheet) {
-                this.spriteSheet = fn;
-                this.image = this.spriteSheet.image;
-                this.animate = new Animate(0, 0, 0);
-                this.collisionWidth = this.spriteSheet.collisionWidth;
-                this.collisionHeight = this.spriteSheet.collisionHeight;
-                this.spritePositions = this.spriteSheet.spritePositions;
-                console.log("Loaded spriteSheet " + this.spriteSheet.image.srcset);
-            } else {
-                this.image = document.createElement("img");
-                this.image.src = fn;
-                console.log("Loaded sprite " + fn);
-            }
+        if (fn != undefined && fn != "" && fn != null && fn instanceof SpriteSheet) {
+            this.spriteSheet = fn;
+            this.animate = new Animate(0, 0, 0);
+            this.collisionWidth = this.spriteSheet.collisionWidth;
+            this.collisionHeight = this.spriteSheet.collisionHeight;
+            console.log("Loaded spriteSheet " + this.spriteSheet.image.srcset);
         } else {
-            console.log("Unable to load sprite. Filename '" + fn + "' is undefined or null.");
+            onsole.log("Unable to load sprite. Filename '" + fn + "' is undefined or null.");
         }
 
     };
@@ -48,7 +38,7 @@ class Sprite {
     //Draw function
     draw(x, y, direction) {
         if (direction == undefined) {
-            Context.context.drawImage(this.image,
+            Context.context.drawImage(this.spriteSheet.image,
                 x,
                 y,
                 this.canvasSpriteWidth,
@@ -64,8 +54,9 @@ class Sprite {
                     this.animate.animationCurrentFrame = various[this.animate.animationIndexCounter];
                 }
 
-                var res = i2xy(this.animate.animationCurrentFrame, this.spriteSheet.spriteSheetWidth);
-                Context.context.drawImage(this.image,
+                var res = i2xy(this.animate.animationCurrentFrame, this.spriteSheet.spriteSheetColumnsCount);
+
+                Context.context.drawImage(this.spriteSheet.image,
                     res[0] * this.spriteSheetSize,
                     res[1] * this.spriteSheetSize,
                     this.spriteSheetSize,
@@ -84,10 +75,10 @@ class Sprite {
     draw2(x, y, w, h) {
         if (this.is_pattern) {
             for (var i = 0; i < this.pattern_x_times; i++) {
-                Context.context.drawImage(this.image, x + w * i, y, w, h);
+                Context.context.drawImage(this.spriteSheet.image, x + w * i, y, w, h);
             }
         } else {
-            Context.context.drawImage(this.image, x, y, w, h);
+            Context.context.drawImage(this.spriteSheet.image, x, y, w, h);
         }
     };
 
@@ -104,7 +95,7 @@ class Sprite {
         Context.context.save();
         Context.context.translate(x - this.canvasSpriteWidth / 2, y - this.canvasSpriteHeight / 2);
         Context.context.rotate(angle * this.TO_RADIANS);
-        Context.context.drawImage(this.image,
+        Context.context.drawImage(this.spriteSheet.image,
             res[0] * this.spriteSheetSize,
             res[1] * this.spriteSheetSize,
             this.spriteSheetSize,
@@ -121,25 +112,29 @@ class Sprite {
         Context.context.save();
         Context.context.translate(x, y);
         Context.context.rotate(angle * this.TO_RADIANS);
-        Context.context.drawImage(this.image, -(this.image.width / 2), -(this.image.height / 2));
+        Context.context.drawImage(
+            this.spriteSheet.image,
+            -(this.spriteSheet.image.width / 2),
+            -(this.spriteSheet.image.height / 2)
+        );
         Context.context.restore();
     }
 
     getSpritePositions(direction) {
-        if (this.spritePositions) {
+        if (this.spriteSheet.spritePositions) {
             if (direction == DirectionEnum.left) {
-                return this.spritePositions.left;
+                return this.spriteSheet.spritePositions.left;
             }
             if (direction == DirectionEnum.right) {
-                return this.spritePositions.right;
+                return this.spriteSheet.spritePositions.right;
             }
             if (direction == DirectionEnum.up) {
-                return this.spritePositions.up;
+                return this.spriteSheet.spritePositions.up;
             }
             if (direction == DirectionEnum.down) {
-                return this.spritePositions.down;
+                return this.spriteSheet.spritePositions.down;
             }
-            return this.spritePositions.none;
+            return this.spriteSheet.spritePositions.none;
         }
         else { return null; }
     }

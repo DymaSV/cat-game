@@ -1,7 +1,7 @@
 import { HTML } from "./scripts/canvas";
 import { DirectionEnum } from "./scripts/utility";
 import { Sprite } from "./scripts/sprite";
-import { initMap, drawMap, waterArray } from "./scripts/world";
+import { drawMap, waterArray } from "./scripts/world";
 import { initKeyEvents } from "./scripts/keyboard";
 import { Collision } from "./scripts/collision";
 import { createEnemies } from "./scripts/enemy";
@@ -27,21 +27,21 @@ $(document).ready(function () {
     Context = new HTML("game", contextWidth, contextHeight);
     initKeyEvents();
     enemiesArray = createEnemies(10, 200, 200);
-    initMap();
     hero.canvasSpriteWidth = 48;
     hero.canvasSpriteHeight = 48;
-
+    hero.sprite.x = -16;
+    hero.sprite.y = -16 ;
     bang.spriteSheetSize = 14
     bang.canvasSpriteWidth = 48;
     bang.canvasSpriteHeight = 48;
 });
 
 setInterval(function () {
-    drawMap();
+    drawMap(contextWidth, contextHeight);
     collision.detectHeroEnemyCollision(hero, enemiesArray);
     collision.detectHeroWaterCollision(hero, waterArray);
     if (collision.heroEnemyCollision) {
-        bang.draw(hero.x, hero.y, DirectionEnum.none);
+        bang.draw(hero.sprite.x, hero.sprite.y, DirectionEnum.none);
         collision.heroEnemyCollision = true;
     } else {
         hero.move(collision);

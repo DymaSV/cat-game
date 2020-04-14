@@ -19,7 +19,7 @@ export class Collision {
     detectHeroEnemyCollision(hero, enemiesArray) {
         for (let i = 0; i < enemiesArray.length; i++) {
             if (!this.heroEnemyCollision) {
-                this.heroEnemyCollision = this.detectCollision(hero, enemiesArray[i].sprite);
+                this.heroEnemyCollision = this.detectCollision(hero.sprite, enemiesArray[i].sprite);
             }
             else { break; }
         }
@@ -28,7 +28,7 @@ export class Collision {
     detectHeroWaterCollision(hero, waterArray) {
         for (let i = 0; i < waterArray.length; i++) {
             if (!this.heroWaterCollisionBegin && !this.heroWaterCollisionEnd) {
-                this.heroWaterCollisionBegin = this.detectCollision(hero, waterArray[i]);
+                this.heroWaterCollisionBegin = this.detectCollision(hero.sprite, waterArray[i]);
             }
             else { break; }
         }
