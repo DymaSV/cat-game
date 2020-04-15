@@ -2,8 +2,10 @@ import { i2xy, DirectionEnum } from './utility';
 import { Animate } from './animate';
 import { SpriteSheet } from './spritesheet';
 import { Context } from "../index";
+import { SpriteBorder } from './obstacle';
 
 class Sprite {
+    // isMoving - indicate posibility to move
     constructor(fn, x, y) {
         this.TO_RADIANS = Math.PI / 180;
         this.spriteSheetSize = 32; //Width and Height of area that we take in image .png like one item
@@ -16,6 +18,7 @@ class Sprite {
         this.y = y;
         this.is_pattern = false;
 
+        this.borderPoints = new SpriteBorder();
         this.initSprite(fn);
     }
 

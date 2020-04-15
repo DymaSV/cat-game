@@ -1,7 +1,6 @@
 import { Sprite } from "./sprite";
 import { DirectionEnum } from "./utility";
 import { dogSpriteSheet } from "./characters";
-import { SpriteBorder } from './obstacle';
 
 
 function createEnemies(count, borderMoveWidth, borderMoveHeight) {
@@ -24,8 +23,6 @@ class Enemy {
         this.moveCirle = 10;
         this.direction = DirectionEnum.none;
         this.moveChoosed = false;
-
-        this.borderPoints = new SpriteBorder();
     }
 
     move() {
@@ -36,11 +33,12 @@ class Enemy {
             this.borderMoveHeight);
         this.sprite.x = enemyMoves.x;
         this.sprite.y = enemyMoves.y;
-        this.borderPoints.calculateBorderPoints(
+        this.sprite.borderPoints.calculateBorderPointsDynamicObjects(
             this.sprite.x,
             this.sprite.y,
-            this.sprite.spriteSheet.collisionWidth,
-            this.sprite.spriteSheet.collisionHeight);
+            this.sprite.canvasSpriteWidth,
+            this.sprite.canvasSpriteHeight,
+            this.getCollisionSize(this.direction));
         this.sprite.draw(this.sprite.x, this.sprite.y, enemyMoves.direction);
     }
 
@@ -95,6 +93,22 @@ class Enemy {
 
     getRandomInt(num) {
         return Math.floor(Math.random() * Math.floor(num));
+    }
+
+    getCollisionSize(direction) {
+        switch (direction) {
+            case DirectionEnum.left:
+                return { left: 12, right: 12, up: 12, down: 12 };
+            case DirectionEnum.right:
+                return { left: 12, right: 12, up: 12, down: 12 };
+            case DirectionEnum.up:
+                return { left: 12, right: 12, up: 12, down: 12 };
+            case DirectionEnum.down:
+                return { left: 12, right: 12, up: 12, down: 12 };
+            case DirectionEnum.none:
+            default:
+                return { left: 12, right: 12, up: 12, down: 12 };
+        }
     }
 }
 

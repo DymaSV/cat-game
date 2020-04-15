@@ -26,8 +26,8 @@ $(document).ready(function () {
 
 function initCharacters() {
     enemiesArray = createEnemies(10, 200, 200);
-    hero.canvasSpriteWidth = 48;
-    hero.canvasSpriteHeight = 48;
+    hero.sprite.canvasSpriteWidth = 48;
+    hero.sprite.canvasSpriteHeight = 48;
     hero.sprite.x = 0;
     hero.sprite.y = 0;
     bang.spriteSheetSize = 14
