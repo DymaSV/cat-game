@@ -30,7 +30,7 @@ function initCharacters() {
     hero.sprite.canvasSpriteHeight = 48;
     hero.sprite.x = 0;
     hero.sprite.y = 0;
-    bang.spriteSheetSize = 125;//14
+    bang.spriteSheetSize = 125;
     bang.canvasSpriteWidth = 48;
     bang.canvasSpriteHeight = 48;
 }
