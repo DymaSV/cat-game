@@ -21,6 +21,21 @@ function createEnemies(count, borderMoveWidth, borderMoveHeight) {
     }
     return enemiesArray;
 }
+
+
+function createFood(count, borderMoveWidth, borderMoveHeight) {
+    let food = new Array();
+    for (let i = 1; i < count + 1; i++) {
+        let mouse = new Enemy(mouseSpriteSheet, i * 100, i * 45, 2, borderMoveWidth, borderMoveHeight);
+        mouse.sprite.spriteSheetHeight = 50;
+        mouse.sprite.spriteSheetWidth = 50;
+        mouse.sprite.canvasSpriteWidth = 25;
+        mouse.sprite.canvasSpriteHeight = 25;
+        food.push(mouse);
+    }
+    return food;
+}
+
 class Enemy {
     constructor(spriteSheet, x, y, speed, borderMoveWidth, borderMoveHeight) {
         this.sprite = new Sprite(spriteSheet, x, y);
@@ -150,4 +165,4 @@ class Enemy {
     }
 }
 
-export { Enemy, createEnemies };
+export { Enemy, createEnemies, createFood };

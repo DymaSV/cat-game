@@ -4,7 +4,7 @@ import { Sprite } from "./scripts/sprite";
 import { World, obstaclesArray } from "./scripts/world";
 import { initKeyEvents } from "./scripts/keyboard";
 import { Collision } from "./scripts/collision";
-import { createEnemies } from "./scripts/enemy";
+import { createEnemies, createFood } from "./scripts/enemy";
 import { Hero } from "./scripts/hero";
 import { catSpriteSheet, bangSpriteSheet } from "./scripts/characters";
 import $ from 'jquery';
@@ -14,6 +14,7 @@ var contextHeight = 960;
 var bang = new Sprite(bangSpriteSheet);
 var hero = new Hero(catSpriteSheet, 0, 0, 2, contextWidth, contextHeight);
 let enemiesArray = new Array();
+let foodArray = new Array();
 let collision = new Collision();
 let world = new World();
 let Context = null;
@@ -25,6 +26,7 @@ $(document).ready(function () {
 });
 
 function initCharacters() {
+    foodArray = createFood(10, contextWidth, 590);
     enemiesArray = createEnemies(10, contextWidth, 590);
     hero.sprite.canvasSpriteWidth = 48;
     hero.sprite.canvasSpriteHeight = 48;
@@ -42,6 +44,12 @@ function enemyMove() {
     }
 }
 
+function foodMove() {
+    for (let i = 0; i < foodArray.length; i++) {
+        foodArray[i].move();
+    }
+}
+
 setInterval(function () {
     world.drawMap(contextWidth, contextHeight);
     collision.detectHeroEnemyCollision(hero, enemiesArray);
@@ -53,6 +61,7 @@ setInterval(function () {
         hero.move();
     }
     enemyMove();
+    foodMove();
 }, 40);
 
 export { Context };
