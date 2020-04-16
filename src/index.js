@@ -25,7 +25,7 @@ $(document).ready(function () {
 });
 
 function initCharacters() {
-    enemiesArray = createEnemies(10, 200, 200);
+    enemiesArray = createEnemies(10, contextWidth, 600);
     hero.sprite.canvasSpriteWidth = 48;
     hero.sprite.canvasSpriteHeight = 48;
     hero.sprite.x = 0;
@@ -44,7 +44,7 @@ function enemyMove() {
 setInterval(function () {
     world.drawMap(contextWidth, contextHeight);
     collision.detectHeroEnemyCollision(hero, enemiesArray);
-    collision.detectHeroWaterCollision(hero, obstaclesArray);
+    collision.detectObstacleCollision(hero, obstaclesArray);
     if (collision.heroEnemyCollision) {
         bang.draw(hero.sprite.x, hero.sprite.y, DirectionEnum.none);
         collision.heroEnemyCollision = true;

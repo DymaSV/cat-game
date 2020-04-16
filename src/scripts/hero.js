@@ -1,7 +1,7 @@
 import { Sprite } from "./sprite";
 import { DirectionEnum } from "./utility";
 import { keyState } from "./keyboard";
-import { SpriteBorder } from './obstacle';
+import { SpriteCollisionFlags } from './collision';
 
 class Hero {
     constructor(spriteSheet, x, y, speed, borderMoveWidth, borderMoveHeight) {
@@ -9,52 +9,48 @@ class Hero {
         this.borderMoveWidth = borderMoveWidth;
         this.borderMoveHeight = borderMoveHeight;
         this.speed = speed;
-        this.lastDirection = DirectionEnum.none;
         this.direction = DirectionEnum.none;
+        this.lastDirection = DirectionEnum.none;
+        this.spriteCollisionFlags = new SpriteCollisionFlags();
     }
 
-    move(collision) {
+    move() {
         this.direction = DirectionEnum.none;
         if (keyState.keyLeftState) {
-            if (!collision.heroWaterCollisionBegin) {
+            this.direction = DirectionEnum.left;
+            if (!this.spriteCollisionFlags.obstacleCollision || this.direction != this.spriteCollisionFlags.direction) {
                 if (this.sprite.x - this.speed >= 0) {
                     this.sprite.x = this.sprite.x - this.speed;
                 }
-                collision.heroWaterCollisionEnd = false;
+                this.spriteCollisionFlags.obstacleCollision = false;
             }
-            this.direction = DirectionEnum.left;
         }
         if (keyState.keyRightState) {
-            if (!collision.heroWaterCollisionBegin) {
+            this.direction = DirectionEnum.right;
+            if (!this.spriteCollisionFlags.obstacleCollision || this.direction != this.spriteCollisionFlags.direction) {
                 if (this.sprite.x + this.speed <= this.borderMoveWidth) {
                     this.sprite.x = this.sprite.x + this.speed;
                 }
-                collision.heroWaterCollisionEnd = false;
+                this.spriteCollisionFlags.obstacleCollision = false;
             }
-            this.direction = DirectionEnum.right;
         }
         if (keyState.keyDownState) {
-            if (!collision.heroWaterCollisionBegin) {
+            this.direction = DirectionEnum.down;
+            if (!this.spriteCollisionFlags.obstacleCollision || this.direction != this.spriteCollisionFlags.direction) {
                 if (this.sprite.y + this.speed <= this.borderMoveHeight) {
                     this.sprite.y = this.sprite.y + this.speed;
                 }
-                collision.heroWaterCollisionEnd = false;
+                this.spriteCollisionFlags.obstacleCollision = false;
             }
-            this.direction = DirectionEnum.down;
         }
         if (keyState.keyUpState) {
-            if (!collision.heroWaterCollisionBegin) {
+            this.direction = DirectionEnum.up;
+            if (!this.spriteCollisionFlags.obstacleCollision || this.direction != this.spriteCollisionFlags.direction) {
                 if (this.sprite.y - this.speed >= 0) {
                     this.sprite.y = this.sprite.y - this.speed;
                 }
-                collision.heroWaterCollisionEnd = false;
+                this.spriteCollisionFlags.obstacleCollision = false;
             }
-            this.direction = DirectionEnum.up;
-        }
-        if (this.lastDirection != this.direction) {
-            this.lastDirection = this.direction;
-            collision.heroWaterCollisionBegin = false;
-            collision.heroWaterCollisionEnd = false;
         }
         this.sprite.borderPoints.calculateBorderPointsDynamicObjects(
             this.sprite.x,
@@ -62,7 +58,14 @@ class Hero {
             this.sprite.canvasSpriteWidth,
             this.sprite.canvasSpriteHeight,
             this.getCollisionSize(this.direction));
-        this.sprite.draw(this.sprite.x, this.sprite.y, this.direction);
+            
+        if (!this.spriteCollisionFlags.obstacleCollision) {
+            this.spriteCollisionFlags.direction = this.direction;
+            this.sprite.draw(this.sprite.x, this.sprite.y, this.direction);
+        } else {
+            this.sprite.draw(this.sprite.x, this.sprite.y, this.lastDirection);
+        }
+        this.lastDirection = this.direction;
     }
 
     getCollisionSize(direction) {

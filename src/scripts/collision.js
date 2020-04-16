@@ -1,6 +1,12 @@
 import { Obstacle } from './obstacle';
 import { DirectionEnum } from "./utility";
 
+export class SpriteCollisionFlags {
+    constructor() {
+        this.obstacleCollision = false;
+        this.direction = DirectionEnum.none;
+    }
+}
 export class Collision {
     constructor() {
         this.heroEnemyCollision = false;
@@ -67,11 +73,11 @@ export class Collision {
         }
     }
 
-    detectHeroWaterCollision(object, obstacleArray) {
+    detectObstacleCollision(object, obstacleArray) {
         for (let i = 0; i < obstacleArray.length; i++) {
             if (obstacleArray[i] instanceof Obstacle && obstacleArray[i].isCollisionActive) {
-                if (!this.heroWaterCollisionBegin && !this.heroWaterCollisionEnd) {
-                    this.heroWaterCollisionBegin = this.detectObstecleCollision(object, obstacleArray[i]);
+                if (!object.spriteCollisionFlags.obstacleCollision) {
+                    object.spriteCollisionFlags.obstacleCollision = this.detectObstecleCollision(object, obstacleArray[i]);
                 }
                 else { break; }
             }
