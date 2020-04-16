@@ -1,5 +1,6 @@
 import { Obstacle } from './obstacle';
 import { DirectionEnum } from "./utility";
+import { Enemy } from './enemy';
 
 export class SpriteCollisionFlags {
     constructor() {
@@ -10,24 +11,16 @@ export class SpriteCollisionFlags {
 export class Collision {
     constructor() {
         this.heroEnemyCollision = false;
-        this.heroWaterCollisionBegin = false;
-        this.heroWaterCollisionEnd = false;
     }
 
     detectCollision(obj1, obj2) {
-        if (obj1 && obj1)
-            if (obj1.x < obj2.x + obj2.collisionWidth &&
-                obj1.x + obj1.collisionWidth > obj2.x &&
-                obj1.y < obj2.y + obj2.collisionHeight &&
-                obj1.y + obj1.collisionHeight > obj2.y) {
-                return true;
-            }
-        return false;
-    }
-
-    detectObstecleCollision(obj1, obj2) {
         let bp1 = obj1.sprite.borderPoints;
-        let bp2 = obj2.borderPoints;
+        let bp2 = null;
+        if (obj2 instanceof Enemy) {
+            bp2 = obj2.sprite.borderPoints;
+        } else {
+            bp2 = obj2.borderPoints;
+        }
         if (bp1.x_left)
             switch (obj1.direction) {
                 case DirectionEnum.left:
@@ -67,7 +60,7 @@ export class Collision {
     detectHeroEnemyCollision(hero, enemiesArray) {
         for (let i = 0; i < enemiesArray.length; i++) {
             if (!this.heroEnemyCollision) {
-                this.heroEnemyCollision = this.detectCollision(hero.sprite, enemiesArray[i].sprite);
+                this.heroEnemyCollision = this.detectCollision(hero, enemiesArray[i]);
             }
             else { break; }
         }
@@ -77,7 +70,7 @@ export class Collision {
         for (let i = 0; i < obstacleArray.length; i++) {
             if (obstacleArray[i] instanceof Obstacle && obstacleArray[i].isCollisionActive) {
                 if (!object.spriteCollisionFlags.obstacleCollision) {
-                    object.spriteCollisionFlags.obstacleCollision = this.detectObstecleCollision(object, obstacleArray[i]);
+                    object.spriteCollisionFlags.obstacleCollision = this.detectCollision(object, obstacleArray[i]);
                 }
                 else { break; }
             }

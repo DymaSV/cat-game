@@ -25,12 +25,12 @@ $(document).ready(function () {
 });
 
 function initCharacters() {
-    enemiesArray = createEnemies(10, contextWidth, 600);
+    enemiesArray = createEnemies(10, contextWidth, 590);
     hero.sprite.canvasSpriteWidth = 48;
     hero.sprite.canvasSpriteHeight = 48;
     hero.sprite.x = 0;
     hero.sprite.y = 0;
-    bang.spriteSheetSize = 14
+    bang.spriteSheetSize = 125;//14
     bang.canvasSpriteWidth = 48;
     bang.canvasSpriteHeight = 48;
 }
@@ -46,12 +46,12 @@ setInterval(function () {
     collision.detectHeroEnemyCollision(hero, enemiesArray);
     collision.detectObstacleCollision(hero, obstaclesArray);
     if (collision.heroEnemyCollision) {
-        bang.draw(hero.sprite.x, hero.sprite.y, DirectionEnum.none);
+        bang.draw(hero.sprite.x + 12, hero.sprite.y + 12, DirectionEnum.none);
         collision.heroEnemyCollision = true;
     } else {
-        hero.move(collision);
-        enemyMove();
+        hero.move();
     }
+    enemyMove();
 }, 40);
 
 export { Context };

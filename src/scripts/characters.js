@@ -7,7 +7,7 @@ import dogImage from '../images/dog-sprite-sheet.png';
 import bangImage from '../images/bang.png';
 import catImage from '../images/cats.png';
 
-const bangSpriteSheet = new SpriteSheet(bangImage, 8, BangPositions);
+const bangSpriteSheet = new SpriteSheet(bangImage, 5, BangPositions);
 const catSpriteSheet = new SpriteSheet(catImage, 4, HeroPositions);
 const dogSpriteSheet = new SpriteSheet(dogImage, 5, EnemyPositions);
 const waterSpriteSheet = new SpriteSheet(waterImage, null);

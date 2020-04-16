@@ -80,7 +80,7 @@ class Enemy {
                 this.spriteCollisionFlags.obstacleCollision = false;
             } else {
                 this.direction = DirectionEnum.none;
-                this.getEnemyCoordinates(x, y, dxy, contextWidth, contextHeight);
+                return this.getEnemyCoordinates(x, y, dxy, contextWidth, contextHeight);
             }
         }
         if (this.direction == DirectionEnum.right) {
@@ -91,7 +91,7 @@ class Enemy {
                 this.spriteCollisionFlags.obstacleCollision = false;
             } else {
                 this.direction = DirectionEnum.none;
-                this.getEnemyCoordinates(x, y, dxy, contextWidth, contextHeight);
+                return this.getEnemyCoordinates(x, y, dxy, contextWidth, contextHeight);
             }
         }
         if (this.direction == DirectionEnum.up) {
@@ -102,7 +102,7 @@ class Enemy {
                 this.spriteCollisionFlags.obstacleCollision = false;
             } else {
                 this.direction = DirectionEnum.none;
-                this.getEnemyCoordinates(x, y, dxy, contextWidth, contextHeight);
+                return this.getEnemyCoordinates(x, y, dxy, contextWidth, contextHeight);
             }
         }
         if (this.direction == DirectionEnum.down) {
@@ -113,7 +113,7 @@ class Enemy {
                 this.spriteCollisionFlags.obstacleCollision = false;
             } else {
                 this.direction = DirectionEnum.none;
-                this.getEnemyCoordinates(x, y, dxy, contextWidth, contextHeight);
+                return this.getEnemyCoordinates(x, y, dxy, contextWidth, contextHeight);
             }
         }
         let direction = this.direction
@@ -127,16 +127,16 @@ class Enemy {
     getCollisionSize(direction) {
         switch (direction) {
             case DirectionEnum.left:
-                return { left: 24, right: 24, up: 5, down: 5 };
+                return { left: 12, right: 12, up: 12, down: 12 };
             case DirectionEnum.right:
-                return { left: 24, right: 24, up: 5, down: 5 };
+                return { left: 12, right: 12, up: 12, down: 12 };
             case DirectionEnum.up:
-                return { left: 5, right: 5, up: 5, down: 5 };
+                return { left: 12, right: 12, up: 12, down: 12 };
             case DirectionEnum.down:
-                return { left: 5, right: 5, up: 5, down: 24 };
+                return { left: 12, right: 12, up: 12, down: 12 };
             case DirectionEnum.none:
             default:
-                return { left: 24, right: 24, up: 24, down: 24 };
+                return { left: 12, right: 12, up: 12, down: 12 };
         }
     }
 }
