@@ -8,7 +8,8 @@ class Sprite {
     // isMoving - indicate posibility to move
     constructor(fn, x, y) {
         this.TO_RADIANS = Math.PI / 180;
-        this.spriteSheetSize = 32; //Width and Height of area that we take in image .png like one item
+        this.spriteSheetWidth = 32; //Width of area that we take in image .png like one item
+        this.spriteSheetHeight = 32; //Height of area that we take in image .png like one item
         this.canvasSpriteWidth = 32; //Width of image on canvas
         this.canvasSpriteHeight = 32; //Height of image on canvas
 
@@ -49,10 +50,10 @@ class Sprite {
             var res = i2xy(this.animate.animationCurrentFrame, this.spriteSheet.spriteSheetColumnsCount);
 
             Context.context.drawImage(this.spriteSheet.image,
-                res[0] * this.spriteSheetSize,
-                res[1] * this.spriteSheetSize,
-                this.spriteSheetSize,
-                this.spriteSheetSize,
+                res[0] * this.spriteSheetWidth,
+                res[1] * this.spriteSheetHeight,
+                this.spriteSheetWidth,
+                this.spriteSheetHeight,
                 x,
                 y,
                 this.canvasSpriteWidth,
@@ -93,10 +94,10 @@ class Sprite {
         Context.context.translate(x - this.canvasSpriteWidth / 2, y - this.canvasSpriteHeight / 2);
         Context.context.rotate(angle * this.TO_RADIANS);
         Context.context.drawImage(this.spriteSheet.image,
-            res[0] * this.spriteSheetSize,
-            res[1] * this.spriteSheetSize,
-            this.spriteSheetSize,
-            this.spriteSheetSize,
+            res[0] * this.spriteSheetWidth,
+            res[1] * this.spriteSheetHeight,
+            this.spriteSheetWidth,
+            this.spriteSheetHeight,
             x,
             y,
             this.canvasSpriteWidth,

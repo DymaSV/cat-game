@@ -1,14 +1,23 @@
 import { Sprite } from "./sprite";
 import { DirectionEnum } from "./utility";
-import { dogSpriteSheet } from "./characters";
+import { dogSpriteSheet, mouseSpriteSheet } from "./characters";
 import { SpriteCollisionFlags } from './collision';
 import { obstaclesArray } from "./world";
 import { Collision } from "./collision";
 
 function createEnemies(count, borderMoveWidth, borderMoveHeight) {
     let enemiesArray = new Array();
-    for (let i = 1; i < count+1; i++) {
-        enemiesArray.push(new Enemy(dogSpriteSheet, i * 100, i * 45, 3, borderMoveWidth, borderMoveHeight));
+    let mouse = new Enemy(mouseSpriteSheet, 100, 100, 2, borderMoveWidth, borderMoveHeight);
+    mouse.sprite.spriteSheetHeight = 50;
+    mouse.sprite.spriteSheetWidth = 50;
+    mouse.sprite.canvasSpriteWidth = 25;
+    mouse.sprite.canvasSpriteHeight = 25;
+    enemiesArray.push(mouse);
+    for (let i = 1; i < count + 1; i++) {
+        let dog = new Enemy(dogSpriteSheet, i * 100, i * 45, 3, borderMoveWidth, borderMoveHeight)
+        dog.sprite.canvasSpriteWidth = 60;
+        dog.sprite.canvasSpriteHeight = 60;
+        enemiesArray.push(dog);
     }
     return enemiesArray;
 }
@@ -32,7 +41,7 @@ class Enemy {
 
     move() {
         // Check collision
-        this.collision.detectObstacleCollision(this,obstaclesArray);
+        this.collision.detectObstacleCollision(this, obstaclesArray);
         // Get enemy cordinates and direction
         let enemyMoves = this.getEnemyCoordinates(this.sprite.x,
             this.sprite.y,

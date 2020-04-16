@@ -7,6 +7,14 @@ export const EnemyPositions = {
     none: [0]
 };
 
+export const MousePositions = {
+    left: [4, 5, 6, 7],
+    right: [8, 9, 10, 11],
+    up: [12, 13, 14, 15],
+    down: [0, 1, 2, 3],
+    none: [0]
+};
+
 export const HeroPositions = {
     left: [12,13,14,15],
     right: [4,5,6,7],
