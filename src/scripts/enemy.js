@@ -7,12 +7,6 @@ import { Collision } from "./collision";
 
 function createEnemies(count, borderMoveWidth, borderMoveHeight) {
     let enemiesArray = new Array();
-    let mouse = new Enemy(mouseSpriteSheet, 100, 100, 2, borderMoveWidth, borderMoveHeight);
-    mouse.sprite.spriteSheetHeight = 50;
-    mouse.sprite.spriteSheetWidth = 50;
-    mouse.sprite.canvasSpriteWidth = 25;
-    mouse.sprite.canvasSpriteHeight = 25;
-    enemiesArray.push(mouse);
     for (let i = 1; i < count + 1; i++) {
         let dog = new Enemy(dogSpriteSheet, i * 100, i * 45, 3, borderMoveWidth, borderMoveHeight)
         dog.sprite.canvasSpriteWidth = 60;
