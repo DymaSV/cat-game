@@ -1,3 +1,4 @@
+import './style.css';
 import { HTML } from "./scripts/canvas";
 import { DirectionEnum } from "./scripts/utility";
 import { Sprite } from "./scripts/sprite";
@@ -10,7 +11,7 @@ import { catSpriteSheet, bangSpriteSheet } from "./scripts/characters";
 import $ from 'jquery';
 
 var contextWidth = 1280;
-var contextHeight = 960;
+var contextHeight = 400;
 var bang = new Sprite(bangSpriteSheet);
 var hero = new Hero(catSpriteSheet, 0, 0, 2, contextWidth, contextHeight);
 let enemiesArray = new Array();
@@ -26,8 +27,8 @@ $(document).ready(function () {
 });
 
 function initCharacters() {
-    foodArray = createFood(10, contextWidth, 590);
-    enemiesArray = createEnemies(10, contextWidth, 590);
+    foodArray = createFood(10, contextWidth, contextHeight);
+    enemiesArray = createEnemies(10, contextWidth, contextHeight);
     hero.sprite.canvasSpriteWidth = 48;
     hero.sprite.canvasSpriteHeight = 48;
     hero.sprite.x = 0;
@@ -38,15 +39,9 @@ function initCharacters() {
     bang.canvasSpriteHeight = 48;
 }
 
-function enemyMove() {
-    for (let i = 0; i < enemiesArray.length; i++) {
-        enemiesArray[i].move();
-    }
-}
-
-function foodMove() {
-    for (let i = 0; i < foodArray.length; i++) {
-        foodArray[i].move();
+function moveCharacters(array) {
+    for (let i = 0; i < array.length; i++) {
+        array[i].move();
     }
 }
 
@@ -54,14 +49,18 @@ setInterval(function () {
     world.drawMap(contextWidth, contextHeight);
     collision.detectHeroEnemyCollision(hero, enemiesArray);
     collision.detectObstacleCollision(hero, obstaclesArray);
-    if (collision.heroEnemyCollision) {
+    let i = collision.detectHeroFoodCollision(hero, foodArray);
+    if (i) {
+        foodArray = foodArray.filter(function(el) { return el.id != i; });
+    }
+    if (hero.heroEnemyCollision) {
         bang.draw(hero.sprite.x + 12, hero.sprite.y + 12, DirectionEnum.none);
-        collision.heroEnemyCollision = true;
+        hero.heroEnemyCollision = true;
     } else {
         hero.move();
     }
-    enemyMove();
-    foodMove();
+    moveCharacters(foodArray);
+    moveCharacters(enemiesArray);
 }, 40);
 
 export { Context };

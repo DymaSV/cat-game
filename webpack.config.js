@@ -19,13 +19,17 @@ module.exports = {
         use: {
           loader: 'url-loader',
         },
-      }
+      },
+      {
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader'],
+      },
     ],
   },
   optimization: {
     minimize: false //Make true for prod
   },
-  plugins: [    
+  plugins: [
     new HtmlWebpackPlugin({
       template: './index.html',
     })

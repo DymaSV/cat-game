@@ -11,45 +11,54 @@ class Hero {
         this.speed = speed;
         this.direction = DirectionEnum.none;
         this.lastDirection = DirectionEnum.none;
-        this.spriteCollisionFlags = new SpriteCollisionFlags();
+
+        this.obstaclesCollisionFlag = new SpriteCollisionFlags();
+        this.heroEnemyCollision = false;
+        this.heroFoodCollision = false;
+        this.life = 2;
+    }
+
+    plusLife() {
+        this.life++;
+        document.getElementById("life-point").innerHTML = this.life;
     }
 
     move() {
         this.direction = DirectionEnum.none;
         if (keyState.keyLeftState) {
             this.direction = DirectionEnum.left;
-            if (!this.spriteCollisionFlags.obstacleCollision || this.direction != this.spriteCollisionFlags.direction) {
+            if (!this.obstaclesCollisionFlag.obstacleCollision || this.direction != this.obstaclesCollisionFlag.direction) {
                 if (this.sprite.x - this.speed >= 0) {
                     this.sprite.x = this.sprite.x - this.speed;
                 }
-                this.spriteCollisionFlags.obstacleCollision = false;
+                this.obstaclesCollisionFlag.obstacleCollision = false;
             }
         }
         if (keyState.keyRightState) {
             this.direction = DirectionEnum.right;
-            if (!this.spriteCollisionFlags.obstacleCollision || this.direction != this.spriteCollisionFlags.direction) {
+            if (!this.obstaclesCollisionFlag.obstacleCollision || this.direction != this.obstaclesCollisionFlag.direction) {
                 if (this.sprite.x + this.speed <= this.borderMoveWidth) {
                     this.sprite.x = this.sprite.x + this.speed;
                 }
-                this.spriteCollisionFlags.obstacleCollision = false;
+                this.obstaclesCollisionFlag.obstacleCollision = false;
             }
         }
         if (keyState.keyDownState) {
             this.direction = DirectionEnum.down;
-            if (!this.spriteCollisionFlags.obstacleCollision || this.direction != this.spriteCollisionFlags.direction) {
+            if (!this.obstaclesCollisionFlag.obstacleCollision || this.direction != this.obstaclesCollisionFlag.direction) {
                 if (this.sprite.y + this.speed <= this.borderMoveHeight) {
                     this.sprite.y = this.sprite.y + this.speed;
                 }
-                this.spriteCollisionFlags.obstacleCollision = false;
+                this.obstaclesCollisionFlag.obstacleCollision = false;
             }
         }
         if (keyState.keyUpState) {
             this.direction = DirectionEnum.up;
-            if (!this.spriteCollisionFlags.obstacleCollision || this.direction != this.spriteCollisionFlags.direction) {
+            if (!this.obstaclesCollisionFlag.obstacleCollision || this.direction != this.obstaclesCollisionFlag.direction) {
                 if (this.sprite.y - this.speed >= 0) {
                     this.sprite.y = this.sprite.y - this.speed;
                 }
-                this.spriteCollisionFlags.obstacleCollision = false;
+                this.obstaclesCollisionFlag.obstacleCollision = false;
             }
         }
         this.sprite.borderPoints.calculateBorderPointsDynamicObjects(
@@ -58,9 +67,9 @@ class Hero {
             this.sprite.canvasSpriteWidth,
             this.sprite.canvasSpriteHeight,
             this.getCollisionSize(this.direction));
-            
-        if (!this.spriteCollisionFlags.obstacleCollision) {
-            this.spriteCollisionFlags.direction = this.direction;
+
+        if (!this.obstaclesCollisionFlag.obstacleCollision) {
+            this.obstaclesCollisionFlag.direction = this.direction;
             this.sprite.draw(this.sprite.x, this.sprite.y, this.direction);
         } else {
             this.sprite.draw(this.sprite.x, this.sprite.y, this.lastDirection);

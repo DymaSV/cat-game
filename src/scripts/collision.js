@@ -9,9 +9,6 @@ export class SpriteCollisionFlags {
     }
 }
 export class Collision {
-    constructor() {
-        this.heroEnemyCollision = false;
-    }
 
     detectCollision(obj1, obj2) {
         let bp1 = obj1.sprite.borderPoints;
@@ -59,8 +56,8 @@ export class Collision {
 
     detectHeroEnemyCollision(hero, enemiesArray) {
         for (let i = 0; i < enemiesArray.length; i++) {
-            if (!this.heroEnemyCollision) {
-                this.heroEnemyCollision = this.detectCollision(hero, enemiesArray[i]);
+            if (!hero.heroEnemyCollision) {
+                hero.heroEnemyCollision = this.detectCollision(hero, enemiesArray[i]);
             }
             else { break; }
         }
@@ -69,11 +66,22 @@ export class Collision {
     detectObstacleCollision(object, obstacleArray) {
         for (let i = 0; i < obstacleArray.length; i++) {
             if (obstacleArray[i] instanceof Obstacle && obstacleArray[i].isCollisionActive) {
-                if (!object.spriteCollisionFlags.obstacleCollision) {
-                    object.spriteCollisionFlags.obstacleCollision = this.detectCollision(object, obstacleArray[i]);
+                if (!object.obstaclesCollisionFlag.obstacleCollision) {
+                    object.obstaclesCollisionFlag.obstacleCollision = this.detectCollision(object, obstacleArray[i]);
                 }
                 else { break; }
             }
         }
+    }
+
+    detectHeroFoodCollision(hero, array) {
+        for (let i = 0; i < array.length; i++) {
+            let heroEat = this.detectCollision(hero, array[i]);
+            if (heroEat) {
+                hero.plusLife();
+                return array[i].id;
+            }
+        }
+        return null;
     }
 }

@@ -8,7 +8,7 @@ import { Collision } from "./collision";
 function createEnemies(count, borderMoveWidth, borderMoveHeight) {
     let enemiesArray = new Array();
     for (let i = 1; i < count + 1; i++) {
-        let dog = new Enemy(dogSpriteSheet, i * 100, i * 45, 3, borderMoveWidth, borderMoveHeight)
+        let dog = new Enemy(i, dogSpriteSheet, i * 100, i * 45, 3, borderMoveWidth, borderMoveHeight)
         dog.sprite.canvasSpriteWidth = 60;
         dog.sprite.canvasSpriteHeight = 60;
         enemiesArray.push(dog);
@@ -20,7 +20,7 @@ function createEnemies(count, borderMoveWidth, borderMoveHeight) {
 function createFood(count, borderMoveWidth, borderMoveHeight) {
     let food = new Array();
     for (let i = 1; i < count + 1; i++) {
-        let mouse = new Enemy(mouseSpriteSheet, i * 100, i * 45, 2, borderMoveWidth, borderMoveHeight);
+        let mouse = new Enemy(i, mouseSpriteSheet, i * 100, i * 45, 4, borderMoveWidth, borderMoveHeight);
         mouse.sprite.spriteSheetHeight = 50;
         mouse.sprite.spriteSheetWidth = 50;
         mouse.sprite.canvasSpriteWidth = 25;
@@ -31,7 +31,8 @@ function createFood(count, borderMoveWidth, borderMoveHeight) {
 }
 
 class Enemy {
-    constructor(spriteSheet, x, y, speed, borderMoveWidth, borderMoveHeight) {
+    constructor(id, spriteSheet, x, y, speed, borderMoveWidth, borderMoveHeight) {
+        this.id = id;
         this.sprite = new Sprite(spriteSheet, x, y);
         this.sprite.canvasSpriteWidth = 48;
         this.sprite.canvasSpriteHeight = 48;
@@ -43,7 +44,7 @@ class Enemy {
         this.moveCirle = 10;
         this.direction = DirectionEnum.none;
         this.lastDirection = DirectionEnum.none;
-        this.spriteCollisionFlags = new SpriteCollisionFlags();
+        this.obstaclesCollisionFlag = new SpriteCollisionFlags();
         this.collision = new Collision();
         this.moveChoosed = false;
     }
@@ -67,8 +68,8 @@ class Enemy {
             this.sprite.canvasSpriteHeight,
             this.getCollisionSize(this.direction));
         // Draw one move if it's possible
-        if (!this.spriteCollisionFlags.obstacleCollision) {
-            this.spriteCollisionFlags.direction = this.direction;
+        if (!this.obstaclesCollisionFlag.obstacleCollision) {
+            this.obstaclesCollisionFlag.direction = this.direction;
             this.sprite.draw(this.sprite.x, this.sprite.y, enemyMoves.direction);
         }
         else {
@@ -91,44 +92,44 @@ class Enemy {
         }
 
         if (this.direction == DirectionEnum.left) {
-            if (!this.spriteCollisionFlags.obstacleCollision || this.direction != this.spriteCollisionFlags.direction) {
+            if (!this.obstaclesCollisionFlag.obstacleCollision || this.direction != this.obstaclesCollisionFlag.direction) {
                 if (x - dxy >= 0) {
                     x = x - dxy;
                 }
-                this.spriteCollisionFlags.obstacleCollision = false;
+                this.obstaclesCollisionFlag.obstacleCollision = false;
             } else {
                 this.direction = DirectionEnum.none;
                 return this.getEnemyCoordinates(x, y, dxy, contextWidth, contextHeight);
             }
         }
         if (this.direction == DirectionEnum.right) {
-            if (!this.spriteCollisionFlags.obstacleCollision || this.direction != this.spriteCollisionFlags.direction) {
+            if (!this.obstaclesCollisionFlag.obstacleCollision || this.direction != this.obstaclesCollisionFlag.direction) {
                 if (x + dxy <= contextWidth) {
                     x = x + dxy;
                 }
-                this.spriteCollisionFlags.obstacleCollision = false;
+                this.obstaclesCollisionFlag.obstacleCollision = false;
             } else {
                 this.direction = DirectionEnum.none;
                 return this.getEnemyCoordinates(x, y, dxy, contextWidth, contextHeight);
             }
         }
         if (this.direction == DirectionEnum.up) {
-            if (!this.spriteCollisionFlags.obstacleCollision || this.direction != this.spriteCollisionFlags.direction) {
+            if (!this.obstaclesCollisionFlag.obstacleCollision || this.direction != this.obstaclesCollisionFlag.direction) {
                 if (y - dxy >= 0) {
                     y = y - dxy;
                 }
-                this.spriteCollisionFlags.obstacleCollision = false;
+                this.obstaclesCollisionFlag.obstacleCollision = false;
             } else {
                 this.direction = DirectionEnum.none;
                 return this.getEnemyCoordinates(x, y, dxy, contextWidth, contextHeight);
             }
         }
         if (this.direction == DirectionEnum.down) {
-            if (!this.spriteCollisionFlags.obstacleCollision || this.direction != this.spriteCollisionFlags.direction) {
+            if (!this.obstaclesCollisionFlag.obstacleCollision || this.direction != this.obstaclesCollisionFlag.direction) {
                 if (y + dxy <= contextHeight) {
                     y = y + dxy;
                 }
-                this.spriteCollisionFlags.obstacleCollision = false;
+                this.obstaclesCollisionFlag.obstacleCollision = false;
             } else {
                 this.direction = DirectionEnum.none;
                 return this.getEnemyCoordinates(x, y, dxy, contextWidth, contextHeight);

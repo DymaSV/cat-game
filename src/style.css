@@ -1,0 +1,33 @@
+body{
+  background-color: black;
+}
+.monitor {
+  color: white;
+  display: flex;
+  margin: 10px 20px 0 20px;
+  flex-direction: column;
+}
+.monitor-header {
+  flex: 1;
+  display: flex;
+  text-align:center;
+}
+.canvas-body {
+  flex: 1;
+  margin: auto;
+}
+.life {
+  flex: 1;
+  margin: auto;
+  font-size: 20px;
+}
+.instruction {
+  flex: 3;
+  margin: auto;
+  font-size: 40px;
+}
+.points {
+  flex: 1;
+  margin: auto;
+  font-size: 20px;
+}
