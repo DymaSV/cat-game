@@ -16,11 +16,33 @@ class Hero {
         this.heroEnemyCollision = false;
         this.heroFoodCollision = false;
         this.life = 2;
+        this.steps = 120;
+        this.isWin = false;
+
     }
 
     plusLife() {
         this.life++;
+        this.steps = this.steps + 60;
+        this.updateHtml();
+    }
+
+    catStep() {
+        this.steps--;
+        this.updateHtml();
+        if (this.steps == 0 && this.life == 0) {
+            this.heroEnemyCollision = true
+        }
+        if (this.steps == 0 && this.life > 0) {
+            this.life--;
+            this.steps = this.steps + 60;
+            this.updateHtml();
+        }
+    }
+
+    updateHtml() {
         document.getElementById("life-point").innerHTML = this.life;
+        document.getElementById("cat-steps").innerHTML = this.steps;
     }
 
     move() {
@@ -30,6 +52,7 @@ class Hero {
             if (!this.obstaclesCollisionFlag.obstacleCollision || this.direction != this.obstaclesCollisionFlag.direction) {
                 if (this.sprite.x - this.speed >= 0) {
                     this.sprite.x = this.sprite.x - this.speed;
+                    this.catStep();
                 }
                 this.obstaclesCollisionFlag.obstacleCollision = false;
             }
@@ -39,6 +62,7 @@ class Hero {
             if (!this.obstaclesCollisionFlag.obstacleCollision || this.direction != this.obstaclesCollisionFlag.direction) {
                 if (this.sprite.x + this.speed <= this.borderMoveWidth) {
                     this.sprite.x = this.sprite.x + this.speed;
+                    this.catStep();
                 }
                 this.obstaclesCollisionFlag.obstacleCollision = false;
             }
@@ -48,6 +72,7 @@ class Hero {
             if (!this.obstaclesCollisionFlag.obstacleCollision || this.direction != this.obstaclesCollisionFlag.direction) {
                 if (this.sprite.y + this.speed <= this.borderMoveHeight) {
                     this.sprite.y = this.sprite.y + this.speed;
+                    this.catStep();
                 }
                 this.obstaclesCollisionFlag.obstacleCollision = false;
             }
@@ -57,6 +82,7 @@ class Hero {
             if (!this.obstaclesCollisionFlag.obstacleCollision || this.direction != this.obstaclesCollisionFlag.direction) {
                 if (this.sprite.y - this.speed >= 0) {
                     this.sprite.y = this.sprite.y - this.speed;
+                    this.catStep();
                 }
                 this.obstaclesCollisionFlag.obstacleCollision = false;
             }
@@ -91,6 +117,16 @@ class Hero {
             default:
                 return { left: 24, right: 24, up: 24, down: 24 };
         }
+    }
+
+    resetHero() {
+        this.direction = DirectionEnum.none;
+        this.lastDirection = DirectionEnum.none;
+        this.heroEnemyCollision = false;
+        this.heroFoodCollision = false;
+        this.life = 2;
+        this.steps = 120;
+        this.updateHtml();
     }
 }
 

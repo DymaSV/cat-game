@@ -21,6 +21,7 @@
   "homepage": "https://github.com/DymaSV/anim_cat#readme",
   "devDependencies": {
     "css-loader": "^3.5.2",
+    "file-loader": "^6.0.0",
     "html-webpack-plugin": "^4.2.0",
     "style-loader": "^1.1.4",
     "url-loader": "^4.1.0",

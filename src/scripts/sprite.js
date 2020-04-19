@@ -132,6 +132,9 @@ class Sprite {
             if (direction == DirectionEnum.down) {
                 return this.spriteSheet.spritePositions.down;
             }
+            if (direction == DirectionEnum.win) {
+                return this.spriteSheet.spritePositions.win;
+            }
             return this.spriteSheet.spritePositions.none;
         }
         else { return null; }

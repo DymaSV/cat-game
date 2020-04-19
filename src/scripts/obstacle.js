@@ -1,5 +1,6 @@
 class Obstacle {
-    constructor(sprite, x, y, isCollisionActive, collisionWidth, collisionHeight) {
+    constructor(id, sprite, x, y, isCollisionActive, collisionWidth, collisionHeight) {
+        this.id = id;
         this.collisionWidth = collisionWidth;
         this.collisionHeight = collisionHeight;
         this.canvasSpriteWidth = sprite.canvasSpriteWidth;

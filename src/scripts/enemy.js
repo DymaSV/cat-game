@@ -8,7 +8,7 @@ import { Collision } from "./collision";
 function createEnemies(count, borderMoveWidth, borderMoveHeight) {
     let enemiesArray = new Array();
     for (let i = 1; i < count + 1; i++) {
-        let dog = new Enemy(i, dogSpriteSheet, i * 100, i * 45, 3, borderMoveWidth, borderMoveHeight)
+        let dog = new Enemy(i, dogSpriteSheet, i * 100, i * 35, 3, borderMoveWidth, borderMoveHeight)
         dog.sprite.canvasSpriteWidth = 60;
         dog.sprite.canvasSpriteHeight = 60;
         enemiesArray.push(dog);
@@ -20,7 +20,7 @@ function createEnemies(count, borderMoveWidth, borderMoveHeight) {
 function createFood(count, borderMoveWidth, borderMoveHeight) {
     let food = new Array();
     for (let i = 1; i < count + 1; i++) {
-        let mouse = new Enemy(i, mouseSpriteSheet, i * 100, i * 45, 4, borderMoveWidth, borderMoveHeight);
+        let mouse = new Enemy(i, mouseSpriteSheet, i * 100, i * 30, 4, borderMoveWidth, borderMoveHeight);
         mouse.sprite.spriteSheetHeight = 50;
         mouse.sprite.spriteSheetWidth = 50;
         mouse.sprite.canvasSpriteWidth = 25;
@@ -104,7 +104,7 @@ class Enemy {
         }
         if (this.direction == DirectionEnum.right) {
             if (!this.obstaclesCollisionFlag.obstacleCollision || this.direction != this.obstaclesCollisionFlag.direction) {
-                if (x + dxy <= contextWidth) {
+                if (x + dxy < contextWidth) {
                     x = x + dxy;
                 }
                 this.obstaclesCollisionFlag.obstacleCollision = false;
@@ -126,7 +126,7 @@ class Enemy {
         }
         if (this.direction == DirectionEnum.down) {
             if (!this.obstaclesCollisionFlag.obstacleCollision || this.direction != this.obstaclesCollisionFlag.direction) {
-                if (y + dxy <= contextHeight) {
+                if (y + dxy < contextHeight) {
                     y = y + dxy;
                 }
                 this.obstaclesCollisionFlag.obstacleCollision = false;

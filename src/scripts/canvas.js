@@ -6,5 +6,6 @@ export function HTML (canvasId, width, height) {
     this.canvas = document.getElementById(canvasId);
     this.context = this.canvas.getContext("2d");
     $(this.canvas).attr({width: this.width, height: this.height});
-    $(this.canvas).attr({style: 'width:' + this.width + 'px;' +'height:' + this.height + 'px;'});
+    $(this.canvas).attr({style: 'width: 100%; ' +'height: 100%'});
+    // $(this.canvas).attr({style: 'width:' + this.width + 'px;' +'height:' + this.height + 'px;'});
 }

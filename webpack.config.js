@@ -16,9 +16,19 @@ module.exports = {
     rules: [
       {
         test: /\.(jpg|png)$/,
-        use: {
-          loader: 'url-loader',
-        },
+        use: [
+          // {
+          //   loader: 'url-loader'
+          // },
+          { 
+            loader: 'file-loader',
+            options: {
+              name: '[name].[ext]',
+              outputPath:'image/',
+              publicPath:'image/'
+            }
+          }
+        ],
       },
       {
         test: /\.css$/i,
