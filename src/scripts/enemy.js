@@ -50,16 +50,11 @@ class Enemy {
     }
 
     move() {
-        // Check collision
-        this.collision.detectObstacleCollision(this, obstaclesArray);
+
         // Get enemy cordinates and direction
-        let enemyMoves = this.getEnemyCoordinates(this.sprite.x,
-            this.sprite.y,
-            this.speed,
+        this.getEnemyCoordinates(
             this.borderMoveWidth,
             this.borderMoveHeight);
-        this.sprite.x = enemyMoves.x;
-        this.sprite.y = enemyMoves.y;
         // Calculate border for character
         this.sprite.borderPoints.calculateBorderPointsDynamicObjects(
             this.sprite.x,
@@ -68,75 +63,82 @@ class Enemy {
             this.sprite.canvasSpriteHeight,
             this.getCollisionSize(this.direction));
         // Draw one move if it's possible
-        if (!this.obstaclesCollisionFlag.obstacleCollision) {
-            this.obstaclesCollisionFlag.direction = this.direction;
-            this.sprite.draw(this.sprite.x, this.sprite.y, enemyMoves.direction);
-        }
-        else {
-            this.sprite.draw(this.sprite.x, this.sprite.y, enemyMoves.direction);
-        }
+        this.sprite.draw(this.sprite.x, this.sprite.y, this.direction);
         this.lastDirection = this.direction;
     }
 
+    resetMove() {
+        this.moveChoosed = false;
+        this.moveCirle = this.cirle;
+    }
 
-    getEnemyCoordinates(x, y, dxy, contextWidth, contextHeight) {
+    getEnemyCoordinates(contextWidth, contextHeight) {
         if (!this.moveChoosed && this.moveCirle > 0) {
             this.direction = this.getRandomInt(4);
             this.moveChoosed = true;
         } else {
             this.moveCirle--;
             if (this.moveCirle <= 0) {
-                this.moveChoosed = false;
-                this.moveCirle = this.cirle;
+                this.resetMove();
             }
         }
 
         if (this.direction == DirectionEnum.left) {
-            if (!this.obstaclesCollisionFlag.obstacleCollision || this.direction != this.obstaclesCollisionFlag.direction) {
-                if (x - dxy >= 0) {
-                    x = x - dxy;
+            if (this.sprite.x - this.speed >= 0) {
+                this.sprite.x = this.sprite.x - this.speed;
+                this.collision.detectObstacleCollision(this, obstaclesArray)
+                if (this.obstaclesCollisionFlag.obstacleCollision) {
+                    this.sprite.x = this.sprite.x + this.speed;
+                    this.resetMove();
+                    this.obstaclesCollisionFlag.obstacleCollision = false;
                 }
-                this.obstaclesCollisionFlag.obstacleCollision = false;
             } else {
                 this.direction = DirectionEnum.none;
-                return this.getEnemyCoordinates(x, y, dxy, contextWidth, contextHeight);
+                this.resetMove();
             }
         }
         if (this.direction == DirectionEnum.right) {
-            if (!this.obstaclesCollisionFlag.obstacleCollision || this.direction != this.obstaclesCollisionFlag.direction) {
-                if (x + dxy < contextWidth) {
-                    x = x + dxy;
+            if (this.sprite.x + this.speed < contextWidth) {
+                this.sprite.x = this.sprite.x + this.speed;
+                this.collision.detectObstacleCollision(this, obstaclesArray)
+                if (this.obstaclesCollisionFlag.obstacleCollision) {
+                    this.sprite.x = this.sprite.x - this.speed;
+                    this.resetMove();
+                    this.obstaclesCollisionFlag.obstacleCollision = false;
                 }
-                this.obstaclesCollisionFlag.obstacleCollision = false;
             } else {
                 this.direction = DirectionEnum.none;
-                return this.getEnemyCoordinates(x, y, dxy, contextWidth, contextHeight);
+                this.resetMove();
             }
         }
         if (this.direction == DirectionEnum.up) {
-            if (!this.obstaclesCollisionFlag.obstacleCollision || this.direction != this.obstaclesCollisionFlag.direction) {
-                if (y - dxy >= 0) {
-                    y = y - dxy;
+            if (this.sprite.y - this.speed >= 0) {
+                this.sprite.y = this.sprite.y - this.speed;
+                this.collision.detectObstacleCollision(this, obstaclesArray)
+                if (this.obstaclesCollisionFlag.obstacleCollision) {
+                    this.sprite.y = this.sprite.y + this.speed;
+                    this.resetMove();
+                    this.obstaclesCollisionFlag.obstacleCollision = false;
                 }
-                this.obstaclesCollisionFlag.obstacleCollision = false;
             } else {
                 this.direction = DirectionEnum.none;
-                return this.getEnemyCoordinates(x, y, dxy, contextWidth, contextHeight);
+                this.resetMove();
             }
         }
         if (this.direction == DirectionEnum.down) {
-            if (!this.obstaclesCollisionFlag.obstacleCollision || this.direction != this.obstaclesCollisionFlag.direction) {
-                if (y + dxy < contextHeight) {
-                    y = y + dxy;
+            if (this.sprite.y + this.speed < contextHeight) {
+                this.sprite.y = this.sprite.y + this.speed;
+                this.collision.detectObstacleCollision(this, obstaclesArray)
+                if (this.obstaclesCollisionFlag.obstacleCollision) {
+                    this.sprite.y = this.sprite.y - this.speed;
+                    this.resetMove();
+                    this.obstaclesCollisionFlag.obstacleCollision = false;
                 }
-                this.obstaclesCollisionFlag.obstacleCollision = false;
             } else {
                 this.direction = DirectionEnum.none;
-                return this.getEnemyCoordinates(x, y, dxy, contextWidth, contextHeight);
+                this.resetMove();
             }
         }
-        let direction = this.direction
-        return { x, y, direction };
     }
 
     getRandomInt(num) {

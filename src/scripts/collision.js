@@ -68,6 +68,7 @@ export class Collision {
             if (obstacleArray[i] instanceof Obstacle && obstacleArray[i].isCollisionActive) {
                 if (!object.obstaclesCollisionFlag.obstacleCollision) {
                     object.obstaclesCollisionFlag.obstacleCollision = this.detectCollision(object, obstacleArray[i]);
+                    object.obstaclesCollisionFlag.direction = object.directon
                     if (object.obstaclesCollisionFlag.obstacleCollision && object.sprite.spriteSheet.id == "cat" && obstacleArray[i].id == "house") {
                         object.isWin = true;
                     }

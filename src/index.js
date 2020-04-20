@@ -48,13 +48,12 @@ function initCharacters() {
     houseWin.canvasSpriteHeight = 96;
 }
 
-
-
 function moveCharacters(array) {
     for (let i = 0; i < array.length; i++) {
         array[i].move();
     }
 }
+
 let winIndex = 0;
 setInterval(function () {
     world.drawMap(contextWidth, contextHeight);
@@ -70,7 +69,6 @@ setInterval(function () {
         winIndex++;
     } else {
         collision.detectHeroEnemyCollision(hero, enemiesArray);
-        collision.detectObstacleCollision(hero, obstaclesArray);
         let i = collision.detectHeroFoodCollision(hero, foodArray);
         if (i) {
             foodArray = foodArray.filter(function (el) { return el.id != i; });
