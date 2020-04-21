@@ -1,37 +1,11 @@
 import { Sprite } from "./sprite";
 import { DirectionEnum } from "./utility";
-import { dogSpriteSheet, mouseSpriteSheet } from "./characters";
 import { SpriteCollisionFlags } from './collision';
 import { obstaclesArray } from "./world";
 import { Collision } from "./collision";
 
-function createEnemies(count, borderMoveWidth, borderMoveHeight) {
-    let enemiesArray = new Array();
-    for (let i = 1; i < count + 1; i++) {
-        let dog = new Enemy(i, dogSpriteSheet, i * 100, i * 35, 3, borderMoveWidth, borderMoveHeight)
-        dog.sprite.canvasSpriteWidth = 60;
-        dog.sprite.canvasSpriteHeight = 60;
-        enemiesArray.push(dog);
-    }
-    return enemiesArray;
-}
-
-
-function createFood(count, borderMoveWidth, borderMoveHeight) {
-    let food = new Array();
-    for (let i = 1; i < count + 1; i++) {
-        let mouse = new Enemy(i, mouseSpriteSheet, i * 100, i * 30, 4, borderMoveWidth, borderMoveHeight);
-        mouse.sprite.spriteSheetHeight = 50;
-        mouse.sprite.spriteSheetWidth = 50;
-        mouse.sprite.canvasSpriteWidth = 25;
-        mouse.sprite.canvasSpriteHeight = 25;
-        food.push(mouse);
-    }
-    return food;
-}
-
 class Enemy {
-    constructor(id, spriteSheet, x, y, speed, borderMoveWidth, borderMoveHeight) {
+    constructor(id, spriteSheet, x, y, speed, borderMoveWidth, borderMoveHeight, getCollisionSize) {
         this.id = id;
         this.sprite = new Sprite(spriteSheet, x, y);
         this.sprite.canvasSpriteWidth = 48;
@@ -47,10 +21,10 @@ class Enemy {
         this.obstaclesCollisionFlag = new SpriteCollisionFlags();
         this.collision = new Collision();
         this.moveChoosed = false;
+        this.getCollisionSize = getCollisionSize;
     }
 
     move() {
-
         // Get enemy cordinates and direction
         this.getEnemyCoordinates(
             this.borderMoveWidth,
@@ -144,22 +118,6 @@ class Enemy {
     getRandomInt(num) {
         return Math.floor(Math.random() * Math.floor(num));
     }
-
-    getCollisionSize(direction) {
-        switch (direction) {
-            case DirectionEnum.left:
-                return { left: 12, right: 12, up: 12, down: 12 };
-            case DirectionEnum.right:
-                return { left: 12, right: 12, up: 12, down: 12 };
-            case DirectionEnum.up:
-                return { left: 12, right: 12, up: 12, down: 12 };
-            case DirectionEnum.down:
-                return { left: 12, right: 12, up: 12, down: 12 };
-            case DirectionEnum.none:
-            default:
-                return { left: 12, right: 12, up: 12, down: 12 };
-        }
-    }
 }
 
-export { Enemy, createEnemies, createFood };
+export { Enemy};

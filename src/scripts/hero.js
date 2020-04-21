@@ -21,6 +21,7 @@ class Hero {
         this.steps = 120;
         this.isWin = false;
         this.collision = new Collision();
+        this.winIndex = 0;
     }
 
     plusLife() {
@@ -112,30 +113,14 @@ class Hero {
         this.lastDirection = this.direction;
     }
 
-    checkSameDirection(direction, obstaclesDirection) {
-        if (obstaclesDirection.obstacleCollision) {
-            switch (obstaclesDirection.direction) {
-                case DirectionEnum.right:
-                    if (direction == DirectionEnum.left)
-                        return true;
-                    return false;
-                case DirectionEnum.left:
-                    if (direction == DirectionEnum.right)
-                        return true;
-                    return false;
-                case DirectionEnum.up:
-                    if (direction == DirectionEnum.down)
-                        return true;
-                    return false;
-                case DirectionEnum.down:
-                    if (direction == DirectionEnum.up)
-                        return true;
-                    return false;
-                default:
-                    return false;
-            }
+    winMove() {
+        if (this.winIndex >= 10) {
+            this.sprite.spriteSheet.spritePositions = {
+                win: [28, 28, 28, 29, 29, 29]
+            };
         }
-        return false;
+        this.sprite.draw(this.sprite.x, this.sprite.y, DirectionEnum.win);
+        this.winIndex++;
     }
 
     getCollisionSize(direction) {

@@ -57,10 +57,11 @@ export class Collision {
     detectHeroEnemyCollision(hero, enemiesArray) {
         for (let i = 0; i < enemiesArray.length; i++) {
             if (!hero.heroEnemyCollision) {
-                hero.heroEnemyCollision = this.detectCollision(hero, enemiesArray[i]);
+                return this.detectCollision(hero, enemiesArray[i]);
             }
             else { break; }
         }
+        return false;
     }
 
     detectObstacleCollision(object, obstacleArray) {
@@ -82,7 +83,6 @@ export class Collision {
         for (let i = 0; i < array.length; i++) {
             let heroEat = this.detectCollision(hero, array[i]);
             if (heroEat) {
-                hero.plusLife();
                 return array[i].id;
             }
         }
