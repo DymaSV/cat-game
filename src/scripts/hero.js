@@ -6,10 +6,8 @@ import { Collision } from "./collision";
 import { obstaclesArray } from "./world";
 
 class Hero {
-    constructor(spriteSheet, x, y, speed, borderMoveWidth, borderMoveHeight) {
-        this.sprite = new Sprite(spriteSheet, x, y);
-        this.borderMoveWidth = borderMoveWidth;
-        this.borderMoveHeight = borderMoveHeight;
+    constructor(sprite, speed) {
+        this.sprite = sprite;
         this.speed = speed;
         this.direction = DirectionEnum.none;
         this.lastDirection = DirectionEnum.none;
@@ -17,7 +15,7 @@ class Hero {
         this.obstaclesCollisionFlag = new SpriteCollisionFlags();
         this.heroEnemyCollision = false;
         this.heroFoodCollision = false;
-        this.life = 2;
+        this.life = 15;
         this.steps = 120;
         this.isWin = false;
         this.collision = new Collision();
@@ -48,7 +46,7 @@ class Hero {
         document.getElementById("cat-steps").innerHTML = this.steps;
     }
 
-    move() {
+    move(viewport) {
         this.direction = DirectionEnum.none;
         if (keyState.keyLeftState) {
             this.direction = DirectionEnum.left;
@@ -65,7 +63,7 @@ class Hero {
         }
         if (keyState.keyRightState) {
             this.direction = DirectionEnum.right;
-            if (this.sprite.x + this.speed <= this.borderMoveWidth) {
+             if (this.sprite.x + this.speed <= viewport.endTile[0] *  viewport.tileW ) {
                 this.sprite.x = this.sprite.x + this.speed;
                 this.collision.detectObstacleCollision(this, obstaclesArray)
                 if (!this.obstaclesCollisionFlag.obstacleCollision) {
@@ -78,7 +76,7 @@ class Hero {
         }
         if (keyState.keyDownState) {
             this.direction = DirectionEnum.down;
-            if (this.sprite.y + this.speed <= this.borderMoveHeight) {
+            if (this.sprite.y + this.speed <= viewport.endTile[1] *  viewport.tileH) {
                 this.sprite.y = this.sprite.y + this.speed;
                 this.collision.detectObstacleCollision(this, obstaclesArray)
                 if (!this.obstaclesCollisionFlag.obstacleCollision) {
@@ -110,6 +108,7 @@ class Hero {
             this.getCollisionSize(this.direction));
 
         this.sprite.draw(this.sprite.x, this.sprite.y, this.direction);
+        // this.sprite.draw(this.sprite.x, this.sprite.y, this.direction);
         this.lastDirection = this.direction;
     }
 
@@ -144,7 +143,7 @@ class Hero {
         this.lastDirection = DirectionEnum.none;
         this.heroEnemyCollision = false;
         this.heroFoodCollision = false;
-        this.life = 2;
+        this.life = 15;
         this.steps = 120;
         this.updateHtml();
     }

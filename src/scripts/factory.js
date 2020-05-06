@@ -1,3 +1,4 @@
+import { Sprite } from "./sprite";
 import { dogSpriteSheet, mouseSpriteSheet } from "./characters";
 import { Enemy } from "./enemy";
 import { DirectionEnum } from "./utility";
@@ -8,10 +9,10 @@ class Factory {
     constructor() {
         this.collision = new Collision();
     }
-    createEnemies(count, borderMoveWidth, borderMoveHeight) {
+    createEnemies(count, borderMoveWidth, borderMoveHeight, viewport) {
         let enemiesArray = new Array();
         for (let i = 1; i < count + 1; i++) {
-            let dog = this.getEnemyInstance(i, i * 100, i * 20, borderMoveWidth, borderMoveHeight)
+            let dog = this.getEnemyInstance(i, i * 100, i * 20, borderMoveWidth, borderMoveHeight, viewport)
             dog.sprite.canvasSpriteWidth = 60;
             dog.sprite.canvasSpriteHeight = 60;
             enemiesArray.push(dog);
@@ -19,12 +20,10 @@ class Factory {
         return enemiesArray;
     }
 
-    getEnemyInstance(id, x, y, borderMoveWidth, borderMoveHeight) {
+    getEnemyInstance(id, x, y, borderMoveWidth, borderMoveHeight, viewport) {
         let enemy = new Enemy(
             id,
-            dogSpriteSheet,
-            x,
-            y,
+            new Sprite(dogSpriteSheet, x, y, viewport),
             3,
             borderMoveWidth,
             borderMoveHeight,
@@ -33,26 +32,24 @@ class Factory {
         this.collision.detectObstacleCollision(enemy, obstaclesArray);
         if (enemy.obstaclesCollisionFlag.obstacleCollision) {
             enemy.obstaclesCollisionFlag.obstacleCollision = false;
-            return this.getEnemyInstance(id, x + 80, y + 10, borderMoveWidth, borderMoveHeight)
+            return this.getEnemyInstance(id, x + 80, y + 10, borderMoveWidth, borderMoveHeight, viewport)
         }
         return enemy;
     }
 
-    createFood(count, borderMoveWidth, borderMoveHeight) {
+    createFood(count, borderMoveWidth, borderMoveHeight, viewport) {
         let food = new Array();
         for (let i = 1; i < count + 1; i++) {
-            let mouse = this.getFoodInstance(i, i * 100, i * 20, borderMoveWidth, borderMoveHeight)
+            let mouse = this.getFoodInstance(i, i * 100, i * 20, borderMoveWidth, borderMoveHeight, viewport)
             food.push(mouse);
         }
         return food;
     }
 
-    getFoodInstance(id, x, y, borderMoveWidth, borderMoveHeight) {
+    getFoodInstance(id, x, y, borderMoveWidth, borderMoveHeight, viewport) {
         let mouse = new Enemy(
             id,
-            mouseSpriteSheet,
-            x,
-            y,
+            new Sprite(mouseSpriteSheet, x, y, viewport),
             4,
             borderMoveWidth,
             borderMoveHeight,
@@ -65,7 +62,7 @@ class Factory {
         this.collision.detectObstacleCollision(mouse, obstaclesArray);
         if (mouse.obstaclesCollisionFlag.obstacleCollision) {
             mouse.obstaclesCollisionFlag.obstacleCollision = false;
-            return this.getFoodInstance(id, x + 100, y + 10, borderMoveWidth, borderMoveHeight)
+            return this.getFoodInstance(id, x + 100, y + 10, borderMoveWidth, borderMoveHeight, viewport)
         }
         return mouse;
     }

@@ -1,13 +1,12 @@
-import { Sprite } from "./sprite";
 import { DirectionEnum } from "./utility";
 import { SpriteCollisionFlags } from './collision';
 import { obstaclesArray } from "./world";
 import { Collision } from "./collision";
 
 class Enemy {
-    constructor(id, spriteSheet, x, y, speed, borderMoveWidth, borderMoveHeight, getCollisionSize) {
+    constructor(id, sprite, speed, borderMoveWidth, borderMoveHeight, getCollisionSize) {
         this.id = id;
-        this.sprite = new Sprite(spriteSheet, x, y);
+        this.sprite = sprite;
         this.sprite.canvasSpriteWidth = 48;
         this.sprite.canvasSpriteHeight = 48;
         this.borderMoveWidth = borderMoveWidth;

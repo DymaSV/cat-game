@@ -8,31 +8,41 @@ import { Collision } from "./scripts/collision";
 import { Hero } from "./scripts/hero";
 import { catSpriteSheet, ghostSpriteSheet, houseWinSpriteSheet } from "./scripts/characters";
 import { Factory } from "./scripts/factory";
+import { ViewPort } from "./scripts/viewport";
 import $ from 'jquery';
 
 let contextWidth = 1280;
 let contextHeight = 500;
-let ghost = new Sprite(ghostSpriteSheet);
-let houseWin = new Sprite(houseWinSpriteSheet, 1000, 150);
-let hero = new Hero(catSpriteSheet, 0, 0, 2, contextWidth, contextHeight);
+let ghost = null;
+let houseWin = null;
+let hero = null;
 let enemiesArray = new Array();
 let foodArray = new Array();
 let collision = new Collision();
 let factory = new Factory();
-let world = new World();
+let world = null;
+let viewport = null;
 let Context = null;
 
 $(document).ready(function () {
     Context = new HTML("game", contextWidth, contextHeight);
+    
+    viewport = new ViewPort(64, 64, 20, 20);
+    viewport.screen = [contextWidth, contextHeight];
+    world = new World(viewport);
+    ghost = new Sprite(ghostSpriteSheet,0,0,viewport);
+    houseWin = new Sprite(houseWinSpriteSheet, 1000, 150, viewport);
+    hero = new Hero(new Sprite(catSpriteSheet, 0, 0, viewport), 2);
+
     contextHeight = contextHeight - 100;
     initKeyEvents();
-    world.drawMap(contextWidth, contextHeight);
     initCharacters();
+    
 });
 
 function initCharacters() {
-    foodArray = factory.createFood(10, contextWidth, contextHeight);
-    enemiesArray = factory.createEnemies(10, contextWidth, contextHeight);
+    // foodArray = factory.createFood(10, contextWidth, contextHeight, viewport);
+    enemiesArray = factory.createEnemies(10, contextWidth, contextHeight, viewport);
 
     hero.sprite.canvasSpriteWidth = 48;
     hero.sprite.canvasSpriteHeight = 48;
@@ -63,13 +73,22 @@ function enemyDetectHero() {
         hero.heroEnemyCollision = true;
     }
     else {
+        viewport.reset()
+
         initCharacters()
         hero.resetHero();
     }
 }
 
 setInterval(function () {
-    world.drawMap(contextWidth, contextHeight);
+    viewport.update(
+        hero.sprite.x + (hero.sprite.canvasSpriteWidth/2),
+        hero.sprite.y + (hero.sprite.canvasSpriteHeight/2)
+    );
+    Context.context.fillStyle = "#000000";
+    Context.context.fillRect(0,0,viewport.screen[0],viewport.screen[1])
+
+    world.drawMap();
     if (hero.isWin) {
         hero.winMove()
     } else {
@@ -82,7 +101,7 @@ setInterval(function () {
                 foodArray = factory.updateFoodArray(foodArray, foodIdDetected)
                 hero.plusLife();
             }
-            hero.move();
+            hero.move(viewport);
         }
         moveCharacters(foodArray);
         moveCharacters(enemiesArray);

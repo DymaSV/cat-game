@@ -6,7 +6,7 @@ import { SpriteBorder } from './obstacle';
 
 class Sprite {
     // isMoving - indicate posibility to move
-    constructor(fn, x, y) {
+    constructor(fn, x, y, viewport) {
         this.TO_RADIANS = Math.PI / 180;
         this.spriteSheetWidth = 32; //Width of area that we take in image .png like one item
         this.spriteSheetHeight = 32; //Height of area that we take in image .png like one item
@@ -20,6 +20,7 @@ class Sprite {
         this.is_pattern = false;
 
         this.borderPoints = new SpriteBorder();
+        this.viewport = viewport;
         this.initSprite(fn);
     }
 
@@ -36,7 +37,14 @@ class Sprite {
     };
 
     //Draw function
-    draw(x, y, direction) {
+    draw(x, y, direction, disableOffset) {
+        let offsetX = this.viewport.offset[0]; 
+        let offsetY = this.viewport.offset[1];
+        if (disableOffset) {
+            offsetX = 0;
+            offsetY = 0;
+        }
+
         var various = this.getSpritePositions(direction);
         if (Array.isArray(various) && various.length > 0) {
             if (this.animate.animationDelay++ >= 3) {
@@ -54,14 +62,14 @@ class Sprite {
                 res[1] * this.spriteSheetHeight,
                 this.spriteSheetWidth,
                 this.spriteSheetHeight,
-                x,
-                y,
+                x + offsetX,
+                y + offsetY,
                 this.canvasSpriteWidth,
                 this.canvasSpriteHeight);
         } else {
             Context.context.drawImage(this.spriteSheet.image,
-                x,
-                y,
+                x + offsetX,
+                y + offsetY,
                 this.canvasSpriteWidth,
                 this.canvasSpriteHeight);
         }
@@ -98,8 +106,8 @@ class Sprite {
             res[1] * this.spriteSheetHeight,
             this.spriteSheetWidth,
             this.spriteSheetHeight,
-            x,
-            y,
+            x + this.viewport.offset[0],
+            y + this.viewport.offset[1],
             this.canvasSpriteWidth,
             this.canvasSpriteHeight);
         Context.context.restore();
