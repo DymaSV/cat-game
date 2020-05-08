@@ -1,8 +1,7 @@
 import { Sprite } from "./sprite";
-import { DirectionEnum } from "./utility";
 import {
-    waterSpriteSheet,
-    wallSpriteSheet,
+    barrierSpriteSheet,
+    landSpriteSheet,
     houseSpriteSheet
 } from "./characters";
 import { Obstacle } from './obstacle';
@@ -10,7 +9,6 @@ import { Obstacle } from './obstacle';
 let obstaclesArray = new Array();
 class World {
     constructor(viewport) {
-        this.isObstaclesSaved = false;
         this.MAP_BLOCK_W = 64;
         this.MAP_BLOCK_H = 64;
         this.map = [
@@ -37,17 +35,16 @@ class World {
         ];
         this.viewport = viewport;
         this.initSprites();
-
     }
 
     initSprites() {
-        this.wall = new Sprite(wallSpriteSheet, 0, 0, this.viewport);
-        this.wall.canvasSpriteWidth = this.MAP_BLOCK_W;
-        this.wall.canvasSpriteHeight = this.MAP_BLOCK_H;
+        this.land = new Sprite(landSpriteSheet, 0, 0, this.viewport);
+        this.land.canvasSpriteWidth = this.MAP_BLOCK_W;
+        this.land.canvasSpriteHeight = this.MAP_BLOCK_H;
 
-        this.water = new Sprite(waterSpriteSheet, 0, 0, this.viewport);
-        this.water.canvasSpriteWidth = this.MAP_BLOCK_W;
-        this.water.canvasSpriteHeight = this.MAP_BLOCK_H;
+        this.barrier = new Sprite(barrierSpriteSheet, 0, 0, this.viewport);
+        this.barrier.canvasSpriteWidth = this.MAP_BLOCK_W;
+        this.barrier.canvasSpriteHeight = this.MAP_BLOCK_H;
 
         this.house = new Sprite(houseSpriteSheet, 1000, 150, this.viewport);
         this.house.canvasSpriteWidth = 96;
@@ -69,7 +66,6 @@ class World {
                     arr[0].draw(x_new, y_new);
                 }
                 let object = arr[arr.length - 1];
-                // if (!this.isObstaclesSaved)
                     if (this.isActiveObstacle(this.map[(y * this.viewport.mapW) + x])) {
                         let id = "el" + (y * this.viewport.mapW) + x;
                         obstaclesArray.push(new Obstacle(
@@ -89,23 +85,21 @@ class World {
                 this.house.x,
                 this.house.y);
         }
-        // if (!this.isObstaclesSaved) {
             let id = "house";
             obstaclesArray.push(new Obstacle(id, this.house, this.house.x, this.house.y, true, this.MAP_BLOCK_W, this.MAP_BLOCK_H));
-        // }
         this.isObstaclesSaved = true;
     }
 
     getSprite(flag) {
         switch (flag) {
             case 1:
-                return [this.wall];
+                return [this.land];
             case 0:
-                return [this.wall, this.water];
+                return [this.land, this.barrier];
             case 8:
-                return [this.wall]
+                return [this.land]
             default:
-                return [this.wall];
+                return [this.land];
         }
     }
 
