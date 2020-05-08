@@ -36,7 +36,7 @@ class ViewPort {
     reset() {
         this.startTile = [0, 0];
         this.endTile = [0, 0];
-        // this.offset = [0, 0];
+        this.offset = [0, 0];
     }
 }
 

@@ -4,7 +4,6 @@ import {
     HeroPositions,
     GhostPositions,
     MousePositions,
-    CatInHousePositions
 } from "./positions";
 
 import mouseImage from '../images/mouse.png';
@@ -15,7 +14,6 @@ import dogImage from '../images/dog-sprite-sheet.png';
 import ghostImage from '../images/cat-ghost.png';
 import catImage from '../images/cats.png';
 import houseImage from '../images/house.png';
-import houseWinImage from '../images/house-sprite.png';
 import pineImage from '../images/pine.png';
 
 // This import should be for transfer images to dist folder
@@ -31,7 +29,6 @@ const landSpriteSheet = new SpriteSheet("land", landImage, null);
 const stoneSpriteSheet = new SpriteSheet("stone_1", stoneImage, null);
 const pineSpriteSheet = new SpriteSheet("pine", pineImage, null);
 const houseSpriteSheet = new SpriteSheet("house", houseImage, null);
-const houseWinSpriteSheet = new SpriteSheet("houseWin", houseWinImage, 4, CatInHousePositions);
 
 export {
     landSpriteSheet,
@@ -41,7 +38,6 @@ export {
     barrierSpriteSheet,
     mouseSpriteSheet,
     houseSpriteSheet,
-    houseWinSpriteSheet,
     stoneSpriteSheet,
     pineSpriteSheet
 };

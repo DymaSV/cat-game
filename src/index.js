@@ -6,15 +6,12 @@ import { World } from "./scripts/world";
 import { initKeyEvents } from "./scripts/keyboard";
 import { Collision } from "./scripts/collision";
 import { Hero } from "./scripts/hero";
-import { catSpriteSheet, ghostSpriteSheet, houseWinSpriteSheet } from "./scripts/characters";
+import { catSpriteSheet, ghostSpriteSheet } from "./scripts/characters";
 import { Factory } from "./scripts/factory";
 import { ViewPort } from "./scripts/viewport";
 import $ from 'jquery';
 
-let contextWidth = 1280;
-let contextHeight = 500;
 let ghost = null;
-let houseWin = null;
 let hero = null;
 let enemiesArray = new Array();
 let foodArray = new Array();
@@ -25,17 +22,18 @@ let viewport = null;
 let Context = null;
 
 $(document).ready(function () {
+    let contextWidth = $(window).width() - 100;
+    let contextHeight = $(window).height() - 200;
     Context = new HTML("game", contextWidth, contextHeight);
-    
-    viewport = new ViewPort(64, 64, 20, 20, contextWidth, contextHeight);
+
+    viewport = new ViewPort(64, 64, Math.floor(contextWidth / 64), 20, contextWidth, contextHeight);
     world = new World(viewport);
-    ghost = new Sprite(ghostSpriteSheet,0,0,viewport);
-    houseWin = new Sprite(houseWinSpriteSheet, 1000, 150, viewport);
+    ghost = new Sprite(ghostSpriteSheet, 0, 0, viewport);
     hero = new Hero(new Sprite(catSpriteSheet, 0, 0, viewport), 2);
 
     initKeyEvents();
     initCharacters();
-    
+
 });
 
 function initCharacters() {
@@ -49,13 +47,8 @@ function initCharacters() {
 
     ghost.spriteSheetWidth = 45;
     ghost.spriteSheetHeight = 48;
-    ghost.canvasSpriteWidth = 36;
-    ghost.canvasSpriteHeight = 36;
-
-    houseWin.spriteSheetWidth = 125;
-    houseWin.spriteSheetHeight = 115;
-    houseWin.canvasSpriteWidth = 96;
-    houseWin.canvasSpriteHeight = 96;
+    ghost.canvasSpriteWidth = 34;
+    ghost.canvasSpriteHeight = 34;
 }
 
 function moveCharacters(array) {
@@ -72,19 +65,26 @@ function enemyDetectHero() {
     }
     else {
         viewport.reset()
-
         initCharacters()
         hero.resetHero();
     }
 }
 
+function heroDetectFood() {
+    let foodIdDetected = collision.detectHeroFoodCollision(hero, foodArray)
+    if (foodIdDetected) {
+        foodArray = factory.updateFoodArray(foodArray, foodIdDetected)
+        hero.plusLife();
+    }
+}
+
 setInterval(function () {
     viewport.update(
-        hero.sprite.x + (hero.sprite.canvasSpriteWidth/2),
-        hero.sprite.y + (hero.sprite.canvasSpriteHeight/2)
+        hero.sprite.x + (hero.sprite.canvasSpriteWidth / 2),
+        hero.sprite.y + (hero.sprite.canvasSpriteHeight / 2)
     );
     Context.context.fillStyle = "#000000";
-    Context.context.fillRect(0,0,viewport.screen[0],viewport.screen[1])
+    Context.context.fillRect(0, 0, viewport.screen[0], viewport.screen[1])
 
     world.drawMap();
     if (hero.isWin) {
@@ -94,11 +94,7 @@ setInterval(function () {
             enemyDetectHero();
         } else {
             hero.heroEnemyCollision = collision.detectHeroEnemyCollision(hero, enemiesArray);
-            let foodIdDetected = collision.detectHeroFoodCollision(hero, foodArray)
-            if (foodIdDetected) {
-                foodArray = factory.updateFoodArray(foodArray, foodIdDetected)
-                hero.plusLife();
-            }
+            heroDetectFood();
             hero.move();
         }
         moveCharacters(foodArray);
