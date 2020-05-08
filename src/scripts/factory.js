@@ -26,7 +26,7 @@ class Factory {
             new Sprite(dogSpriteSheet, x, y, viewport),
             3,
             this.enemyCollisionSize);
-        enemy.move(viewport);
+        enemy.move();
         this.collision.detectObstacleCollision(enemy, obstaclesArray);
         if (enemy.obstaclesCollisionFlag.obstacleCollision) {
             enemy.obstaclesCollisionFlag.obstacleCollision = false;
@@ -54,7 +54,7 @@ class Factory {
         mouse.sprite.spriteSheetWidth = 50;
         mouse.sprite.canvasSpriteWidth = 25;
         mouse.sprite.canvasSpriteHeight = 25;
-        mouse.move(viewport);
+        mouse.move();
         this.collision.detectObstacleCollision(mouse, obstaclesArray);
         if (mouse.obstaclesCollisionFlag.obstacleCollision) {
             mouse.obstaclesCollisionFlag.obstacleCollision = false;

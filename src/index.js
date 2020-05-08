@@ -33,7 +33,6 @@ $(document).ready(function () {
     houseWin = new Sprite(houseWinSpriteSheet, 1000, 150, viewport);
     hero = new Hero(new Sprite(catSpriteSheet, 0, 0, viewport), 2);
 
-    contextHeight = contextHeight - 100;
     initKeyEvents();
     initCharacters();
     
@@ -61,7 +60,7 @@ function initCharacters() {
 
 function moveCharacters(array) {
     for (let i = 0; i < array.length; i++) {
-        array[i].move(viewport);
+        array[i].move();
     }
 }
 
@@ -100,7 +99,7 @@ setInterval(function () {
                 foodArray = factory.updateFoodArray(foodArray, foodIdDetected)
                 hero.plusLife();
             }
-            hero.move(viewport);
+            hero.move();
         }
         moveCharacters(foodArray);
         moveCharacters(enemiesArray);

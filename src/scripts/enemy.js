@@ -21,9 +21,9 @@ class Enemy {
         this.getCollisionSize = getCollisionSize;
     }
 
-    move(viewport) {
+    move() {
         // Get enemy cordinates and direction
-        this.getEnemyCoordinates(viewport);
+        this.getEnemyCoordinates();
         // Calculate border for character
         this.sprite.borderPoints.calculateBorderPointsDynamicObjects(
             this.sprite.x,
@@ -32,8 +32,8 @@ class Enemy {
             this.sprite.canvasSpriteHeight,
             this.getCollisionSize(this.direction));
         // Draw one move if it's possible
-        if (this.sprite.x < (1 + viewport.endTile[0]) * viewport.tileW &&
-            this.sprite.y < (1 + viewport.endTile[1]) * viewport.tileH) {
+        if (this.sprite.x < (1 + this.sprite.viewport.endTile[0]) * this.sprite.viewport.tileW &&
+            this.sprite.y < (1 + this.sprite.viewport.endTile[1]) * this.sprite.viewport.tileH) {
             this.sprite.draw(this.sprite.x, this.sprite.y, this.direction);
         }
         this.lastDirection = this.direction;
@@ -44,7 +44,7 @@ class Enemy {
         this.moveCirle = this.cirle;
     }
 
-    getEnemyCoordinates(viewport) {
+    getEnemyCoordinates() {
         if (!this.moveChoosed && this.moveCirle > 0) {
             this.direction = this.getRandomInt(4);
             this.moveChoosed = true;
@@ -70,7 +70,7 @@ class Enemy {
             }
         }
         if (this.direction == DirectionEnum.right) {
-            if (this.sprite.x + this.speed <= viewport.endTile[0] * viewport.tileW) {
+            if (this.sprite.x + this.speed <= this.sprite.viewport.endTile[0] * this.sprite.viewport.tileW) {
                 this.sprite.x = this.sprite.x + this.speed;
                 this.collision.detectObstacleCollision(this, obstaclesArray)
                 if (this.obstaclesCollisionFlag.obstacleCollision) {
@@ -98,7 +98,7 @@ class Enemy {
             }
         }
         if (this.direction == DirectionEnum.down) {
-            if (this.sprite.y + this.speed <= viewport.endTile[1] * viewport.tileH) {
+            if (this.sprite.y + this.speed <= this.sprite.viewport.endTile[1] * this.sprite.viewport.tileH) {
                 this.sprite.y = this.sprite.y + this.speed;
                 this.collision.detectObstacleCollision(this, obstaclesArray)
                 if (this.obstaclesCollisionFlag.obstacleCollision) {

@@ -45,7 +45,7 @@ class Hero {
         document.getElementById("cat-steps").innerHTML = this.steps;
     }
 
-    move(viewport) {
+    move() {
         this.direction = DirectionEnum.none;
         if (keyState.keyLeftState) {
             this.direction = DirectionEnum.left;
@@ -62,7 +62,7 @@ class Hero {
         }
         if (keyState.keyRightState) {
             this.direction = DirectionEnum.right;
-             if (this.sprite.x + this.speed <= viewport.endTile[0] *  viewport.tileW ) {
+             if (this.sprite.x + this.speed <= this.sprite.viewport.endTile[0] *  this.sprite.viewport.tileW ) {
                 this.sprite.x = this.sprite.x + this.speed;
                 this.collision.detectObstacleCollision(this, obstaclesArray)
                 if (!this.obstaclesCollisionFlag.obstacleCollision) {
@@ -75,7 +75,7 @@ class Hero {
         }
         if (keyState.keyDownState) {
             this.direction = DirectionEnum.down;
-            if (this.sprite.y + this.speed <= viewport.endTile[1] *  viewport.tileH) {
+            if (this.sprite.y + this.speed <= this.sprite.viewport.endTile[1] *  this.sprite.viewport.tileH) {
                 this.sprite.y = this.sprite.y + this.speed;
                 this.collision.detectObstacleCollision(this, obstaclesArray)
                 if (!this.obstaclesCollisionFlag.obstacleCollision) {
