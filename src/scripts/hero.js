@@ -1,4 +1,3 @@
-import { Sprite } from "./sprite";
 import { DirectionEnum } from "./utility";
 import { keyState } from "./keyboard";
 import { SpriteCollisionFlags } from './collision';
@@ -15,7 +14,7 @@ class Hero {
         this.obstaclesCollisionFlag = new SpriteCollisionFlags();
         this.heroEnemyCollision = false;
         this.heroFoodCollision = false;
-        this.life = 15;
+        this.life = 3;
         this.steps = 120;
         this.isWin = false;
         this.collision = new Collision();
@@ -108,7 +107,6 @@ class Hero {
             this.getCollisionSize(this.direction));
 
         this.sprite.draw(this.sprite.x, this.sprite.y, this.direction);
-        // this.sprite.draw(this.sprite.x, this.sprite.y, this.direction);
         this.lastDirection = this.direction;
     }
 
@@ -125,16 +123,16 @@ class Hero {
     getCollisionSize(direction) {
         switch (direction) {
             case DirectionEnum.left:
-                return { left: 24, right: 24, up: 5, down: 5 };
+                return { left: 20, right: 20, up: 7, down: 7 };
             case DirectionEnum.right:
-                return { left: 24, right: 24, up: 5, down: 5 };
+                return { left: 20, right: 20, up: 7, down: 7 };
             case DirectionEnum.up:
-                return { left: 5, right: 5, up: 5, down: 5 };
+                return { left: 7, right: 7, up: 7, down: 7 };
             case DirectionEnum.down:
-                return { left: 5, right: 5, up: 5, down: 24 };
+                return { left: 7, right: 7, up: 7, down: 20 };
             case DirectionEnum.none:
             default:
-                return { left: 24, right: 24, up: 24, down: 24 };
+                return { left: 20, right: 20, up: 20, down: 20 };
         }
     }
 
@@ -143,7 +141,7 @@ class Hero {
         this.lastDirection = DirectionEnum.none;
         this.heroEnemyCollision = false;
         this.heroFoodCollision = false;
-        this.life = 15;
+        this.life = 3;
         this.steps = 120;
         this.updateHtml();
     }

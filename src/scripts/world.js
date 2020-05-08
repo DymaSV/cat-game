@@ -70,25 +70,28 @@ class World {
                 }
                 let object = arr[arr.length - 1];
                 // if (!this.isObstaclesSaved)
-                if (this.isActiveObstacle(this.map[(y * this.viewport.mapW) + x])) {
-                    let id = "el" + (y * this.viewport.mapW) + x;
-                    obstaclesArray.push(new Obstacle(
-                        id,
-                        object,
-                        x_new,
-                        y_new,
-                        true,
-                        this.MAP_BLOCK_W,
-                        this.MAP_BLOCK_H));
-                }
+                    if (this.isActiveObstacle(this.map[(y * this.viewport.mapW) + x])) {
+                        let id = "el" + (y * this.viewport.mapW) + x;
+                        obstaclesArray.push(new Obstacle(
+                            id,
+                            object,
+                            x_new,
+                            y_new,
+                            true,
+                            this.MAP_BLOCK_W,
+                            this.MAP_BLOCK_H));
+                    }
             }
         }
-        this.house.draw(
-            this.house.x,
-            this.house.y);
+        if (this.house.x < (1 + this.viewport.endTile[0]) * this.viewport.tileW &&
+            this.house.y < (1 + this.viewport.endTile[1]) * this.viewport.tileH) {
+            this.house.draw(
+                this.house.x,
+                this.house.y);
+        }
         // if (!this.isObstaclesSaved) {
-        let id = "house";
-        obstaclesArray.push(new Obstacle(id, this.house, this.house.x, this.house.y, true, this.MAP_BLOCK_W, this.MAP_BLOCK_H));
+            let id = "house";
+            obstaclesArray.push(new Obstacle(id, this.house, this.house.x, this.house.y, true, this.MAP_BLOCK_W, this.MAP_BLOCK_H));
         // }
         this.isObstaclesSaved = true;
     }

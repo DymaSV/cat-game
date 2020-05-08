@@ -27,8 +27,7 @@ let Context = null;
 $(document).ready(function () {
     Context = new HTML("game", contextWidth, contextHeight);
     
-    viewport = new ViewPort(64, 64, 20, 20);
-    viewport.screen = [contextWidth, contextHeight];
+    viewport = new ViewPort(64, 64, 20, 20, contextWidth, contextHeight);
     world = new World(viewport);
     ghost = new Sprite(ghostSpriteSheet,0,0,viewport);
     houseWin = new Sprite(houseWinSpriteSheet, 1000, 150, viewport);
@@ -41,8 +40,8 @@ $(document).ready(function () {
 });
 
 function initCharacters() {
-    // foodArray = factory.createFood(10, contextWidth, contextHeight, viewport);
-    enemiesArray = factory.createEnemies(10, contextWidth, contextHeight, viewport);
+    foodArray = factory.createFood(10, viewport);
+    enemiesArray = factory.createEnemies(10, viewport);
 
     hero.sprite.canvasSpriteWidth = 48;
     hero.sprite.canvasSpriteHeight = 48;
@@ -62,12 +61,12 @@ function initCharacters() {
 
 function moveCharacters(array) {
     for (let i = 0; i < array.length; i++) {
-        array[i].move();
+        array[i].move(viewport);
     }
 }
 
 function enemyDetectHero() {
-    if (hero.sprite.y > 0) {
+    if (hero.sprite.y > viewport.startTile[1] * viewport.tileH) {
         hero.sprite.y = hero.sprite.y - 3;
         ghost.draw(hero.sprite.x + 12, hero.sprite.y, DirectionEnum.none);
         hero.heroEnemyCollision = true;

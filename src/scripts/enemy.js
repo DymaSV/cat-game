@@ -4,13 +4,11 @@ import { obstaclesArray } from "./world";
 import { Collision } from "./collision";
 
 class Enemy {
-    constructor(id, sprite, speed, borderMoveWidth, borderMoveHeight, getCollisionSize) {
+    constructor(id, sprite, speed, getCollisionSize) {
         this.id = id;
         this.sprite = sprite;
         this.sprite.canvasSpriteWidth = 48;
         this.sprite.canvasSpriteHeight = 48;
-        this.borderMoveWidth = borderMoveWidth;
-        this.borderMoveHeight = borderMoveHeight;
         this.speed = speed;
 
         this.cirle = 10;
@@ -23,11 +21,9 @@ class Enemy {
         this.getCollisionSize = getCollisionSize;
     }
 
-    move() {
+    move(viewport) {
         // Get enemy cordinates and direction
-        this.getEnemyCoordinates(
-            this.borderMoveWidth,
-            this.borderMoveHeight);
+        this.getEnemyCoordinates(viewport);
         // Calculate border for character
         this.sprite.borderPoints.calculateBorderPointsDynamicObjects(
             this.sprite.x,
@@ -36,7 +32,10 @@ class Enemy {
             this.sprite.canvasSpriteHeight,
             this.getCollisionSize(this.direction));
         // Draw one move if it's possible
-        this.sprite.draw(this.sprite.x, this.sprite.y, this.direction);
+        if (this.sprite.x < (1 + viewport.endTile[0]) * viewport.tileW &&
+            this.sprite.y < (1 + viewport.endTile[1]) * viewport.tileH) {
+            this.sprite.draw(this.sprite.x, this.sprite.y, this.direction);
+        }
         this.lastDirection = this.direction;
     }
 
@@ -45,7 +44,7 @@ class Enemy {
         this.moveCirle = this.cirle;
     }
 
-    getEnemyCoordinates(contextWidth, contextHeight) {
+    getEnemyCoordinates(viewport) {
         if (!this.moveChoosed && this.moveCirle > 0) {
             this.direction = this.getRandomInt(4);
             this.moveChoosed = true;
@@ -71,7 +70,7 @@ class Enemy {
             }
         }
         if (this.direction == DirectionEnum.right) {
-            if (this.sprite.x + this.speed < contextWidth) {
+            if (this.sprite.x + this.speed <= viewport.endTile[0] * viewport.tileW) {
                 this.sprite.x = this.sprite.x + this.speed;
                 this.collision.detectObstacleCollision(this, obstaclesArray)
                 if (this.obstaclesCollisionFlag.obstacleCollision) {
@@ -99,7 +98,7 @@ class Enemy {
             }
         }
         if (this.direction == DirectionEnum.down) {
-            if (this.sprite.y + this.speed < contextHeight) {
+            if (this.sprite.y + this.speed <= viewport.endTile[1] * viewport.tileH) {
                 this.sprite.y = this.sprite.y + this.speed;
                 this.collision.detectObstacleCollision(this, obstaclesArray)
                 if (this.obstaclesCollisionFlag.obstacleCollision) {
@@ -119,4 +118,4 @@ class Enemy {
     }
 }
 
-export { Enemy};
+export { Enemy };
