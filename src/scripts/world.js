@@ -2,51 +2,45 @@ import { Sprite } from "./sprite";
 import {
     barrierSpriteSheet,
     landSpriteSheet,
-    houseSpriteSheet
+    houseSpriteSheet,
+    teleportSpriteSheet
 } from "./characters";
 import { Obstacle } from './obstacle';
+import { stage } from "./stage";
 
 let obstaclesArray = new Array();
 class World {
     constructor(viewport) {
-        this.MAP_BLOCK_W = 64;
-        this.MAP_BLOCK_H = 64;
-        this.map = [
-            1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-            1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-            1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-            1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-            1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1,
-            1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1,
-            1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-            1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-            1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-            1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-            1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-            1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1,
-            1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1,
-            1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-            1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1,
-            1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-            1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1,
-            1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-            1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1,
-            1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        ];
         this.viewport = viewport;
         this.initSprites();
     }
 
     initSprites() {
-        this.land = new Sprite(landSpriteSheet, 0, 0, this.viewport);
+        this.MAP_BLOCK_W = stage.getTileSize().width;
+        this.MAP_BLOCK_H = stage.getTileSize().height;
+        this.map = stage.getMap();
+
+        this.land = new Sprite(stage.getSpriteSheet("land"), 0, 0, this.viewport);
         this.land.canvasSpriteWidth = this.MAP_BLOCK_W;
         this.land.canvasSpriteHeight = this.MAP_BLOCK_H;
 
-        this.barrier = new Sprite(barrierSpriteSheet, 0, 0, this.viewport);
+        this.barrier = new Sprite(stage.getSpriteSheet("barrier"), 0, 0, this.viewport);
         this.barrier.canvasSpriteWidth = this.MAP_BLOCK_W;
         this.barrier.canvasSpriteHeight = this.MAP_BLOCK_H;
 
-        this.house = new Sprite(houseSpriteSheet, 1000, 150, this.viewport);
+        this.teleport = new Sprite(stage.getSpriteSheet("teleport"), 0, 0, this.viewport);
+        this.teleport.canvasSpriteWidth = this.MAP_BLOCK_W;
+        this.teleport.canvasSpriteHeight = this.MAP_BLOCK_H;
+
+        this.stone = new Sprite(stage.getSpriteSheet("stone"), 0, 0, this.viewport);
+        this.stone.canvasSpriteWidth = this.MAP_BLOCK_W;
+        this.stone.canvasSpriteHeight = 46;
+
+        this.house = new Sprite(
+            houseSpriteSheet,
+            this.viewport.screen[0] - 96,
+            this.viewport.mapH * stage.getTileSize().height - 96,
+            this.viewport);
         this.house.canvasSpriteWidth = 96;
         this.house.canvasSpriteHeight = 96;
     }
@@ -66,28 +60,36 @@ class World {
                     arr[0].draw(x_new, y_new);
                 }
                 let object = arr[arr.length - 1];
-                    if (this.isActiveObstacle(this.map[(y * this.viewport.mapW) + x])) {
-                        let id = "el" + (y * this.viewport.mapW) + x;
-                        obstaclesArray.push(new Obstacle(
-                            id,
-                            object,
-                            x_new,
-                            y_new,
-                            true,
-                            this.MAP_BLOCK_W,
-                            this.MAP_BLOCK_H));
-                    }
+                if (this.isActiveObstacle(this.map[(y * this.viewport.mapW) + x])) {
+                    let id = object.spriteSheet.id;
+                    obstaclesArray.push(new Obstacle(
+                        id,
+                        object,
+                        x_new,
+                        y_new,
+                        true,
+                        object.canvasSpriteWidth,
+                        object.canvasSpriteHeight));
+                }
             }
         }
-        if (this.house.x < (1 + this.viewport.endTile[0]) * this.viewport.tileW &&
-            this.house.y < (1 + this.viewport.endTile[1]) * this.viewport.tileH) {
-            this.house.draw(
-                this.house.x,
-                this.house.y);
-        }
+        if (stage.isLastLevel()) {
+            if (this.house.x < (1 + this.viewport.endTile[0]) * this.viewport.tileW &&
+                this.house.y < (1 + this.viewport.endTile[1]) * this.viewport.tileH) {
+                this.house.draw(
+                    this.house.x,
+                    this.house.y);
+            }
             let id = "house";
-            obstaclesArray.push(new Obstacle(id, this.house, this.house.x, this.house.y, true, this.MAP_BLOCK_W, this.MAP_BLOCK_H));
-        this.isObstaclesSaved = true;
+            obstaclesArray.push(new Obstacle(
+                id,
+                this.house,
+                this.house.x,
+                this.house.y,
+                true,
+                this.house.canvasSpriteWidth,
+                this.house.canvasSpriteHeight));
+        }
     }
 
     getSprite(flag) {
@@ -97,7 +99,9 @@ class World {
             case 0:
                 return [this.land, this.barrier];
             case 8:
-                return [this.land]
+                return [this.land, this.teleport];
+            case 7:
+                return [this.land, this.stone];
             default:
                 return [this.land];
         }
@@ -108,6 +112,7 @@ class World {
             case 1:
                 return false;
             case 8:
+            case 7:
             case 0:
                 return true;
             default:

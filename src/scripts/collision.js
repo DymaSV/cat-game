@@ -1,6 +1,8 @@
 import { Obstacle } from './obstacle';
 import { DirectionEnum } from "./utility";
 import { Enemy } from './enemy';
+import { newLevel } from '../index';
+
 
 export class SpriteCollisionFlags {
     constructor() {
@@ -72,6 +74,9 @@ export class Collision {
                     object.obstaclesCollisionFlag.direction = object.directon
                     if (object.obstaclesCollisionFlag.obstacleCollision && object.sprite.spriteSheet.id == "cat" && obstacleArray[i].id == "house") {
                         object.isWin = true;
+                    }
+                    if (object.obstaclesCollisionFlag.obstacleCollision && object.sprite.spriteSheet.id == "cat" && obstacleArray[i].id == "teleport") {
+                        newLevel()
                     }
                 }
                 else { break; }

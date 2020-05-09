@@ -7,7 +7,7 @@ class ViewPort {
         this.tileW = tileW;
         this.tileH = tileH;
         this.mapW = mapW,
-            this.mapH = mapH;
+        this.mapH = mapH;
     }
     update(px, py) {
         if (px > this.screen[0] / 2) {

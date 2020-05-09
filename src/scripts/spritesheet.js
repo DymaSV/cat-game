@@ -1,6 +1,6 @@
 
 export class SpriteSheet {
-        constructor(id,filename, spriteSheetColumnsCount, spritePositions) {
+        constructor(id, filename, spriteSheetColumnsCount, spritePositions) {
                 this.id = id;
                 this.image = document.createElement("img");
                 this.image.src = filename;

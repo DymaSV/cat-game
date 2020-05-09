@@ -9,6 +9,7 @@ import { Hero } from "./scripts/hero";
 import { catSpriteSheet, ghostSpriteSheet } from "./scripts/characters";
 import { Factory } from "./scripts/factory";
 import { ViewPort } from "./scripts/viewport";
+import { stage } from "./scripts/stage";
 import $ from 'jquery';
 
 let ghost = null;
@@ -35,6 +36,14 @@ $(document).ready(function () {
     initCharacters();
 
 });
+
+export function newLevel() {
+    stage.upLevel();
+    world.initSprites();
+    viewport.reset()
+    initCharacters()
+    hero.resetHero();
+}
 
 function initCharacters() {
     foodArray = factory.createFood(10, viewport);
