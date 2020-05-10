@@ -6,7 +6,6 @@ import { World } from "./scripts/world";
 import { initKeyEvents } from "./scripts/keyboard";
 import { Collision } from "./scripts/collision";
 import { Hero } from "./scripts/hero";
-import { catSpriteSheet, ghostSpriteSheet } from "./scripts/characters";
 import { Factory } from "./scripts/factory";
 import { ViewPort } from "./scripts/viewport";
 import { stage } from "./scripts/stage";
@@ -29,8 +28,8 @@ $(document).ready(function () {
 
     viewport = new ViewPort(64, 64, Math.floor(contextWidth / 64), 20, contextWidth, contextHeight);
     world = new World(viewport);
-    ghost = new Sprite(ghostSpriteSheet, 0, 0, viewport);
-    hero = new Hero(new Sprite(catSpriteSheet, 0, 0, viewport), 2);
+    ghost = new Sprite(stage.getSpriteSheet("ghost"), 0, 0, viewport);
+    hero = new Hero(new Sprite(stage.getSpriteSheet("cat"), 0, 0, viewport), 2);
 
     initKeyEvents();
     initCharacters();
@@ -46,18 +45,29 @@ export function newLevel() {
 }
 
 function initCharacters() {
+    //initialize hero before create map. Important for viewport.
+    initHero();
+    //initialize map before create foods and enemies. Enemies should know map before they get their positions.
+    initMap();
+
     foodArray = factory.createFood(20, viewport);
     enemiesArray = factory.createEnemies(10, viewport);
+}
 
+function initHero() {
     hero.sprite.canvasSpriteWidth = 48;
     hero.sprite.canvasSpriteHeight = 48;
     hero.sprite.x = 0;
     hero.sprite.y = 0;
-
     ghost.spriteSheetWidth = 45;
     ghost.spriteSheetHeight = 48;
     ghost.canvasSpriteWidth = 34;
     ghost.canvasSpriteHeight = 34;
+}
+
+function initMap() {
+    viewport.update(hero.sprite.x + (hero.sprite.canvasSpriteWidth / 2), hero.sprite.y + (hero.sprite.canvasSpriteHeight / 2));
+    world.drawMap();
 }
 
 function moveCharacters(array) {
@@ -88,14 +98,9 @@ function heroDetectFood() {
 }
 
 setInterval(function () {
-    viewport.update(
-        hero.sprite.x + (hero.sprite.canvasSpriteWidth / 2),
-        hero.sprite.y + (hero.sprite.canvasSpriteHeight / 2)
-    );
     Context.context.fillStyle = "#000000";
-    Context.context.fillRect(0, 0, viewport.screen[0], viewport.screen[1])
-
-    world.drawMap();
+    Context.context.fillRect(0, 0, viewport.screen[0], viewport.screen[1]);
+    initMap();
     if (hero.isWin) {
         hero.winMove()
     } else {

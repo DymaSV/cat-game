@@ -1,10 +1,4 @@
 import { Sprite } from "./sprite";
-import {
-    barrierSpriteSheet,
-    landSpriteSheet,
-    houseSpriteSheet,
-    teleportSpriteSheet
-} from "./characters";
 import { Obstacle } from './obstacle';
 import { stage } from "./stage";
 

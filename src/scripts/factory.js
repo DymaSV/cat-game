@@ -1,10 +1,9 @@
 import { Sprite } from "./sprite";
-import { dogSpriteSheet, mouseSpriteSheet } from "./characters";
+import { stage } from "./stage";
 import { Enemy } from "./enemy";
 import { DirectionEnum } from "./utility";
 import { obstaclesArray } from "./world";
 import { Collision } from "./collision";
-
 class Factory {
     constructor() {
         this.collision = new Collision();
@@ -23,7 +22,7 @@ class Factory {
     getEnemyInstance(id, x, y, viewport) {
         let enemy = new Enemy(
             id,
-            new Sprite(dogSpriteSheet, x, y, viewport),
+            new Sprite(stage.getSpriteSheet("dog"), x, y, viewport),
             3,
             this.enemyCollisionSize);
         enemy.move();
@@ -47,7 +46,7 @@ class Factory {
     getFoodInstance(id, x, y, viewport) {
         let mouse = new Enemy(
             id,
-            new Sprite(mouseSpriteSheet, x, y, viewport),
+            new Sprite(stage.getSpriteSheet("mouse"), x, y, viewport),
             4,
             this.mouseCollisionSize);
         mouse.sprite.spriteSheetHeight = 50;
