@@ -38,7 +38,7 @@ class Factory {
     createFood(count, viewport) {
         let food = new Array();
         for (let i = 1; i < count + 1; i++) {
-            let mouse = this.getFoodInstance(i, i * 100, i * 20, viewport)
+            let mouse = this.getFoodInstance(i, i * 70, i * 50, viewport)
             food.push(mouse);
         }
         return food;

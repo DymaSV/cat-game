@@ -28,16 +28,22 @@ class World {
         this.barrier.canvasSpriteWidth = this.MAP_BLOCK_W;
         this.barrier.canvasSpriteHeight = this.MAP_BLOCK_H;
 
+        this.barrier2 = new Sprite(stage.getSpriteSheet("barrier2"), 0, 0, this.viewport);
+        this.barrier2.canvasSpriteWidth = 48;
+        this.barrier2.canvasSpriteHeight = this.MAP_BLOCK_H;
+
         this.teleport = new Sprite(stage.getSpriteSheet("teleport"), 0, 0, this.viewport);
-        this.teleport.canvasSpriteWidth = this.MAP_BLOCK_W;
-        this.teleport.canvasSpriteHeight = this.MAP_BLOCK_H;
+        this.teleport.spriteSheetWidth = 200;
+        this.teleport.spriteSheetHeight = 350;
+        this.teleport.canvasSpriteWidth = 48;
+        this.teleport.canvasSpriteHeight = 64;
 
         this.stone = new Sprite(stage.getSpriteSheet("stone"), 0, 0, this.viewport);
         this.stone.canvasSpriteWidth = this.MAP_BLOCK_W;
         this.stone.canvasSpriteHeight = 46;
 
         this.house = new Sprite(
-            houseSpriteSheet,
+            stage.getSpriteSheet("house"),
             this.viewport.screen[0] - 96,
             this.viewport.mapH * stage.getTileSize().height - 96,
             this.viewport);
@@ -98,6 +104,8 @@ class World {
                 return [this.land];
             case 0:
                 return [this.land, this.barrier];
+            case 2:
+                return [this.land, this.barrier2];
             case 8:
                 return [this.land, this.teleport];
             case 7:
@@ -114,6 +122,7 @@ class World {
             case 8:
             case 7:
             case 0:
+            case 2:
                 return true;
             default:
                 return false;

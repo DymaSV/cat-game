@@ -46,7 +46,7 @@ export function newLevel() {
 }
 
 function initCharacters() {
-    foodArray = factory.createFood(10, viewport);
+    foodArray = factory.createFood(20, viewport);
     enemiesArray = factory.createEnemies(10, viewport);
 
     hero.sprite.canvasSpriteWidth = 48;

@@ -4,19 +4,23 @@ import {
     HeroPositions,
     GhostPositions,
     MousePositions,
+    TeleportPositions
 } from "./positions";
 
 import mouseImage from '../images/mouse.png';
 import landImage from '../images/grass.jpg';
 import land2Image from '../images/land_2.png';
-import stoneImage from '../images/stone_1.png';
+import stoneImage from '../images/volcano.png';
 import barrierImage from '../images/tree_2.png';
 import dogImage from '../images/dog-sprite-sheet.png';
 import ghostImage from '../images/cat-ghost.png';
 import catImage from '../images/cats.png';
 import houseImage from '../images/house.png';
 import pineImage from '../images/pine.png';
-import teleportImage from '../images/teleport_blue.png';
+import teleportImage from '../images/teleport.png';
+import treeVolcano1Image from '../images/trees_volcano_1.png';
+import treeVolcano2Image from '../images/trees_volcano_2.png';
+
 
 // This import should be for transfer images to dist folder
 import catPawImage from '../images/cat-paw.png';
@@ -38,7 +42,7 @@ class Stage {
         this.landSpriteSheet = new SpriteSheet("land", landImage, null);
         this.stoneSpriteSheet = new SpriteSheet("stone_1", stoneImage, null);
         this.houseSpriteSheet = new SpriteSheet("house", houseImage, null);
-        this.teleportSpriteSheet = new SpriteSheet("teleport", teleportImage, null);
+        this.teleportSpriteSheet = new SpriteSheet("teleport", teleportImage, 5, TeleportPositions);
     }
 
     initSpriteSheetsSecondLevel() {
@@ -46,11 +50,12 @@ class Stage {
         this.ghostSpriteSheet = new SpriteSheet("ghost", ghostImage, 3, GhostPositions);
         this.catSpriteSheet = new SpriteSheet("cat", catImage, 4, HeroPositions);
         this.dogSpriteSheet = new SpriteSheet("dog", dogImage, 5, EnemyPositions);
-        this.barrierSpriteSheet = new SpriteSheet("barrier", pineImage, null);
+        this.barrierSpriteSheet = new SpriteSheet("barrier", treeVolcano1Image, null);
+        this.barrier2SpriteSheet = new SpriteSheet("barrier_2", treeVolcano2Image, null);
         this.landSpriteSheet = new SpriteSheet("land_2", land2Image, null);
         this.stoneSpriteSheet = new SpriteSheet("stone_1", stoneImage, null);
         this.houseSpriteSheet = new SpriteSheet("house", houseImage, null);
-        this.teleportSpriteSheet = new SpriteSheet("teleport", teleportImage, null);
+        this.teleportSpriteSheet = new SpriteSheet("teleport", teleportImage, 5, TeleportPositions);
     }
 
     initSpriteSheets() {
@@ -96,17 +101,17 @@ class Stage {
         switch (this.level) {
             case 1:
                 return [
-                    1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-                    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-                    8, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                    1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1,
+                    1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                    1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1,
                     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                    0, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1,
                     1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1,
-                    1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1,
-                    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1,
                     1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-                    1, 1, 1, 1, 1, 1, 1, 1, 8, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                    1, 1, 1, 1, 1, 1, 1, 1, 8, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1,
                     1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-                    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1,
                     1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1,
                     1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1,
                     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -119,20 +124,20 @@ class Stage {
                 ];
             case 2:
                 return [
-                    1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1,
-                    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-                    1, 1, 1, 0, 1, 1, 1, 1, 7, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1,
+                    1, 1, 1, 1, 1, 2, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1,
+                    1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                    2, 1, 1, 2, 1, 1, 1, 1, 7, 1, 2, 1, 1, 1, 1, 2, 1, 2, 1, 1,
                     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-                    1, 1, 1, 7, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                    2, 1, 1, 7, 1, 1, 2, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                     1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-                    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 7, 1, 1, 0, 1, 1, 1, 1,
-                    1, 0, 1, 1, 1, 0, 1, 1, 7, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-                    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1,
+                    0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 7, 1, 1, 0, 1, 2, 1, 1,
+                    1, 2, 1, 1, 1, 0, 1, 1, 7, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                    1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1,
                     1, 1, 1, 1, 7, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                     1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1,
                     8, 1, 1, 1, 1, 1, 1, 8, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-                    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-                    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1,
+                    1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 0, 1, 1, 1, 1,
                     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                     1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -187,12 +192,16 @@ class Stage {
                 return this.dogSpriteSheet;
             case "barrier":
                 return this.barrierSpriteSheet;
+            case "barrier2":
+                return this.barrier2SpriteSheet;
             case "land":
                 return this.landSpriteSheet;
             case "teleport":
                 return this.teleportSpriteSheet;
             case "stone":
                 return this.stoneSpriteSheet;
+            case "house":
+                return this.houseSpriteSheet;
         }
     }
 }
