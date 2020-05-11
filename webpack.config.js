@@ -34,6 +34,19 @@ module.exports = {
         test: /\.css$/i,
         use: ['style-loader', 'css-loader'],
       },
+      {
+        test: /\.(ogg|mp3)$/,
+        use: [
+          { 
+            loader: 'file-loader',
+            options: {
+              name: '[name].[ext]',
+              outputPath:'sounds/',
+              publicPath:'sounds/'
+            }
+          }
+        ],
+      },
     ],
   },
   optimization: {

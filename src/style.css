@@ -25,6 +25,15 @@ body{
   flex: 3;
   margin: auto;
   font-size: 40px;
+  display: flex;
+}
+.instruction_name {
+  flex: 10;
+  margin: auto;
+}
+.instruction_sound {
+  flex: 1;
+  margin: auto;
 }
 .points {
   flex: 1;

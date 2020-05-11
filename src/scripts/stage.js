@@ -21,19 +21,26 @@ import teleportImage from '../images/teleport.png';
 import treeVolcano1Image from '../images/trees_volcano_1.png';
 import treeVolcano2Image from '../images/trees_volcano_2.png';
 
-
 // This import should be for transfer images to dist folder
 import catPawImage from '../images/cat-paw.png';
 import mouseLogoImage from '../images/mouse-logo.png';
 
+// Sounds
+import sound_1 from '../sounds/theme-1.ogg';
+import sound_2 from '../sounds/theme-2.mp3';
+
+let isSoundActive = false;
 class Stage {
     constructor() {
         this.level = 1;
         this.lastLevel = 5;
-        this.initSpriteSheets();
+        this.sound = document.createElement("audio");
+
+        this.initLevel();
+        document.getElementById("sound").addEventListener("click", getSound)
     }
 
-    initSpriteSheetsFirstLevel() {
+    initFirstLevel() {
         this.mouseSpriteSheet = new SpriteSheet("mouse", mouseImage, 4, MousePositions);
         this.ghostSpriteSheet = new SpriteSheet("ghost", ghostImage, 3, GhostPositions);
         this.catSpriteSheet = new SpriteSheet("cat", catImage, 4, HeroPositions);
@@ -43,9 +50,12 @@ class Stage {
         this.stoneSpriteSheet = new SpriteSheet("stone_1", stoneImage, null);
         this.houseSpriteSheet = new SpriteSheet("house", houseImage, null);
         this.teleportSpriteSheet = new SpriteSheet("teleport", teleportImage, 5, TeleportPositions);
+
+        this.sound.src = sound_2;
+        activateSoundLoop(this.sound);
     }
 
-    initSpriteSheetsSecondLevel() {
+    initSecondLevel() {
         this.mouseSpriteSheet = new SpriteSheet("mouse", mouseImage, 4, MousePositions);
         this.ghostSpriteSheet = new SpriteSheet("ghost", ghostImage, 3, GhostPositions);
         this.catSpriteSheet = new SpriteSheet("cat", catImage, 4, HeroPositions);
@@ -56,39 +66,42 @@ class Stage {
         this.stoneSpriteSheet = new SpriteSheet("stone_1", stoneImage, null);
         this.houseSpriteSheet = new SpriteSheet("house", houseImage, null);
         this.teleportSpriteSheet = new SpriteSheet("teleport", teleportImage, 5, TeleportPositions);
+
+        this.sound.src = sound_1;
+        activateSoundLoop(this.sound);
     }
 
-    initSpriteSheets() {
+    initLevel() {
         switch (this.level) {
             case 1:
-                this.initSpriteSheetsFirstLevel();
+                this.initFirstLevel();
                 break;
             case 2:
-                this.initSpriteSheetsSecondLevel();
+                this.initSecondLevel();
                 break;
             case 3:
-                this.initSpriteSheetsFirstLevel();
+                this.initFirstLevel();
                 break;
             case 4:
-                this.initSpriteSheetsFirstLevel();
+                this.initFirstLevel();
                 break;
             case 5:
-                this.initSpriteSheetsFirstLevel();
+                this.initFirstLevel();
                 break;
             default:
-                this.initSpriteSheetsFirstLevel();
+                this.initFirstLevel();
                 break;
         }
     }
 
     resetLevel() {
         this.level = 1;
-        initSpriteSheets();
+        initLevel();
     }
 
     upLevel() {
         this.level++;
-        this.initSpriteSheets();
+        this.initLevel();
     }
 
     isLastLevel() {
@@ -203,6 +216,29 @@ class Stage {
             case "house":
                 return this.houseSpriteSheet;
         }
+    }
+}
+
+function activateSoundLoop(sound) {
+    if (!sound || !isSoundActive) { return; }
+    sound.loop = true;
+    sound.onended = function () {
+        sound.play();
+    }
+    sound.play();
+}
+
+function getSound() {
+    if (!isSoundActive) {
+        isSoundActive = true;
+    } else {
+        isSoundActive = false;
+    }
+
+    if (isSoundActive) {
+        activateSoundLoop(stage.sound)
+    } else {
+        stage.sound.pause();
     }
 }
 

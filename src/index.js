@@ -94,6 +94,7 @@ function heroDetectFood() {
     if (foodIdDetected) {
         foodArray = factory.updateFoodArray(foodArray, foodIdDetected)
         hero.plusLife();
+        hero.meow();
     }
 }
 

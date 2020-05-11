@@ -3,6 +3,7 @@ import { keyState } from "./keyboard";
 import { SpriteCollisionFlags } from './collision';
 import { Collision } from "./collision";
 import { obstaclesArray } from "./world";
+import meow from '../sounds/meow.ogg';
 
 class Hero {
     constructor(sprite, speed) {
@@ -19,6 +20,14 @@ class Hero {
         this.isWin = false;
         this.collision = new Collision();
         this.winIndex = 0;
+
+        this.sound = document.createElement("audio");
+        this.sound.src = meow;
+
+    }
+
+    meow() {
+        this.sound.play();
     }
 
     plusLife() {
