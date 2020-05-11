@@ -24,23 +24,23 @@ class Hero {
     plusLife() {
         this.life++;
         this.steps = this.steps + 60;
-        this.updateHtml();
+        this.updatePoints();
     }
 
-    catStep() {
+    heroStep() {
         this.steps--;
-        this.updateHtml();
+        this.updatePoints();
         if (this.steps == 0 && this.life == 0) {
             this.heroEnemyCollision = true
         }
         if (this.steps == 0 && this.life > 0) {
             this.life--;
             this.steps = this.steps + 60;
-            this.updateHtml();
+            this.updatePoints();
         }
     }
 
-    updateHtml() {
+    updatePoints() {
         document.getElementById("life-point").innerHTML = this.life;
         document.getElementById("cat-steps").innerHTML = this.steps;
     }
@@ -53,7 +53,7 @@ class Hero {
                 this.sprite.x = this.sprite.x - this.speed;
                 this.collision.detectObstacleCollision(this, obstaclesArray)
                 if (!this.obstaclesCollisionFlag.obstacleCollision) {
-                    this.catStep();
+                    this.heroStep();
                 } else {
                     this.sprite.x = this.sprite.x + this.speed;
                     this.obstaclesCollisionFlag.obstacleCollision = false;
@@ -62,11 +62,11 @@ class Hero {
         }
         if (keyState.keyRightState) {
             this.direction = DirectionEnum.right;
-             if (this.sprite.x + this.speed <= this.sprite.viewport.endTile[0] *  this.sprite.viewport.tileW ) {
+            if (this.sprite.x + this.speed <= this.sprite.viewport.endTile[0] * this.sprite.viewport.tileW) {
                 this.sprite.x = this.sprite.x + this.speed;
                 this.collision.detectObstacleCollision(this, obstaclesArray)
                 if (!this.obstaclesCollisionFlag.obstacleCollision) {
-                    this.catStep();
+                    this.heroStep();
                 } else {
                     this.sprite.x = this.sprite.x - this.speed;
                     this.obstaclesCollisionFlag.obstacleCollision = false;
@@ -75,11 +75,11 @@ class Hero {
         }
         if (keyState.keyDownState) {
             this.direction = DirectionEnum.down;
-            if (this.sprite.y + this.speed <= this.sprite.viewport.endTile[1] *  this.sprite.viewport.tileH) {
+            if (this.sprite.y + this.speed <= this.sprite.viewport.endTile[1] * this.sprite.viewport.tileH) {
                 this.sprite.y = this.sprite.y + this.speed;
                 this.collision.detectObstacleCollision(this, obstaclesArray)
                 if (!this.obstaclesCollisionFlag.obstacleCollision) {
-                    this.catStep();
+                    this.heroStep();
                 } else {
                     this.sprite.y = this.sprite.y - this.speed;
                     this.obstaclesCollisionFlag.obstacleCollision = false;
@@ -92,13 +92,14 @@ class Hero {
                 this.sprite.y = this.sprite.y - this.speed;
                 this.collision.detectObstacleCollision(this, obstaclesArray)
                 if (!this.obstaclesCollisionFlag.obstacleCollision) {
-                    this.catStep();
+                    this.heroStep();
                 } else {
                     this.sprite.y = this.sprite.y + this.speed;
                     this.obstaclesCollisionFlag.obstacleCollision = false;
                 }
             }
         }
+
         this.sprite.borderPoints.calculateBorderPointsDynamicObjects(
             this.sprite.x,
             this.sprite.y,
@@ -109,6 +110,21 @@ class Hero {
         this.sprite.draw(this.sprite.x, this.sprite.y, this.direction);
         this.lastDirection = this.direction;
     }
+
+    // detectAslantMove() {
+    //     if (keyState.upLeftState) {
+    //         this.direction = DirectionEnum.upLeft;
+    //     }
+    //     if (keyState.upRightState) {
+    //         this.direction = DirectionEnum.upRight;
+    //     }
+    //     if (keyState.downLeftState) {
+    //         this.direction = DirectionEnum.downLeft;
+    //     }
+    //     if (keyState.downRightState) {
+    //         this.direction = DirectionEnum.downRight;
+    //     }
+    // }
 
     winMove() {
         if (this.winIndex >= 10) {
@@ -143,7 +159,7 @@ class Hero {
         this.heroFoodCollision = false;
         this.life = 3;
         this.steps = 120;
-        this.updateHtml();
+        this.updatePoints();
     }
 }
 

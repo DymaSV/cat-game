@@ -14,5 +14,10 @@ export const DirectionEnum = {
     up: 2,
     down: 3,
     none: 4,
-    win: 5
+    win: 5,
+    upLeft:6,
+    downLeft:7,
+    upRight:8,
+    downRight:9
+
 }

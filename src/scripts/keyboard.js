@@ -46,23 +46,18 @@ function initKeyEvents(){
         if (keyState.keyLeftState && keyState.keyUpState) {
             keyState.upLeftState = true;
         }
-        if (e.keyCode == key_right && e.keyCode == key_up) {
+        if (keyState.keyRightState && keyState.keyUpState) {
             keyState.upRightState = true;
         }
-        if (e.keyCode == key_left && e.keyCode == key_down) {
+        if (keyState.keyLeftState && keyState.keyDownState) {
             keyState.downLeftState = true;
         }
-        if (e.keyCode == key_right && e.keyCode == key_down) {
+        if (keyState.keyRightState && keyState.keyDownState) {
             keyState.downRightState = true;
         }
     });
 
     $(document).keyup(function(e){
-        keyState.upLeftState = false;
-        keyState.upRightState = false;
-        keyState.downLeftState = false;
-        keyState.downRightState = false;
-
         if (e.keyCode == key_shift) {
             keyState.keyShiftState = false;
         }
@@ -78,6 +73,20 @@ function initKeyEvents(){
         }
         if (e.keyCode == key_down) {
             keyState.keyDownState = false;
+        }
+
+         //Two direction
+        if (keyState.keyLeftState && keyState.keyUpState) {
+            keyState.upLeftState = false;
+        }
+        if (keyState.keyRightState && keyState.keyUpState) {
+            keyState.upRightState = false;
+        }
+        if (keyState.keyLeftState && keyState.keyDownState) {
+            keyState.downLeftState = false;
+        }
+        if (keyState.keyRightState && keyState.keyDownState) {
+            keyState.downRightState = false;
         }
     });
 }
