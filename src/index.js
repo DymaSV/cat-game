@@ -117,7 +117,15 @@ function heroDetectFoodCheck() {
     if (foodIdDetected) {
         foodArray = factory.updateFoodArray(foodArray, foodIdDetected)
         hero.plusLife();
-        hero.meow();
+        hero.say();
+    }
+}
+
+function heroDetectEnemyCheck() {
+    let enemyId = collision.detectHeroEnemyCollision(hero, enemiesArray);
+    if (enemyId != null || enemyId != undefined) {
+        hero.heroEnemyCollision = true;
+        enemiesArray[enemyId].say();
     }
 }
 
@@ -131,7 +139,7 @@ setInterval(function () {
         if (hero.heroEnemyCollision) {
             enemyDetectHero();
         } else {
-            collision.detectHeroEnemyCollision(hero, enemiesArray);
+            heroDetectEnemyCheck()
             heroDetectFoodCheck();
             hero.move();
         }

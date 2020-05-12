@@ -26,7 +26,7 @@ class Hero {
 
     }
 
-    meow() {
+    say() {
         this.sound.play();
     }
 

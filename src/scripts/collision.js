@@ -60,12 +60,11 @@ export class Collision {
         for (let i = 0; i < enemiesArray.length; i++) {
             if (!hero.heroEnemyCollision) {
                 if(this.detectCollision(hero, enemiesArray[i])){
-                    hero.heroEnemyCollision = true;
-                    break;
+                    return i;
                 }
             }
-            else { break; }
         }
+        return null;
     }
 
     detectObstacleCollision(object, obstacleArray) {

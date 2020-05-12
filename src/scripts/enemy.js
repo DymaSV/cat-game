@@ -2,6 +2,7 @@ import { DirectionEnum } from "./utility";
 import { SpriteCollisionFlags } from './collision';
 import { obstaclesArray } from "./world";
 import { Collision } from "./collision";
+import dogSound from '../sounds/dog.mp3';
 
 class Enemy {
     constructor(id, sprite, speed, getCollisionSize) {
@@ -19,6 +20,13 @@ class Enemy {
         this.collision = new Collision();
         this.moveChoosed = false;
         this.getCollisionSize = getCollisionSize;
+
+        this.sound = document.createElement("audio");
+        this.sound.src = dogSound;
+    }
+    
+    say(){
+        this.sound.play(); 
     }
 
     move() {
