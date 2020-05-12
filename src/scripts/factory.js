@@ -1,5 +1,5 @@
 import { Sprite } from "./sprite";
-import { stage } from "./stage";
+import { stage } from "../index";
 import { Enemy } from "./enemy";
 import { DirectionEnum } from "./utility";
 import { obstaclesArray } from "./world";

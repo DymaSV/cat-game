@@ -1,6 +1,6 @@
 import { Sprite } from "./sprite";
 import { Obstacle } from './obstacle';
-import { stage } from "./stage";
+import { stage } from "../index";
 
 let obstaclesArray = new Array();
 class World {
@@ -10,8 +10,8 @@ class World {
     }
 
     initSprites() {
-        this.MAP_BLOCK_W = stage.getTileSize().width;
-        this.MAP_BLOCK_H = stage.getTileSize().height;
+        this.MAP_BLOCK_W = stage.viewPortSize().width;
+        this.MAP_BLOCK_H = stage.viewPortSize().height;
         this.map = stage.getMap();
 
         this.land = new Sprite(stage.getSpriteSheet("land"), 0, 0, this.viewport);
@@ -39,7 +39,7 @@ class World {
         this.house = new Sprite(
             stage.getSpriteSheet("house"),
             this.viewport.screen[0] - 96,
-            this.viewport.mapH * stage.getTileSize().height - 96,
+            this.viewport.mapH * stage.viewPortSize().height - 96,
             this.viewport);
         this.house.canvasSpriteWidth = 96;
         this.house.canvasSpriteHeight = 96;

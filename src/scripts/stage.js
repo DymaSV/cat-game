@@ -29,15 +29,12 @@ import mouseLogoImage from '../images/mouse-logo.png';
 import sound_1 from '../sounds/theme-1.ogg';
 import sound_2 from '../sounds/theme-2.mp3';
 
-let isSoundActive = false;
 class Stage {
     constructor() {
         this.level = 1;
         this.lastLevel = 5;
-        this.sound = document.createElement("audio");
-
+        this.sound = new Sound();
         this.initLevel();
-        document.getElementById("sound").addEventListener("click", getSound)
     }
 
     initFirstLevel() {
@@ -51,8 +48,8 @@ class Stage {
         this.houseSpriteSheet = new SpriteSheet("house", houseImage, null);
         this.teleportSpriteSheet = new SpriteSheet("teleport", teleportImage, 5, TeleportPositions);
 
-        this.sound.src = sound_2;
-        activateSoundLoop(this.sound);
+        this.sound.setSoundSrc(sound_2);
+        this.sound.activateSoundLoop();
     }
 
     initSecondLevel() {
@@ -67,8 +64,8 @@ class Stage {
         this.houseSpriteSheet = new SpriteSheet("house", houseImage, null);
         this.teleportSpriteSheet = new SpriteSheet("teleport", teleportImage, 5, TeleportPositions);
 
-        this.sound.src = sound_1;
-        activateSoundLoop(this.sound);
+        this.sound.setSoundSrc(sound_1);
+        this.sound.activateSoundLoop();
     }
 
     initLevel() {
@@ -79,15 +76,6 @@ class Stage {
             case 2:
                 this.initSecondLevel();
                 break;
-            case 3:
-                this.initFirstLevel();
-                break;
-            case 4:
-                this.initFirstLevel();
-                break;
-            case 5:
-                this.initFirstLevel();
-                break;
             default:
                 this.initFirstLevel();
                 break;
@@ -96,7 +84,7 @@ class Stage {
 
     resetLevel() {
         this.level = 1;
-        initLevel();
+        this.initLevel();
     }
 
     upLevel() {
@@ -184,12 +172,12 @@ class Stage {
         }
     }
 
-    getTileSize() {
+    viewPortSize() {
         switch (this.level) {
             case 1:
-                return { width: 64, height: 64 };
+                return { width: 64, height: 64, mapW: 20, mapH: 20 };
             default:
-                return { width: 64, height: 64 };
+                return { width: 64, height: 64, mapW: 20, mapH: 20 };
         }
     }
 
@@ -219,27 +207,25 @@ class Stage {
     }
 }
 
-function activateSoundLoop(sound) {
-    if (!sound || !isSoundActive) { return; }
-    sound.loop = true;
-    sound.onended = function () {
-        sound.play();
-    }
-    sound.play();
-}
-
-function getSound() {
-    if (!isSoundActive) {
-        isSoundActive = true;
-    } else {
-        isSoundActive = false;
+class Sound {
+    constructor(){
+        this.isSoundActive = false;
+        this.sound = document.createElement("audio");
     }
 
-    if (isSoundActive) {
-        activateSoundLoop(stage.sound)
-    } else {
-        stage.sound.pause();
+    setSoundSrc(filePath){
+        this.sound.src = filePath;
+    }
+
+    activateSoundLoop() {
+        if (!this.sound || !this.isSoundActive) { return; }
+        this.sound.loop = true;
+        this.sound.onended = function () {
+            this.sound.play();
+        }
+        this.sound.play();
     }
 }
 
-export let stage = new Stage();
+
+export { Stage }

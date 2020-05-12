@@ -8,9 +8,10 @@ import { Collision } from "./scripts/collision";
 import { Hero } from "./scripts/hero";
 import { Factory } from "./scripts/factory";
 import { ViewPort } from "./scripts/viewport";
-import { stage } from "./scripts/stage";
+import { Stage } from "./scripts/stage";
 import $ from 'jquery';
 
+let stage = new Stage();
 let ghost = null;
 let hero = null;
 let enemiesArray = new Array();
@@ -22,11 +23,19 @@ let viewport = null;
 let Context = null;
 
 $(document).ready(function () {
+    document.getElementById("sound").addEventListener("click", getSound);
+
     let contextWidth = $(window).width() - 100;
     let contextHeight = $(window).height() - 200;
     Context = new HTML("game", contextWidth, contextHeight);
 
-    viewport = new ViewPort(64, 64, Math.floor(contextWidth / 64), 20, contextWidth, contextHeight);
+    viewport = new ViewPort(
+        stage.viewPortSize().width,
+        stage.viewPortSize().height,
+        Math.floor(contextWidth / stage.viewPortSize().width),
+        stage.viewPortSize().mapH,
+        contextWidth, contextHeight);
+
     world = new World(viewport);
     ghost = new Sprite(stage.getSpriteSheet("ghost"), 0, 0, viewport);
     hero = new Hero(new Sprite(stage.getSpriteSheet("cat"), 0, 0, viewport), 2);
@@ -36,7 +45,21 @@ $(document).ready(function () {
 
 });
 
-export function newLevel() {
+function getSound() {
+    if (!stage.sound.isSoundActive) {
+        stage.sound.isSoundActive = true;
+    } else {
+        stage.sound.isSoundActive = false;
+    }
+
+    if (stage.sound.isSoundActive) {
+        stage.sound.activateSoundLoop();
+    } else {
+        stage.sound.sound.pause();
+    }
+}
+
+function newLevel() {
     stage.upLevel();
     world.initSprites();
     viewport.reset()
@@ -89,7 +112,7 @@ function enemyDetectHero() {
     }
 }
 
-function heroDetectFood() {
+function heroDetectFoodCheck() {
     let foodIdDetected = collision.detectHeroFoodCollision(hero, foodArray)
     if (foodIdDetected) {
         foodArray = factory.updateFoodArray(foodArray, foodIdDetected)
@@ -108,8 +131,8 @@ setInterval(function () {
         if (hero.heroEnemyCollision) {
             enemyDetectHero();
         } else {
-            hero.heroEnemyCollision = collision.detectHeroEnemyCollision(hero, enemiesArray);
-            heroDetectFood();
+            collision.detectHeroEnemyCollision(hero, enemiesArray);
+            heroDetectFoodCheck();
             hero.move();
         }
         moveCharacters(foodArray);
@@ -117,4 +140,4 @@ setInterval(function () {
     }
 }, 40);
 
-export { Context };
+export { Context, stage, newLevel };

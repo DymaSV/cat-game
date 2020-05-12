@@ -59,11 +59,13 @@ export class Collision {
     detectHeroEnemyCollision(hero, enemiesArray) {
         for (let i = 0; i < enemiesArray.length; i++) {
             if (!hero.heroEnemyCollision) {
-                return this.detectCollision(hero, enemiesArray[i]);
+                if(this.detectCollision(hero, enemiesArray[i])){
+                    hero.heroEnemyCollision = true;
+                    break;
+                }
             }
             else { break; }
         }
-        return false;
     }
 
     detectObstacleCollision(object, obstacleArray) {
@@ -86,8 +88,7 @@ export class Collision {
 
     detectHeroFoodCollision(hero, array) {
         for (let i = 0; i < array.length; i++) {
-            let heroEat = this.detectCollision(hero, array[i]);
-            if (heroEat) {
+            if (this.detectCollision(hero, array[i])) {
                 return array[i].id;
             }
         }
